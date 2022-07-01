@@ -4,8 +4,8 @@ from data import sendemail
 
 
 class DATABASE:
-    def __init__(self):
-        self.conn = sqlite3.connect("data/database.db")  # connecting to database
+    def __init__(self , returant_name , *arg):
+        self.conn = sqlite3.connect(f"data/{returant_name}.db")  # connecting to database
         self.conn.row_factory = self.dict_factory  # to return rows in new mode
         self.c = self.conn.cursor()  # cursor
 
@@ -92,6 +92,16 @@ class DATABASE:
                             );"""
         )
 
+        self.c.execute(
+            """  CREATE TABLE IF NOT EXISTS INFO
+                           (MANAGER_NAME    TEXT     NOT NULL,
+                            LOCATION        TEXT     NOT NULL,
+                            TYPE            TEXT     NOT NULL,
+                            ADDRESS         TEXT     NOT NULL,
+                            DATE            TEXT     NOT NULL,
+                            PRIMARY KEY(MANAGER_NAME, TYPE , ADDRESS , DATE)
+                            );"""
+        )
 
         
         self.conn.execute(
@@ -99,6 +109,17 @@ class DATABASE:
         )  #  FOREIGN KEY is not supported automatically in sqlite3
         self.conn.commit()
 
+        self.c.execute(f"SELECT * FROM INFO")
+        record = self.c.fetchone()
+        if record == None:
+            try:
+                # Insert new user to database
+                self.c.execute(f"""INSERT INTO INFO( 'MANAGER_NAME',   'LOCATION',   'TYPE',  'ADDRESS' , 'DATE') VALUES (? , ? , ? , ?, ?)""" , arg)
+                self.conn.commit()
+            except Exception as e:
+                return False , e
+
+        
 # -------------------------------------------------------------------------
     def base64_encode(self, message):
         message_bytes = message.encode('ascii')
@@ -273,18 +294,3 @@ class DATABASE:
 
         else:
             return False, "Just kwargs acceptable"
-
-
-
-
-
-
-
-        
-
-
-
-
-   
-
-

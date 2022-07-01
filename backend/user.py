@@ -1,8 +1,8 @@
 from base import DATABASE
 from admin import Admin
 class User(DATABASE):
-    def __init__(self):
-        super().__init__()
+    def __init__(self , returant_name , *arg):
+        super().__init__(returant_name , *arg)
 # -------------------------------------------------------------------------
     def UseCopon(self, CODE):
         self.c.execute(f"SELECT * FROM DISCOUNT WHERE CODE = '{CODE}'")

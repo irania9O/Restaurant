@@ -1,7 +1,7 @@
 from base import DATABASE
 class Market(DATABASE):
-    def __init__(self):
-        super().__init__()
+    def __init__(self , returant_name , *arg):
+        super().__init__(returant_name , *arg)
 # -------------------------------------------------------------------------
     def OneVote(self, FOOD_ID):
         """
@@ -174,5 +174,3 @@ class Market(DATABASE):
         
         except Exception as e:
             return False , e
-        
-    

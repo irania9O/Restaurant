@@ -2,8 +2,8 @@ from base import DATABASE
 import random
 
 class Admin(DATABASE):
-    def __init__(self):
-        super().__init__()
+    def __init__(self , returant_name , *arg):
+        super().__init__(returant_name , *arg)
 # -------------------------------------------------------------------------
     def NewFood(self, NAME, PRICE, INVENTORY, DATE , PROFILE , MEAL, MATERIAL):
         """
@@ -76,4 +76,21 @@ class Admin(DATABASE):
         self.conn.commit()
         return True , "Successfully added"       
 
+# -------------------------------------------------------------------------
+    def ChangeInfo(self, MANAGER_NAME, LOCATION, TYPE, ADDRESS , DATE):
+        try:
+            # insert
+            self.c.execute( "DELETE FROM INFO ")
+            self.conn.commit()
+        except Exception as e:
+            return False , e
+        
+        try:
+            # Insert new user to database
+            self.c.execute(f"""INSERT INTO INFO ( 'MANAGER_NAME',   'LOCATION',   'TYPE',  'ADDRESS' , 'DATE') VALUES (? , ? , ? , ?, ?)""" , (MANAGER_NAME, LOCATION, TYPE, ADDRESS , DATE))
+            self.conn.commit()
+        except Exception as e:
+            return False , e
+        
+        return True , "Successfully changed"       
 
