@@ -1,49 +1,55 @@
 from base import DATABASE
 from admin import Admin
+
+
 class User(DATABASE):
-    def __init__(self , returant_name , *arg):
-        super().__init__(returant_name , *arg)
-# -------------------------------------------------------------------------
+    def __init__(self, returant_name, *arg):
+        super().__init__(returant_name, *arg)
+
+    # -------------------------------------------------------------------------
     def UseCopon(self, CODE):
         self.c.execute(f"SELECT * FROM DISCOUNT WHERE CODE = '{CODE}'")
         records = self.c.fetchone()
         if records == None:
-            return False , "Donst Exist"
-        elif records['COUNT'] < 1:
-             return False , "The code is consumed"
-            
+            return False, "Donst Exist"
+        elif records["COUNT"] < 1:
+            return False, "The code is consumed"
+
         try:
-            # update 
-            self.c.execute(f"UPDATE DISCOUNT SET COUNT = COUNT - 1  WHERE CODE = '{CODE}'")
+            # update
+            self.c.execute(
+                f"UPDATE DISCOUNT SET COUNT = COUNT - 1  WHERE CODE = '{CODE}'"
+            )
         except Exception as e:
-            return False , e
+            return False, e
 
         self.conn.commit()
-        return True , records["PERCENT"]    
-# -------------------------------------------------------------------------
+        return True, records["PERCENT"]
+
+    # -------------------------------------------------------------------------
     def NewOrder(self, PERSON_ID, FOOD_ID, DATE, COUNT):
         """
         Task:
-            Order new food 
+            Order new food
 
         Arguments:
             PERSON_ID              -- Customer or Manager National code                   -- type : str(chr)   -- default : not null
             FOOD_ID                -- Food id                                             -- type : int        -- default : not null
             DATE                   -- Date format as YYYY-MM-DD                           -- type : str        -- default : Now
-            COUNT                  -- How many foods that they wants                      -- type : int        -- default : 0            
-            
+            COUNT                  -- How many foods that they wants                      -- type : int        -- default : 0
+
         Return :
             HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
             NO  PROBLEM             --Successfully Update ot insert                       -- type : tuple       -- value   : True  , Message
         """
-        
+
         self.c.execute(
             f"SELECT * FROM `ORDER` WHERE FOOD_ID = {FOOD_ID} AND PERSON_ID = '{PERSON_ID}' AND date(DATE) = '{DATE}'"
         )
         records = self.c.fetchone()
         # if exists delete order
         if not records == None:
-            self.DeleteOrder(records['ID'])
+            self.DeleteOrder(records["ID"])
         try:
             # Order
             self.c.execute(
@@ -51,12 +57,12 @@ class User(DATABASE):
                 (PERSON_ID, FOOD_ID, COUNT, DATE, "PAYING"),
             )
         except Exception as e:
-            return False , e
+            return False, e
 
         self.conn.commit()
-        return True , "Successfully orderd"
+        return True, "Successfully orderd"
 
-# -------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     def DeleteOrder(self, ORDER_ID):
         """
         Task:
@@ -64,23 +70,22 @@ class User(DATABASE):
 
         Arguments:
             PERSON_ID              -- Customer or Manager National code                   -- type : str(chr)   -- default : not null
-            FOOD_ID_OR_DATE        -- Food id or Date format as YYYY-MM-DD                -- type : int|str    -- default : not null      
-            
+            FOOD_ID_OR_DATE        -- Food id or Date format as YYYY-MM-DD                -- type : int|str    -- default : not null
+
         Return :
             HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
             NO  PROBLEM             --Successfully Update ot insert                       -- type : tuple       -- value   : True  , Message
         """
         try:
-            self.c.execute(
-                f"DELETE FROM `ORDER` WHERE ID = {ORDER_ID}"
-            )
+            self.c.execute(f"DELETE FROM `ORDER` WHERE ID = {ORDER_ID}")
         except Exception as e:
-            return False , e
+            return False, e
 
         self.conn.commit()
-        return True , "Successfully deleted" 
-# -------------------------------------------------------------------------        
-    def Pay(self, PERSON_ID , Tracking_Code , DATE ,Copon = ""):
+        return True, "Successfully deleted"
+
+    # -------------------------------------------------------------------------
+    def Pay(self, PERSON_ID, Tracking_Code, DATE, Copon=""):
         """
         Task:
             Pay Orders .
@@ -88,30 +93,37 @@ class User(DATABASE):
         Arguments:
             PERSON_ID              -- Customer National code                              -- type : str(chr)    -- default : not null
             Tracking_Code          -- Pay to order                                        -- type : str         -- default : not null
-            
+
         Return :
             HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
-            NO  PROBLEM             --Successfully                                        -- type : tuple       -- value   : True  , Message 
+            NO  PROBLEM             --Successfully                                        -- type : tuple       -- value   : True  , Message
         """
-        
+
         data = self.base64_decode(Tracking_Code).split("|")
         SUMINCOME = 0
         for Order in data:
             try:
-                FOOD_ID ,COUNT =  Order.split("/")
+                FOOD_ID, COUNT = Order.split("/")
                 self.c.execute(f"SELECT * FROM FOOD WHERE ID = '{FOOD_ID}' ")
                 FOOD = self.c.fetchone()
-                Admin().FoodAdmin(FOOD["NAME"], FOOD["PRICE"], FOOD["INVENTORY"] - int(COUNT), FOOD["DATE"], FOOD["MEAL"])
-                self.c.execute(f"UPDATE `ORDER` SET STATE = 'SENDING'  WHERE PERSON_ID = '{PERSON_ID}' AND STATE = 'PAYING' AND FOOD_ID = '{FOOD_ID}'")
+                Admin().FoodAdmin(
+                    FOOD["NAME"],
+                    FOOD["PRICE"],
+                    FOOD["INVENTORY"] - int(COUNT),
+                    FOOD["DATE"],
+                    FOOD["MEAL"],
+                )
+                self.c.execute(
+                    f"UPDATE `ORDER` SET STATE = 'SENDING'  WHERE PERSON_ID = '{PERSON_ID}' AND STATE = 'PAYING' AND FOOD_ID = '{FOOD_ID}'"
+                )
                 SUMINCOME += FOOD["PRICE"]
             except Exception as e:
-                return True , e
+                return True, e
 
         if not Copon == "":
             percent = self.UseCopon(Copon)
-            SUMINCOME *= (100 - percent)/100
-            
-            
+            SUMINCOME *= (100 - percent) / 100
+
         try:
             # add new comment to datebase
             self.c.execute(
@@ -119,11 +131,11 @@ class User(DATABASE):
                 (SUMINCOME, Tracking_Code, DATE),
             )
         except Exception as e:
-            return False,e               
+            return False, e
         self.conn.commit()
-        return True , "Successfully"
-    
-# -------------------------------------------------------------------------
+        return True, "Successfully"
+
+    # -------------------------------------------------------------------------
     def Factor(self, PERSON_ID):
         """
         Task:
@@ -141,13 +153,14 @@ class User(DATABASE):
                 f"SELECT * FROM `ORDER` WHERE STATE = 'PAYING' AND PERSON_ID = '{PERSON_ID}'"
             )
             records = self.c.fetchall()
-            Tracking_Code = "" 
+            Tracking_Code = ""
             for i in records:
-                Tracking_Code += str(i['FOOD_ID']) + "/" + str(i['COUNT']) + "|" 
-            return records , self.base64_encode(Tracking_Code)
+                Tracking_Code += str(i["FOOD_ID"]) + "/" + str(i["COUNT"]) + "|"
+            return records, self.base64_encode(Tracking_Code)
         except Exception as e:
-            return False , e
-# -------------------------------------------------------------------------
+            return False, e
+
+    # -------------------------------------------------------------------------
     def NewVote(self, PERSON_ID, FOOD_ID, COMMENT):
         """
         Task:
@@ -155,9 +168,9 @@ class User(DATABASE):
 
         Arguments:
             PERSON_ID              -- Customer National code                              -- type : str(chr)   -- default : not null
-            FOOD_ID                -- Food id                                             -- type : int        -- default : not null      
-            COMMENT                -- Customer comment                                    -- type : str        -- default : not null      
-            
+            FOOD_ID                -- Food id                                             -- type : int        -- default : not null
+            COMMENT                -- Customer comment                                    -- type : str        -- default : not null
+
         Return :
             HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
             NO  PROBLEM             --Successfully Update ot insert                       -- type : tuple       -- value   : True  , Message
@@ -168,7 +181,7 @@ class User(DATABASE):
         self.c.execute(
             f"SELECT * FROM VOTE WHERE PERSON_ID = '{PERSON_ID}' AND FOOD_ID = '{FOOD_ID}'"
         )
-        
+
         VOTE = self.c.fetchone()
         # if exists update else new comment
         if VOTE == None:
@@ -179,7 +192,7 @@ class User(DATABASE):
                     (PERSON_ID, FOOD_ID, MESSAGE),
                 )
             except Exception as e:
-                return False,e
+                return False, e
         else:
             try:
                 # update last comment
@@ -187,7 +200,7 @@ class User(DATABASE):
                     f"UPDATE VOTE SET COMMENT = '{MESSAGE}'  WHERE PERSON_ID = '{PERSON_ID}' AND FOOD_ID = '{FOOD_ID}'"
                 )
             except Exception as e:
-                return False , e
-            
+                return False, e
+
         self.conn.commit()
         return True

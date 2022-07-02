@@ -4,8 +4,10 @@ from data import sendemail
 
 
 class DATABASE:
-    def __init__(self , returant_name , *arg):
-        self.conn = sqlite3.connect(f"data/{returant_name}.db")  # connecting to database
+    def __init__(self, returant_name, *arg):
+        self.conn = sqlite3.connect(
+            f"data/{returant_name}.db"
+        )  # connecting to database
         self.conn.row_factory = self.dict_factory  # to return rows in new mode
         self.c = self.conn.cursor()  # cursor
 
@@ -63,7 +65,7 @@ class DATABASE:
                             FOREIGN KEY(FOOD_ID)        REFERENCES FOOD(ID)
                             );"""
         )
-        
+
         # Create NEWS table if deos not exist in database
         self.c.execute(
             """  CREATE TABLE IF NOT EXISTS NEWS
@@ -79,10 +81,10 @@ class DATABASE:
             """  CREATE TABLE IF NOT EXISTS DISCOUNT
                            (CODE            TEXT        PRIMARY KEY  ,
                             PERCENT         INTEGER     NOT NULL,
-                            COUNT           INTEGER     NOT NULL                          
+                            COUNT           INTEGER     NOT NULL
                             );"""
         )
-        
+
         # Create DICSOUNT table if deos not exist in database
         self.c.execute(
             """  CREATE TABLE IF NOT EXISTS ECONOMY
@@ -94,47 +96,51 @@ class DATABASE:
 
         self.c.execute(
             """  CREATE TABLE IF NOT EXISTS INFO
-                           (MANAGER_NAME    TEXT     NOT NULL,
+                           (
+                            PERSON_ID       CHAR(20)    NOT NULL,
+                            MANAGER_NAME    TEXT     NOT NULL,
                             LOCATION        TEXT     NOT NULL,
                             TYPE            TEXT     NOT NULL,
                             ADDRESS         TEXT     NOT NULL,
                             DATE            TEXT     NOT NULL,
+                            FOREIGN KEY(PERSON_ID)      REFERENCES PERSON(NATIONAL_CODE),
                             PRIMARY KEY(MANAGER_NAME, TYPE , ADDRESS , DATE)
                             );"""
         )
 
-        
         self.conn.execute(
             "PRAGMA foreign_keys = ON"
-        )  #  FOREIGN KEY is not supported automatically in sqlite3
+        )  # FOREIGN KEY is not supported automatically in sqlite3
         self.conn.commit()
 
         self.c.execute(f"SELECT * FROM INFO")
         record = self.c.fetchone()
-        if record == None:
+        if record is None:
             try:
                 # Insert new user to database
-                self.c.execute(f"""INSERT INTO INFO( 'MANAGER_NAME',   'LOCATION',   'TYPE',  'ADDRESS' , 'DATE') VALUES (? , ? , ? , ?, ?)""" , arg)
+                self.c.execute(
+                    f"""INSERT INTO INFO( 'MANAGER_NAME',   'LOCATION',   'TYPE',  'ADDRESS' , 'DATE') VALUES (? , ? , ? , ?, ?)""",
+                    arg,
+                )
                 self.conn.commit()
             except Exception as e:
-                return False , e
+                return False, e
 
-        
-# -------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     def base64_encode(self, message):
-        message_bytes = message.encode('ascii')
+        message_bytes = message.encode("ascii")
         base64_bytes = base64.b64encode(message_bytes)
-        base64_message = base64_bytes.decode('ascii')
+        base64_message = base64_bytes.decode("ascii")
         return base64_message
 
-# -------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     def base64_decode(self, base64_message):
-        base64_bytes = base64_message.encode('ascii')
+        base64_bytes = base64_message.encode("ascii")
         message_bytes = base64.b64decode(base64_bytes)
-        message = message_bytes.decode('ascii')
+        message = message_bytes.decode("ascii")
         return message
 
-# -------------------------------------------------------------------------    
+    # -------------------------------------------------------------------------
     def dict_factory(self, cursor, row):
         """
         Task:
@@ -152,6 +158,7 @@ class DATABASE:
             dictionary[column[0]] = row[index]
         return dictionary
 
+    # -------------------------------------------------------------------------
     def Registery(
         self,
         FRIST_NAME,
@@ -197,7 +204,7 @@ class DATABASE:
         except Exception as e:
             return False, e
 
-# -------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     def Login(self, EMAIL_OR_NATIONALCODE, PASSWORD):
         """
         Task:
@@ -216,18 +223,23 @@ class DATABASE:
         records = self.Person(EMAIL_OR_NATIONALCODE)
 
         # Couldn't find any data
-        if records == None:
+        if records is None:
             return False, "NATIONAL_CODE OR EMAIL DOES NOT EXIST IN DATABASE"
 
         elif not records["PASSWORD"] == PASSWORD:
             # Another error was recorded
             self.Update(
-                NATIONAL_CODE = records["NATIONAL_CODE"], FAILS = records["FAILS"] + 1
-            )
+                NATIONAL_CODE=records["NATIONAL_CODE"],
+                FAILS=records["FAILS"] + 1)
 
             # SEND EMAIL
             if records["FAILS"] + 1 > 2:
-                sendemail.Email().send_email("Restaurant ", records["EMAIL"], "Recover Password", f"Your password is {records['PASSWORD']}")
+                sendemail.Email().send_email(
+                    "Restaurant ",
+                    records["EMAIL"],
+                    "Recover Password",
+                    f"Your password is {records['PASSWORD']}",
+                )
                 return False, "You tried more than three times wrong"
                 pass
 
@@ -235,10 +247,10 @@ class DATABASE:
 
         elif records["PASSWORD"] == PASSWORD:
             # logged in successfully
-            self.Update(NATIONAL_CODE = records["NATIONAL_CODE"], FAILS = 0)
-            return True , "You have successfully logged in"
+            self.Update(NATIONAL_CODE=records["NATIONAL_CODE"], FAILS=0)
+            return True, "You have successfully logged in"
 
-# -------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     def Person(self, EMAIL_OR_NATIONALCODE):
         """
         Task:
@@ -258,7 +270,7 @@ class DATABASE:
         records = self.c.fetchone()
         return records
 
-# -------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     def Update(self, *arg, **kwargs):
         """
         Task:
@@ -274,7 +286,8 @@ class DATABASE:
 
         # Chceking not enter any positional arguments
         if arg == tuple():
-            # Create key value pairs as format sqlite3 and convert to string using join method
+            # Create key value pairs as format sqlite3 and convert to string
+            # using join method
             LIST = []
             for key, value in kwargs.items():
                 LIST.append(f" `{key}` = '{value}' ")
@@ -294,3 +307,18 @@ class DATABASE:
 
         else:
             return False, "Just kwargs acceptable"
+
+    # -------------------------------------------------------------------------
+    def ResturantInfo(self):
+        self.c.execute(f"SELECT * FROM INFO")
+        record = self.c.fetchone()
+        return records
+
+    # -------------------------------------------------------------------------
+    def ChangeResturantDate(self, DATE):
+        try:
+            self.c.execute(f"UPDATE INFO SET DATE = '{DATE}'")
+        except Exception as e:
+            return False, e
+        self.conn.commit()
+        return True, "Updated successfully"

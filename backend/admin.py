@@ -1,11 +1,13 @@
 from base import DATABASE
 import random
 
+
 class Admin(DATABASE):
-    def __init__(self , returant_name , *arg):
-        super().__init__(returant_name , *arg)
-# -------------------------------------------------------------------------
-    def NewFood(self, NAME, PRICE, INVENTORY, DATE , PROFILE , MEAL, MATERIAL):
+    def __init__(self, returant_name, *arg):
+        super().__init__(returant_name, *arg)
+
+    # -------------------------------------------------------------------------
+    def NewFood(self, NAME, PRICE, INVENTORY, DATE, PROFILE, MEAL, MATERIAL):
         """
         Task:
             Insert new food into database if dosn't exist and Update price or inventory if exists.
@@ -44,13 +46,17 @@ class Admin(DATABASE):
                     f"UPDATE FOOD SET INVENTORY = {INVENTORY} ,PRICE = {PRICE} ,PROFILE = '{PROFILE}',MATERIAL='{STRING_MEAL}'   WHERE date(DATE) = '{DATE}' AND NAME = '{NAME}' AND MEAL = '{MEAL}'"
                 )
             except Exception as e:
-                return False , e
+                return False, e
 
         self.conn.commit()
         return True
-# -------------------------------------------------------------------------
+
+    # -------------------------------------------------------------------------
     def NewCopon(self, PERCENT, COUNT):
-        CODE = ''.join(random.choice('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ') for x in range(5))
+        CODE = "".join(
+            random.choice("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+            for x in range(5)
+        )
         try:
             # insert
             self.c.execute(
@@ -58,12 +64,13 @@ class Admin(DATABASE):
                 (CODE, PERCENT, COUNT),
             )
         except Exception as e:
-            return False , e
+            return False, e
 
         self.conn.commit()
-        return True , CODE
-# -------------------------------------------------------------------------
-    def NewNews(self, SUBJECT, CONTENT , DATE):
+        return True, CODE
+
+    # -------------------------------------------------------------------------
+    def NewNews(self, SUBJECT, CONTENT, DATE):
         try:
             # insert
             self.c.execute(
@@ -71,26 +78,28 @@ class Admin(DATABASE):
                 (SUBJECT, CONTENT, DATE),
             )
         except Exception as e:
-            return False , e
+            return False, e
 
         self.conn.commit()
-        return True , "Successfully added"       
+        return True, "Successfully added"
 
-# -------------------------------------------------------------------------
-    def ChangeInfo(self, MANAGER_NAME, LOCATION, TYPE, ADDRESS , DATE):
+    # -------------------------------------------------------------------------
+    def ChangeInfo(self, MANAGER_NAME, LOCATION, TYPE, ADDRESS, DATE):
         try:
             # insert
-            self.c.execute( "DELETE FROM INFO ")
+            self.c.execute("DELETE FROM INFO ")
             self.conn.commit()
         except Exception as e:
-            return False , e
-        
+            return False, e
+
         try:
             # Insert new user to database
-            self.c.execute(f"""INSERT INTO INFO ( 'MANAGER_NAME',   'LOCATION',   'TYPE',  'ADDRESS' , 'DATE') VALUES (? , ? , ? , ?, ?)""" , (MANAGER_NAME, LOCATION, TYPE, ADDRESS , DATE))
+            self.c.execute(
+                f"""INSERT INTO INFO ( 'MANAGER_NAME',   'LOCATION',   'TYPE',  'ADDRESS' , 'DATE') VALUES (? , ? , ? , ?, ?)""",
+                (MANAGER_NAME, LOCATION, TYPE, ADDRESS, DATE),
+            )
             self.conn.commit()
         except Exception as e:
-            return False , e
-        
-        return True , "Successfully changed"       
+            return False, e
 
+        return True, "Successfully changed"
