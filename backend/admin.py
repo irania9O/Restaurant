@@ -3,8 +3,9 @@ import random
 
 
 class Admin(DATABASE):
-    def __init__(self, returant_name, *arg):
-        super().__init__(returant_name, *arg)
+    def __init__(self, returant_name, national_code):
+        super().__init__(returant_name)
+        self.national_code = national_code
 
     # -------------------------------------------------------------------------
     def NewFood(self, NAME, PRICE, INVENTORY, DATE, PROFILE, MEAL, MATERIAL):
@@ -23,7 +24,7 @@ class Admin(DATABASE):
 
         Return :
             HAS PROBLEM          --Error                                                  -- type : tuple       -- value   : False , Message
-            NO  PROBLEM          --Successfully Update ot insert                          -- type : tuple       -- value   : True  , Message
+            NO  PROBLEM          --Successfully Update or insert                          -- type : tuple       -- value   : True  , Message
         """
         STRING_MEAL = "|".join(MATERIAL)
         self.c.execute(
@@ -53,6 +54,18 @@ class Admin(DATABASE):
 
     # -------------------------------------------------------------------------
     def NewCopon(self, PERCENT, COUNT):
+        """
+        Task:
+            Generate new copon.
+
+        Arguments:
+            PERCENT              -- Discount percent                                      -- type : str        -- default : not null
+            COUNT                -- How many times can use code                           -- type : int        -- default : not null
+
+        Return :
+            HAS PROBLEM          --Error                                                  -- type : tuple       -- value   : False , Message
+            NO  PROBLEM          --Successfully generate                                  -- type : tuple       -- value   : True  , Code
+        """
         CODE = "".join(
             random.choice("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
             for x in range(5)
@@ -71,6 +84,19 @@ class Admin(DATABASE):
 
     # -------------------------------------------------------------------------
     def NewNews(self, SUBJECT, CONTENT, DATE):
+        """
+        Task:
+            Add new news to database.
+
+        Arguments:
+            SUBJECT              -- News subject                                          -- type : str        -- default : not null
+            CONTENT              -- News content                                          -- type : str        -- default : not null
+            DATE                 -- Food date YYYY-MM-DD                                  -- type : str        -- default : not null
+
+        Return :
+            HAS PROBLEM          --Error                                                  -- type : tuple       -- value   : False , Message
+            NO  PROBLEM          --Successfully insert                                    -- type : tuple       -- value   : True  , Message
+        """
         try:
             # insert
             self.c.execute(
@@ -84,7 +110,18 @@ class Admin(DATABASE):
         return True, "Successfully added"
 
     # -------------------------------------------------------------------------
-    def ChangeInfo(self, MANAGER_NAME, LOCATION, TYPE, ADDRESS, DATE):
+    def ChangeInfo(self, arg):
+        """
+        Task:
+            Change Resturant info.
+
+        Arguments:
+            arg                  -- positionals arguments                                 -- type : ---         -- default : not null
+
+        Return :
+            HAS PROBLEM          --Error                                                  -- type : tuple       -- value   : False , Message
+            NO  PROBLEM          --Successfully Update                                    -- type : tuple       -- value   : True  , Message
+        """
         try:
             # insert
             self.c.execute("DELETE FROM INFO ")
@@ -93,13 +130,68 @@ class Admin(DATABASE):
             return False, e
 
         try:
-            # Insert new user to database
+            # Insert new info to database
             self.c.execute(
-                f"""INSERT INTO INFO ( 'MANAGER_NAME',   'LOCATION',   'TYPE',  'ADDRESS' , 'DATE') VALUES (? , ? , ? , ?, ?)""",
-                (MANAGER_NAME, LOCATION, TYPE, ADDRESS, DATE),
+                f"""INSERT INTO INFO( 'MANAGER_FIRST_NAME', 'MANAGER_LAST_NAME',   'PHONE_NUMBER',   'EMAIL',  'PERSON_ID' , 'PASSWORD' , 'PROFILE' , 'NAME_RESTURANT' , 'TYPE' , 'ADDRESS' , 'DATE' ) VALUES (? , ? , ? , ?, ? ,? ,? ,? ,?,?,?,?)""",
+                arg,
             )
             self.conn.commit()
         except Exception as e:
             return False, e
 
         return True, "Successfully changed"
+
+    # -------------------------------------------------------------------------
+    def ResturantInfo(self):
+        """
+        Task:
+            Get Resturant info.
+
+        Arguments:
+            ---
+
+        Return :
+            HAS PROBLEM          --Error                                                  -- type : tuple       -- value   : False , Message
+            NO  PROBLEM          --Successfully                                           -- type : list        -- value   : []
+        """
+        try:
+            self.c.execute(f"SELECT * FROM INFO")
+            record = self.c.fetchone()
+            return records
+        except Exception as e:
+            return False, e
+
+    # -------------------------------------------------------------------------
+    def ChangeResturantDate(self, DATE):
+        """
+        Task:
+            Change Resturant Date.
+
+        Arguments:
+            DATE                 -- Food date YYYY-MM-DD                                  -- type : str        -- default : not null
+
+        Return :
+            HAS PROBLEM          --Error                                                  -- type : tuple       -- value   : False , Message
+            NO  PROBLEM          --Successfully Update                                    -- type : tuple       -- value   : True  , Message
+        """
+        try:
+            self.c.execute(f"UPDATE INFO SET DATE = '{DATE}'")
+        except Exception as e:
+            return False, e
+        self.conn.commit()
+        return True, "Updated successfully"
+
+    # -------------------------------------------------------------------------
+    def Person(self):
+        """
+        Task:
+            Get person account info with email or national code.
+
+        Arguments:
+            EMAIL_OR_NATIONALCODE   -- Customer or Manager National code or email            -- type : str(chr)   -- default : not null
+
+        Return :
+            HAS PROBLEM             --Error like not exist email or national code            -- type : tuple       -- value   : False , Message
+            NO  PROBLEM             --Successfully retrun                                    -- type : tuple       -- value   : True  , Message
+        """
+        super().Person(self.national_code)

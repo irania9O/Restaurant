@@ -28,6 +28,17 @@ class Market(DATABASE):
 
     # -------------------------------------------------------------------------
     def InfoCopon(self, CODE):
+        """
+        Task:
+            Get Copon code details.
+
+        Arguments:
+            CODE                    -- Copon code                                         -- type : str        -- default : not null
+
+        Return :
+            HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
+            NO  PROBLEM             --Successfully                                        -- type : tuple       -- value   : True  , {}
+        """
         self.c.execute(f"SELECT * FROM DISCOUNT WHERE CODE = '{CODE}'")
         record = self.c.fetchone()
         if record == None:
@@ -38,6 +49,17 @@ class Market(DATABASE):
 
     # -------------------------------------------------------------------------
     def AllNews(self):
+        """
+        Task:
+            Get all news.
+
+        Arguments:
+            ---
+
+        Return :
+            HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
+            NO  PROBLEM             --Successfully                                        -- type : tuple       -- value   : True  , []
+        """
         self.c.execute(f"SELECT * FROM NEWS")
         record = self.c.fetchall()
         if record == None:
@@ -48,6 +70,17 @@ class Market(DATABASE):
 
     # -------------------------------------------------------------------------
     def OnDateNews(self, DATE):
+        """
+        Task:
+            Get one day news.
+
+        Arguments:
+            DATE                 -- Food date YYYY-MM-DD                                  -- type : str        -- default : not null
+
+        Return :
+            HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
+            NO  PROBLEM             --Successfully                                        -- type : tuple       -- value   : True  , []
+        """
         self.c.execute(f"SELECT * FROM NEWS WHERE date(DATE) = '{DATE}'")
         record = self.c.fetchall()
         if record == None:
@@ -63,7 +96,7 @@ class Market(DATABASE):
             Get all foods votes
 
         Arguments:
-            DATE                    -- Date format as YYYY-MM-DD                           -- type : str        -- default : Now
+            DATE                    -- Date format as YYYY-MM-DD                           -- type : str        -- default : ---
 
         Return :
             HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
@@ -91,7 +124,7 @@ class Market(DATABASE):
             Foods that exists on Date
 
         Arguments:
-            DATE                    -- Date format as YYYY-MM-DD                           -- type : str        -- default : Now
+            DATE                    -- Date format as YYYY-MM-DD                           -- type : str        -- default : ---
 
         Return :
             HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
@@ -116,7 +149,7 @@ class Market(DATABASE):
             Foods that exists on Date
 
         Arguments:
-            DATE                    -- Date format as YYYY-MM-DD                           -- type : str        -- default : Now
+            DATE                    -- Date format as YYYY-MM-DD                           -- type : str        -- default : ---
 
         Return :
             HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
@@ -138,6 +171,17 @@ class Market(DATABASE):
 
     # -------------------------------------------------------------------------
     def Income(self, DATE):
+        """
+        Task:
+            Get incomes .
+
+        Arguments:
+            DATE                    -- Date format as YYYY-MM-DD                           -- type : str        -- default : ---
+
+        Return :
+            HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
+            NO  PROBLEM             --Successfully                                        -- type : tuple       -- value   : True  , []
+        """
         self.c.execute(f"SELECT * FROM ECONOMY WHERE date(DATE) = '{DATE}'")
         record = self.c.fetchall()
         if record == None:

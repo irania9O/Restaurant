@@ -1,13 +1,26 @@
 from base import DATABASE
-from admin import Admin
 
 
 class User(DATABASE):
-    def __init__(self, returant_name, *arg):
-        super().__init__(returant_name, *arg)
+    def __init__(self, returant_name, national_code):
+        super().__init__(returant_name)
+        self.national_code = national_code
 
     # -------------------------------------------------------------------------
     def UseCopon(self, CODE):
+        """
+        Task:
+            Use copon.
+
+        Arguments:
+            CODE                    -- use copon code                                     -- type : str(chr)   -- default : not null
+
+
+        Return :
+            HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
+            NO  PROBLEM             --Successfully Update                                 -- type : tuple       -- value   : True  , PERCENT
+        """
+
         self.c.execute(f"SELECT * FROM DISCOUNT WHERE CODE = '{CODE}'")
         records = self.c.fetchone()
         if records == None:
@@ -27,7 +40,7 @@ class User(DATABASE):
         return True, records["PERCENT"]
 
     # -------------------------------------------------------------------------
-    def NewOrder(self, PERSON_ID, FOOD_ID, DATE, COUNT):
+    def NewOrder(self, FOOD_ID, DATE, COUNT):
         """
         Task:
             Order new food
@@ -35,7 +48,7 @@ class User(DATABASE):
         Arguments:
             PERSON_ID              -- Customer or Manager National code                   -- type : str(chr)   -- default : not null
             FOOD_ID                -- Food id                                             -- type : int        -- default : not null
-            DATE                   -- Date format as YYYY-MM-DD                           -- type : str        -- default : Now
+            DATE                   -- Date format as YYYY-MM-DD                           -- type : str        -- default : ---
             COUNT                  -- How many foods that they wants                      -- type : int        -- default : 0
 
         Return :
@@ -43,6 +56,7 @@ class User(DATABASE):
             NO  PROBLEM             --Successfully Update ot insert                       -- type : tuple       -- value   : True  , Message
         """
 
+        PERSON_ID = self.national_code
         self.c.execute(
             f"SELECT * FROM `ORDER` WHERE FOOD_ID = {FOOD_ID} AND PERSON_ID = '{PERSON_ID}' AND date(DATE) = '{DATE}'"
         )
@@ -85,7 +99,53 @@ class User(DATABASE):
         return True, "Successfully deleted"
 
     # -------------------------------------------------------------------------
-    def Pay(self, PERSON_ID, Tracking_Code, DATE, Copon=""):
+    # for not importing from admin
+    def NewFood(self, NAME, PRICE, INVENTORY, DATE, PROFILE, MEAL, MATERIAL):
+        """
+        Task:
+            Insert new food into database if dosn't exist and Update price or inventory if exists.
+
+        Arguments:
+            NAME                 -- Food name                                             -- type : str        -- default : not null
+            PRICE                -- Food price to sell                                    -- type : int        -- default : not null
+            INVENTORY            -- Food inventory                                        -- type : int        -- default : not null
+            DATE                 -- Food date YYYY-MM-DD                                  -- type : str        -- default : not null
+            PROFILE              -- Food picture                                          -- type : str        -- default : not null
+            MEAL                 -- BREAKFAST, LUNCH, SUPPER                              -- type : str        -- default : not null
+            MATERIAL             -- Cheese|Yogurt,....                                    -- type : list       -- default : not null
+
+        Return :
+            HAS PROBLEM          --Error                                                  -- type : tuple       -- value   : False , Message
+            NO  PROBLEM          --Successfully Update ot insert                          -- type : tuple       -- value   : True  , Message
+        """
+        STRING_MEAL = "|".join(MATERIAL)
+        self.c.execute(
+            f"SELECT * FROM FOOD WHERE date(DATE) = '{DATE}' AND NAME = '{NAME}' AND MEAL = '{MEAL}'"
+        )
+        FOOD = self.c.fetchone()
+        if FOOD == None:
+            try:
+                # Insert new food into database
+                self.c.execute(
+                    f"INSERT INTO FOOD ( 'NAME', 'PROFILE',   'PRICE' , 'INVENTORY' , 'DATE', 'MEAL' , 'MATERIAL') VALUES ('{NAME}','{PROFILE}' , {PRICE} , {INVENTORY} , '{DATE}', '{MEAL}','{STRING_MEAL}' )"
+                )
+            except Exception as e:
+                print(e)
+                return False
+        else:
+            try:
+                # Update price or inventory
+                self.c.execute(
+                    f"UPDATE FOOD SET INVENTORY = {INVENTORY} ,PRICE = {PRICE} ,PROFILE = '{PROFILE}',MATERIAL='{STRING_MEAL}'   WHERE date(DATE) = '{DATE}' AND NAME = '{NAME}' AND MEAL = '{MEAL}'"
+                )
+            except Exception as e:
+                return False, e
+
+        self.conn.commit()
+        return True
+
+    # -------------------------------------------------------------------------
+    def Pay(self, Tracking_Code, DATE, Copon=""):
         """
         Task:
             Pay Orders .
@@ -98,7 +158,7 @@ class User(DATABASE):
             HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
             NO  PROBLEM             --Successfully                                        -- type : tuple       -- value   : True  , Message
         """
-
+        PERSON_ID = self.national_code
         data = self.base64_decode(Tracking_Code).split("|")
         SUMINCOME = 0
         for Order in data:
@@ -106,7 +166,7 @@ class User(DATABASE):
                 FOOD_ID, COUNT = Order.split("/")
                 self.c.execute(f"SELECT * FROM FOOD WHERE ID = '{FOOD_ID}' ")
                 FOOD = self.c.fetchone()
-                Admin().FoodAdmin(
+                self.NewFood(
                     FOOD["NAME"],
                     FOOD["PRICE"],
                     FOOD["INVENTORY"] - int(COUNT),
@@ -136,7 +196,7 @@ class User(DATABASE):
         return True, "Successfully"
 
     # -------------------------------------------------------------------------
-    def Factor(self, PERSON_ID):
+    def Factor(self):
         """
         Task:
             Create Factor and Tracking Code.
@@ -148,6 +208,7 @@ class User(DATABASE):
             HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
             NO  PROBLEM             --Successfully                                        -- type : tuple       -- value   : [] , Tracking Code
         """
+        PERSON_ID = self.national_code
         try:
             self.c.execute(
                 f"SELECT * FROM `ORDER` WHERE STATE = 'PAYING' AND PERSON_ID = '{PERSON_ID}'"
@@ -161,7 +222,7 @@ class User(DATABASE):
             return False, e
 
     # -------------------------------------------------------------------------
-    def NewVote(self, PERSON_ID, FOOD_ID, COMMENT):
+    def NewVote(self, FOOD_ID, COMMENT):
         """
         Task:
             Vote to a food.
@@ -176,6 +237,7 @@ class User(DATABASE):
             NO  PROBLEM             --Successfully Update ot insert                       -- type : tuple       -- value   : True  , Message
         """
         # person info
+        PERSON_ID = self.national_code
         PERSON = self.Person(PERSON_ID)
         MESSAGE = PERSON["EMAIL"] + " : \n" + COMMENT
         self.c.execute(
@@ -204,3 +266,18 @@ class User(DATABASE):
 
         self.conn.commit()
         return True
+
+    # -------------------------------------------------------------------------
+    def Person(self):
+        """
+        Task:
+            Get person account info with email or national code.
+
+        Arguments:
+            EMAIL_OR_NATIONALCODE   -- Customer or Manager National code or email            -- type : str(chr)   -- default : not null
+
+        Return :
+            HAS PROBLEM             --Error like not exist email or national code            -- type : tuple       -- value   : False , Message
+            NO  PROBLEM             --Successfully retrun                                    -- type : tuple       -- value   : True  , Message
+        """
+        super().Person(self.national_code)

@@ -85,7 +85,7 @@ class DATABASE:
                             );"""
         )
 
-        # Create DICSOUNT table if deos not exist in database
+        # Create ECONOMY table if deos not exist in database
         self.c.execute(
             """  CREATE TABLE IF NOT EXISTS ECONOMY
                            (SUMINCOME       REAL     NOT NULL,
@@ -94,17 +94,23 @@ class DATABASE:
                             );"""
         )
 
+        # Create INFO table if deos not exist in database
         self.c.execute(
             """  CREATE TABLE IF NOT EXISTS INFO
-                           (
-                            PERSON_ID       CHAR(20)    NOT NULL,
-                            MANAGER_NAME    TEXT     NOT NULL,
-                            LOCATION        TEXT     NOT NULL,
-                            TYPE            TEXT     NOT NULL,
-                            ADDRESS         TEXT     NOT NULL,
-                            DATE            TEXT     NOT NULL,
-                            FOREIGN KEY(PERSON_ID)      REFERENCES PERSON(NATIONAL_CODE),
-                            PRIMARY KEY(MANAGER_NAME, TYPE , ADDRESS , DATE)
+                           (                           
+                            MANAGER_FIRST_NAME    TEXT        NOT NULL,
+                            MANAGER_LAST_NAME     TEXT        NOT NULL,
+                            PHONE_NUMBER          CHAR(20)    NOT NULL,
+                            EMAIL                 TEXT        NOT NULL,
+                            PERSON_ID             CHAR(30)    NOT NULL,
+                            PASSWORD              TEXT        NOT NULL,
+                            PROFILE               TEXT        NOT NULL,
+                            NAME_RESTURANT        TEXT        NOT NULL,
+                            LOCATION              TEXT        NOT NULL,
+                            TYPE                  TEXT        NOT NULL,
+                            ADDRESS               TEXT        NOT NULL,
+                            DATE                  TEXT        NOT NULL, 
+                            PRIMARY KEY(NAME_RESTURANT, TYPE , ADDRESS , DATE)
                             );"""
         )
 
@@ -115,14 +121,26 @@ class DATABASE:
 
         self.c.execute(f"SELECT * FROM INFO")
         record = self.c.fetchone()
-        if record is None:
+        if record is None and not arg == tuple():
             try:
                 # Insert new user to database
                 self.c.execute(
-                    f"""INSERT INTO INFO( 'MANAGER_NAME',   'LOCATION',   'TYPE',  'ADDRESS' , 'DATE') VALUES (? , ? , ? , ?, ?)""",
+                    f"""INSERT INTO INFO( 'MANAGER_FIRST_NAME', 'MANAGER_LAST_NAME',   'PHONE_NUMBER',   'EMAIL',  'PERSON_ID' , 'PASSWORD' , 'PROFILE' , 'NAME_RESTURANT' , 'TYPE' , 'ADDRESS' , 'DATE' ) VALUES (? , ? , ? , ?, ? ,? ,? ,? ,?,?,?,?)""",
                     arg,
                 )
                 self.conn.commit()
+                self.Registery(
+                    arg[0],
+                    arg[1],
+                    arg[2],
+                    arg[3],
+                    arg[4],
+                    arg[5],
+                    arg[6],
+                    0,
+                    "Admin",
+                )
+
             except Exception as e:
                 return False, e
 
@@ -229,8 +247,8 @@ class DATABASE:
         elif not records["PASSWORD"] == PASSWORD:
             # Another error was recorded
             self.Update(
-                NATIONAL_CODE=records["NATIONAL_CODE"],
-                FAILS=records["FAILS"] + 1)
+                NATIONAL_CODE=records["NATIONAL_CODE"], FAILS=records["FAILS"] + 1
+            )
 
             # SEND EMAIL
             if records["FAILS"] + 1 > 2:
@@ -248,7 +266,7 @@ class DATABASE:
         elif records["PASSWORD"] == PASSWORD:
             # logged in successfully
             self.Update(NATIONAL_CODE=records["NATIONAL_CODE"], FAILS=0)
-            return True, "You have successfully logged in"
+            return True, records["POSITION"]
 
     # -------------------------------------------------------------------------
     def Person(self, EMAIL_OR_NATIONALCODE):
@@ -307,18 +325,3 @@ class DATABASE:
 
         else:
             return False, "Just kwargs acceptable"
-
-    # -------------------------------------------------------------------------
-    def ResturantInfo(self):
-        self.c.execute(f"SELECT * FROM INFO")
-        record = self.c.fetchone()
-        return records
-
-    # -------------------------------------------------------------------------
-    def ChangeResturantDate(self, DATE):
-        try:
-            self.c.execute(f"UPDATE INFO SET DATE = '{DATE}'")
-        except Exception as e:
-            return False, e
-        self.conn.commit()
-        return True, "Updated successfully"
