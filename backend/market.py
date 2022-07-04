@@ -254,6 +254,6 @@ class Market(DATABASE):
         try:
             self.c.execute(f"SELECT * FROM INFO")
             record = self.c.fetchone()
-            return records
+            return record
         except Exception as e:
             return False, e
