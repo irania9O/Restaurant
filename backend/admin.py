@@ -132,7 +132,7 @@ class Admin(DATABASE):
         try:
             # Insert new info to database
             self.c.execute(
-                f"""INSERT INTO INFO( 'MANAGER_FIRST_NAME', 'MANAGER_LAST_NAME',   'PHONE_NUMBER',   'EMAIL',  'PERSON_ID' , 'PASSWORD' , 'PROFILE' , 'NAME_RESTURANT' , 'TYPE' , 'ADDRESS' , 'DATE' ) VALUES (? , ? , ? , ?, ? ,? ,? ,? ,?,?,?,?)""",
+                f"""INSERT INTO INFO( 'MANAGER_FIRST_NAME', 'MANAGER_LAST_NAME',   'PHONE_NUMBER',   'EMAIL',  'PERSON_ID' , 'PASSWORD' , 'PROFILE' , 'NAME_RESTURANT' , 'TYPE' , 'ADDRESS' , 'DATE' , 'LOCATION' ) VALUES (? ,? , ? , ?, ? ,? ,? ,? , ?, ?, ?, ?)""",
                 arg,
             )
             self.conn.commit()

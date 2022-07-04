@@ -237,7 +237,7 @@ class Market(DATABASE):
 
         except Exception as e:
             return False, e
-        
+
     # -------------------------------------------------------------------------
     def ResturantInfo(self):
         """

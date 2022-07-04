@@ -5,6 +5,7 @@ from data import sendemail
 
 class DATABASE:
     def __init__(self, returant_name, *arg):
+
         self.conn = sqlite3.connect(
             f"data/{returant_name}.db"
         )  # connecting to database
@@ -119,13 +120,18 @@ class DATABASE:
         )  # FOREIGN KEY is not supported automatically in sqlite3
         self.conn.commit()
 
+        # self.conn.execute(
+        #    "check_same_thread = False"
+        # )
+        # self.conn.commit()
+
         self.c.execute(f"SELECT * FROM INFO")
         record = self.c.fetchone()
         if record is None and not arg == tuple():
             try:
                 # Insert new user to database
                 self.c.execute(
-                    f"""INSERT INTO INFO( 'MANAGER_FIRST_NAME', 'MANAGER_LAST_NAME',   'PHONE_NUMBER',   'EMAIL',  'PERSON_ID' , 'PASSWORD' , 'PROFILE' , 'NAME_RESTURANT' , 'TYPE' , 'ADDRESS' , 'DATE' ) VALUES (? , ? , ? , ?, ? ,? ,? ,? ,?,?,?,?)""",
+                    f"""INSERT INTO INFO( 'MANAGER_FIRST_NAME', 'MANAGER_LAST_NAME',   'PHONE_NUMBER',   'EMAIL',  'PERSON_ID' , 'PASSWORD' , 'PROFILE' , 'NAME_RESTURANT' , 'TYPE' , 'ADDRESS' , 'DATE' , 'LOCATION' ) VALUES (? ,? , ? , ?, ? ,? ,? ,? , ?, ?, ?, ?)""",
                     arg,
                 )
                 self.conn.commit()
@@ -142,6 +148,7 @@ class DATABASE:
                 )
 
             except Exception as e:
+                print(e)
                 return False, e
 
     # -------------------------------------------------------------------------
