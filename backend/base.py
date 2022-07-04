@@ -7,7 +7,8 @@ class DATABASE:
     def __init__(self, returant_name, *arg):
 
         self.conn = sqlite3.connect(
-            f"data/{returant_name}.db"
+            f"data/{returant_name}.db",
+            check_same_thread=False
         )  # connecting to database
         self.conn.row_factory = self.dict_factory  # to return rows in new mode
         self.c = self.conn.cursor()  # cursor
@@ -120,10 +121,6 @@ class DATABASE:
         )  # FOREIGN KEY is not supported automatically in sqlite3
         self.conn.commit()
 
-        # self.conn.execute(
-        #    "check_same_thread = False"
-        # )
-        # self.conn.commit()
 
         self.c.execute(f"SELECT * FROM INFO")
         record = self.c.fetchone()
