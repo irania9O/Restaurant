@@ -146,7 +146,7 @@ class DATABASE:
 
             except Exception as e:
                 print(e)
-                return False, e
+                pass
 
     # -------------------------------------------------------------------------
     def base64_encode(self, message):
