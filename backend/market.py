@@ -237,3 +237,23 @@ class Market(DATABASE):
 
         except Exception as e:
             return False, e
+        
+    # -------------------------------------------------------------------------
+    def ResturantInfo(self):
+        """
+        Task:
+            Get Resturant info.
+
+        Arguments:
+            ---
+
+        Return :
+            HAS PROBLEM          --Error                                                  -- type : tuple       -- value   : False , Message
+            NO  PROBLEM          --Successfully                                           -- type : list        -- value   : []
+        """
+        try:
+            self.c.execute(f"SELECT * FROM INFO")
+            record = self.c.fetchone()
+            return records
+        except Exception as e:
+            return False, e
