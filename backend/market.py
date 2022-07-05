@@ -48,48 +48,6 @@ class Market(DATABASE):
         return True, record
 
     # -------------------------------------------------------------------------
-    def AllNews(self):
-        """
-        Task:
-            Get all news.
-
-        Arguments:
-            ---
-
-        Return :
-            HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
-            NO  PROBLEM             --Successfully                                        -- type : tuple       -- value   : True  , []
-        """
-        self.c.execute(f"SELECT * FROM NEWS")
-        record = self.c.fetchall()
-        if record == None:
-            return False, "Donst Exist"
-
-        self.conn.commit()
-        return True, record
-
-    # -------------------------------------------------------------------------
-    def OnDateNews(self, DATE):
-        """
-        Task:
-            Get one day news.
-
-        Arguments:
-            DATE                 -- Food date YYYY-MM-DD                                  -- type : str        -- default : not null
-
-        Return :
-            HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
-            NO  PROBLEM             --Successfully                                        -- type : tuple       -- value   : True  , []
-        """
-        self.c.execute(f"SELECT * FROM NEWS WHERE date(DATE) = '{DATE}'")
-        record = self.c.fetchall()
-        if record == None:
-            return False, "Donst Exist"
-
-        self.conn.commit()
-        return True, record
-
-    # -------------------------------------------------------------------------
     def AllVotes(self, DATE):
         """
         Task:
