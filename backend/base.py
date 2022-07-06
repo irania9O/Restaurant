@@ -16,7 +16,7 @@ class DATABASE:
         # Create PERSON table if deos not exist in database
         self.c.execute(
             """  CREATE TABLE IF NOT EXISTS PERSON
-                           (FRIST_NAME      TEXT        NOT NULL,
+                           (FIRST_NAME      TEXT        NOT NULL,
                             LAST_NAME       TEXT        NOT NULL,
                             PHONE_NUMBER    CHAR(20)    NOT NULL,
                             EMAIL           TEXT        NOT NULL,
@@ -169,7 +169,7 @@ class DATABASE:
             Convert sql row data to dictionary
 
         Arguments:
-            FRIST_NAME      -- Customer or Manager first name     -- type : sqlite3.Cursor     -- default : not null
+            FIRST_NAME      -- Customer or Manager first name     -- type : sqlite3.Cursor     -- default : not null
             LAST_NAME       -- Customer or Manager last name      -- type : tuple              -- default : not null
 
         Return :
@@ -183,7 +183,7 @@ class DATABASE:
     # -------------------------------------------------------------------------
     def Registery(
         self,
-        FRIST_NAME,
+        FIRST_NAME,
         LAST_NAME,
         PHONE_NUMBER,
         EMAIL,
@@ -198,7 +198,7 @@ class DATABASE:
             Registery New Account.
 
         Arguments:
-            FRIST_NAME      -- Customer or Manager first name     -- type : str        -- default : not null
+            FIRST_NAME      -- Customer or Manager first name     -- type : str        -- default : not null
             LAST_NAME       -- Customer or Manager last name      -- type : str        -- default : not null
             PHONE_NUMBER    -- Customer or Manager phone number   -- type : str(chr)   -- default : not null
             EMAIL           -- Customer or Manager EMAIL          -- type : str        -- default : not null
@@ -217,8 +217,8 @@ class DATABASE:
             # Insert new user to database
             self.c.execute(
                 f"""INSERT INTO PERSON
-                           ( 'FRIST_NAME',   'LAST_NAME',   'PHONE_NUMBER',  'EMAIL',    'NATIONAL_CODE',   'PASSWORD',   'PROFILE',  'FAILS',    'POSITION') VALUES
-                           ('{FRIST_NAME}', '{LAST_NAME}', '{PHONE_NUMBER}', '{EMAIL}', '{NATIONAL_CODE}', '{PASSWORD}', '{PROFILE}', '{FAILS}', '{POSITION}')"""
+                           ( 'FIRST_NAME',   'LAST_NAME',   'PHONE_NUMBER',  'EMAIL',    'NATIONAL_CODE',   'PASSWORD',   'PROFILE',  'FAILS',    'POSITION') VALUES
+                           ('{FIRST_NAME}', '{LAST_NAME}', '{PHONE_NUMBER}', '{EMAIL}', '{NATIONAL_CODE}', '{PASSWORD}', '{PROFILE}', '{FAILS}', '{POSITION}')"""
             )
             self.conn.commit()
             return True, "Account created successfully"
@@ -313,13 +313,12 @@ class DATABASE:
             LIST = []
             for key, value in kwargs.items():
                 LIST.append(f" `{key}` = '{value}' ")
-
             try:
                 # Update person table
                 self.c.execute(
                     "UPDATE PERSON SET "
                     + ",".join(LIST)
-                    + f" WHERE NATIONAL_CODE= '{kwargs['NATIONAL_CODE']}'"
+                    + f" WHERE NATIONAL_CODE= \'{kwargs['NATIONAL_CODE']}\'"
                 )
             except Exception as e:
                 return False, e
@@ -364,10 +363,11 @@ class DATABASE:
             HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
             NO  PROBLEM             --Successfully                                        -- type : tuple       -- value   : True  , []
         """
-        self.c.execute(f"SELECT * FROM NEWS WHERE date(DATE) = '{DATE}'")
+        self.c.execute(f"SELECT * FROM NEWS WHERE DATE = '{DATE}'")
         record = self.c.fetchall()
         if record == None:
             return False, "Donst Exist"
 
         self.conn.commit()
         return True, record
+

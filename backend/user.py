@@ -58,7 +58,7 @@ class User(DATABASE):
 
         PERSON_ID = self.national_code
         self.c.execute(
-            f"SELECT * FROM `ORDER` WHERE FOOD_ID = {FOOD_ID} AND PERSON_ID = '{PERSON_ID}' AND date(DATE) = '{DATE}'"
+            f"SELECT * FROM `ORDER` WHERE FOOD_ID = {FOOD_ID} AND PERSON_ID = '{PERSON_ID}' AND DATE = '{DATE}'"
         )
         records = self.c.fetchone()
         # if exists delete order
@@ -120,7 +120,7 @@ class User(DATABASE):
         """
         STRING_MEAL = "|".join(MATERIAL)
         self.c.execute(
-            f"SELECT * FROM FOOD WHERE date(DATE) = '{DATE}' AND NAME = '{NAME}' AND MEAL = '{MEAL}'"
+            f"SELECT * FROM FOOD WHERE DATE = '{DATE}' AND NAME = '{NAME}' AND MEAL = '{MEAL}'"
         )
         FOOD = self.c.fetchone()
         if FOOD == None:
@@ -136,7 +136,7 @@ class User(DATABASE):
             try:
                 # Update price or inventory
                 self.c.execute(
-                    f"UPDATE FOOD SET INVENTORY = {INVENTORY} ,PRICE = {PRICE} ,PROFILE = '{PROFILE}',MATERIAL='{STRING_MEAL}'   WHERE date(DATE) = '{DATE}' AND NAME = '{NAME}' AND MEAL = '{MEAL}'"
+                    f"UPDATE FOOD SET INVENTORY = {INVENTORY} ,PRICE = {PRICE} ,PROFILE = '{PROFILE}',MATERIAL='{STRING_MEAL}'   WHERE DATE = '{DATE}' AND NAME = '{NAME}' AND MEAL = '{MEAL}'"
                 )
             except Exception as e:
                 return False, e
@@ -280,4 +280,4 @@ class User(DATABASE):
             HAS PROBLEM             --Error like not exist email or national code            -- type : tuple       -- value   : False , Message
             NO  PROBLEM             --Successfully retrun                                    -- type : tuple       -- value   : True  , Message
         """
-        super().Person(self.national_code)
+        return super().Person(self.national_code)

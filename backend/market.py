@@ -63,7 +63,7 @@ class Market(DATABASE):
         try:
             # Get food list
             self.c.execute(
-                f"SELECT * FROM FOOD WHERE date(DATE) = '{DATE}' ORDER BY MEAL"
+                f"SELECT * FROM FOOD WHERE DATE = '{DATE}' ORDER BY MEAL"
             )
             records = self.c.fetchall()
             # add votes
@@ -90,9 +90,9 @@ class Market(DATABASE):
         """
         try:
             # Get food list
-            # self.c.execute(f"SELECT ID,NAME,DATE FROM FOOD WHERE date(DATE) = '{DATE}'")
+            # self.c.execute(f"SELECT ID,NAME,DATE FROM FOOD WHERE DATE = '{DATE}'")
             self.c.execute(
-                f"SELECT * FROM FOOD WHERE date(DATE) = '{DATE}' ORDER BY MEAL"
+                f"SELECT * FROM FOOD WHERE DATE = '{DATE}' ORDER BY MEAL"
             )
             records = self.c.fetchall()
             return list(records)
@@ -140,7 +140,7 @@ class Market(DATABASE):
             HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
             NO  PROBLEM             --Successfully                                        -- type : tuple       -- value   : True  , []
         """
-        self.c.execute(f"SELECT * FROM ECONOMY WHERE date(DATE) = '{DATE}'")
+        self.c.execute(f"SELECT * FROM ECONOMY WHERE DATE = '{DATE}'")
         record = self.c.fetchall()
         if record == None:
             return False, "Donst Exist"
@@ -215,3 +215,4 @@ class Market(DATABASE):
             return record
         except Exception as e:
             return False, e
+
