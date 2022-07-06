@@ -181,8 +181,9 @@ class User(DATABASE):
                 return True, e
 
         if not Copon == "":
-            percent = self.UseCopon(Copon)
-            SUMINCOME *= (100 - percent) / 100
+            status , percent = self.UseCopon(Copon)
+            if status == True:
+                SUMINCOME *= (100 - percent) / 100
 
         try:
             # add new comment to datebase
