@@ -175,3 +175,32 @@ class Admin(DATABASE):
             NO  PROBLEM             --Successfully retrun                                    -- type : tuple       -- value   : True  , Message
         """
         return super().Person(self.national_code)
+        
+    # -------------------------------------------------------------------------
+    def PayInfo(self, STATUS ,DATE):
+        """
+        Task:
+            Pay Info .
+
+        Arguments:
+            STATUS                  -- SENDING , PAYING                                   -- type : str(chr)    -- default : not null
+            DATE                    -- Food date YYYY-MM-DD                               -- type : str        -- default : not null
+
+        Return :
+            HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
+            NO  PROBLEM             --Successfully                                        -- type : tuple       -- value   : True  , []
+        """
+
+        try:
+            self.c.execute(
+                f"SELECT * FROM `ORDER` WHERE STATE = '{STATUS}' AND DATE = '{DATE}' ORDER BY ID DESC"
+            )
+            records = self.c.fetchall()
+            # add votes
+            for data in records:
+                data["info"] = self.FoodInfo(data["FOOD_ID"])
+                
+            return True, records
+
+        except Exception as e:
+            return False, e
