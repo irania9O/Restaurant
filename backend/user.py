@@ -159,26 +159,30 @@ class User(DATABASE):
             NO  PROBLEM             --Successfully                                        -- type : tuple       -- value   : True  , Message
         """
         PERSON_ID = self.national_code
-        data = self.base64_decode(Tracking_Code).split("|")
+        data = self.base64_decode(Tracking_Code).split("|")[:-1]
         SUMINCOME = 0
         for Order in data:
             try:
                 FOOD_ID, COUNT = Order.split("/")
                 self.c.execute(f"SELECT * FROM FOOD WHERE ID = '{FOOD_ID}' ")
                 FOOD = self.c.fetchone()
-                self.NewFood(
-                    FOOD["NAME"],
-                    FOOD["PRICE"],
-                    FOOD["INVENTORY"] - int(COUNT),
-                    FOOD["DATE"],
-                    FOOD["MEAL"],
-                )
+                self.NewFood( 
+                     FOOD["NAME"], 
+                     FOOD["PRICE"],                      
+                     FOOD["INVENTORY"] - int(COUNT), 
+                     FOOD["DATE"], 
+                     FOOD["PROFILE"], 
+                     FOOD["MEAL"], 
+                     FOOD["MATERIAL"].split("|")
+                 )
+                
                 self.c.execute(
                     f"UPDATE `ORDER` SET STATE = 'SENDING'  WHERE PERSON_ID = '{PERSON_ID}' AND STATE = 'PAYING' AND FOOD_ID = '{FOOD_ID}'"
                 )
-                SUMINCOME += FOOD["PRICE"]
+                
+                SUMINCOME += float(FOOD["PRICE"])
             except Exception as e:
-                return True, e
+                return False, e
 
         if not Copon == "":
             status , percent = self.UseCopon(Copon)
