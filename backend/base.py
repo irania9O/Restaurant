@@ -74,7 +74,8 @@ class DATABASE:
                            (ID              INTEGER     PRIMARY KEY AUTOINCREMENT ,
                             SUBJECT         TEXT        NOT NULL,
                             CONTENT         TEXT        NOT NULL,
-                            DATE            TEXT        NOT NULL
+                            DATE            TEXT        NOT NULL,
+                            STATUS          INTEGER     NOT NULL
                             );"""
         )
 

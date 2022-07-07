@@ -83,7 +83,7 @@ class Admin(DATABASE):
         return True, CODE
 
     # -------------------------------------------------------------------------
-    def NewNews(self, SUBJECT, CONTENT, DATE):
+    def NewNews(self, SUBJECT, CONTENT, DATE, STATUS):
         """
         Task:
             Add new news to database.
@@ -92,6 +92,7 @@ class Admin(DATABASE):
             SUBJECT              -- News subject                                          -- type : str        -- default : not null
             CONTENT              -- News content                                          -- type : str        -- default : not null
             DATE                 -- Food date YYYY-MM-DD                                  -- type : str        -- default : not null
+            STATUS               -- 0 , 1                                                 -- type : int        -- default : not null
 
         Return :
             HAS PROBLEM          --Error                                                  -- type : tuple       -- value   : False , Message
@@ -100,8 +101,8 @@ class Admin(DATABASE):
         try:
             # insert
             self.c.execute(
-                "INSERT INTO NEWS ('SUBJECT', 'CONTENT', 'DATE') VALUES (?,?,?)",
-                (SUBJECT, CONTENT, DATE),
+                "INSERT INTO NEWS ('SUBJECT', 'CONTENT', 'DATE','STATUS') VALUES (?,?,?,?)",
+                (SUBJECT, CONTENT, DATE, STATUS),
             )
         except Exception as e:
             return False, e
