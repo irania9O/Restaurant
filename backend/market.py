@@ -99,30 +99,7 @@ class Market(DATABASE):
 
         except Exception as e:
             return False, e
-    # -------------------------------------------------------------------------
-    def FoodInfo(self, FOOD_ID):
-        """
-        Task:
-            Foods that exists on Date
 
-        Arguments:
-            FOOD_ID                -- Food id                                             -- type : int        -- default : not null
-
-        Return :
-            HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
-            NO  PROBLEM             --Successfully Update ot insert                       -- type : lsit        -- value   : []
-        """
-        try:
-            # Get food list
-            # self.c.execute(f"SELECT ID,NAME,DATE FROM FOOD WHERE DATE = '{DATE}'")
-            self.c.execute(
-                f"SELECT * FROM FOOD WHERE ID = '{FOOD_ID}'"
-            )
-            record = self.c.fetchone()
-            return record
-
-        except Exception as e:
-            return False, e
     # -------------------------------------------------------------------------
     def SearchFood(self, MATERIAL):
         """
