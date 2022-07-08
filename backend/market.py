@@ -62,9 +62,7 @@ class Market(DATABASE):
         """
         try:
             # Get food list
-            self.c.execute(
-                f"SELECT * FROM FOOD WHERE DATE = '{DATE}' ORDER BY MEAL"
-            )
+            self.c.execute(f"SELECT * FROM FOOD WHERE DATE = '{DATE}' ORDER BY MEAL")
             records = self.c.fetchall()
             # add votes
             for data in records:
@@ -91,9 +89,7 @@ class Market(DATABASE):
         try:
             # Get food list
             # self.c.execute(f"SELECT ID,NAME,DATE FROM FOOD WHERE DATE = '{DATE}'")
-            self.c.execute(
-                f"SELECT * FROM FOOD WHERE DATE = '{DATE}' ORDER BY MEAL"
-            )
+            self.c.execute(f"SELECT * FROM FOOD WHERE DATE = '{DATE}' ORDER BY MEAL")
             records = self.c.fetchall()
             return list(records)
 
@@ -170,7 +166,7 @@ class Market(DATABASE):
             # add votes
             for data in records:
                 data["info"] = self.FoodInfo(data["FOOD_ID"])
-                
+
             return True, records
 
         except Exception as e:

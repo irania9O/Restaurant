@@ -7,8 +7,7 @@ class DATABASE:
     def __init__(self, returant_name, *arg):
 
         self.conn = sqlite3.connect(
-            f"data/{returant_name}.db",
-            check_same_thread=False
+            f"data/{returant_name}.db", check_same_thread=False
         )  # connecting to database
         self.conn.row_factory = self.dict_factory  # to return rows in new mode
         self.c = self.conn.cursor()  # cursor
@@ -121,7 +120,6 @@ class DATABASE:
             "PRAGMA foreign_keys = ON"
         )  # FOREIGN KEY is not supported automatically in sqlite3
         self.conn.commit()
-
 
         self.c.execute(f"SELECT * FROM INFO")
         record = self.c.fetchone()
@@ -319,7 +317,7 @@ class DATABASE:
                 self.c.execute(
                     "UPDATE PERSON SET "
                     + ",".join(LIST)
-                    + f" WHERE NATIONAL_CODE= \'{kwargs['NATIONAL_CODE']}\'"
+                    + f" WHERE NATIONAL_CODE= '{kwargs['NATIONAL_CODE']}'"
                 )
             except Exception as e:
                 return False, e
@@ -388,9 +386,7 @@ class DATABASE:
         try:
             # Get food list
             # self.c.execute(f"SELECT ID,NAME,DATE FROM FOOD WHERE DATE = '{DATE}'")
-            self.c.execute(
-                f"SELECT * FROM FOOD WHERE ID = '{FOOD_ID}'"
-            )
+            self.c.execute(f"SELECT * FROM FOOD WHERE ID = '{FOOD_ID}'")
             record = self.c.fetchone()
             return record
 

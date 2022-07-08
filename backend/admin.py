@@ -176,9 +176,9 @@ class Admin(DATABASE):
             NO  PROBLEM             --Successfully retrun                                    -- type : tuple       -- value   : True  , Message
         """
         return super().Person(self.national_code)
-        
+
     # -------------------------------------------------------------------------
-    def PayInfo(self, STATUS ,DATE):
+    def PayInfo(self, STATUS, DATE):
         """
         Task:
             Pay Info .
@@ -200,7 +200,7 @@ class Admin(DATABASE):
             # add votes
             for data in records:
                 data["info"] = self.FoodInfo(data["FOOD_ID"])
-                
+
             return True, records
 
         except Exception as e:

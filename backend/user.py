@@ -166,26 +166,26 @@ class User(DATABASE):
                 FOOD_ID, COUNT = Order.split("/")
                 self.c.execute(f"SELECT * FROM FOOD WHERE ID = '{FOOD_ID}' ")
                 FOOD = self.c.fetchone()
-                self.NewFood( 
-                     FOOD["NAME"], 
-                     FOOD["PRICE"],                      
-                     FOOD["INVENTORY"] - int(COUNT), 
-                     FOOD["DATE"], 
-                     FOOD["PROFILE"], 
-                     FOOD["MEAL"], 
-                     FOOD["MATERIAL"].split("|")
-                 )
-                
+                self.NewFood(
+                    FOOD["NAME"],
+                    FOOD["PRICE"],
+                    FOOD["INVENTORY"] - int(COUNT),
+                    FOOD["DATE"],
+                    FOOD["PROFILE"],
+                    FOOD["MEAL"],
+                    FOOD["MATERIAL"].split("|"),
+                )
+
                 self.c.execute(
                     f"UPDATE `ORDER` SET STATE = 'SENDING'  WHERE PERSON_ID = '{PERSON_ID}' AND STATE = 'PAYING' AND FOOD_ID = '{FOOD_ID}'"
                 )
-                
+
                 SUMINCOME += float(FOOD["PRICE"])
             except Exception as e:
                 return False, e
 
         if not Copon == "":
-            status , percent = self.UseCopon(Copon)
+            status, percent = self.UseCopon(Copon)
             if status == True:
                 SUMINCOME *= (100 - percent) / 100
 
