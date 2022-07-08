@@ -243,7 +243,7 @@ class User(DATABASE):
         """
         # person info
         PERSON_ID = self.national_code
-        PERSON = self.Person(PERSON_ID)
+        PERSON = self.Person()
         MESSAGE = PERSON["EMAIL"] + " : \n" + COMMENT
         self.c.execute(
             f"SELECT * FROM VOTE WHERE PERSON_ID = '{PERSON_ID}' AND FOOD_ID = '{FOOD_ID}'"
