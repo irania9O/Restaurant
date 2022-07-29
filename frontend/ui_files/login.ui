@@ -13,6 +13,11 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget{
+	background-color: rgb(222, 222, 220)
+}</string>
+  </property>
   <widget class="QPushButton" name="login">
    <property name="geometry">
     <rect>
@@ -49,7 +54,7 @@ QPushButton:pressed   {
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="QLineEdit" name="emailfield">
+  <widget class="QLineEdit" name="username">
    <property name="geometry">
     <rect>
      <x>150</x>
@@ -73,10 +78,10 @@ QPushButton:pressed   {
     <set>Qt::AlignCenter</set>
    </property>
    <property name="placeholderText">
-    <string>username</string>
+    <string>email or national code</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="passwordfield">
+  <widget class="QLineEdit" name="password">
    <property name="geometry">
     <rect>
      <x>150</x>
@@ -115,8 +120,16 @@ QPushButton:pressed   {
      <height>16</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+color: rgb(255, 30, 10);
+}</string>
+   </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -132,13 +145,13 @@ QPushButton:pressed   {
     <string notr="true">	font: 12pt &quot;MS Shell Dlg 2&quot;;</string>
    </property>
    <property name="text">
-    <string>Login To your Restaurant account</string>
+    <string>Login To your Restaurant Account</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="exit_button">
    <property name="geometry">
     <rect>
      <x>560</x>
@@ -173,6 +186,32 @@ QPushButton:pressed   {
    </property>
    <property name="text">
     <string>X</string>
+   </property>
+  </widget>
+  <widget class="QCommandLinkButton" name="signup">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>380</y>
+     <width>121</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Sing Up</string>
+   </property>
+  </widget>
+  <widget class="QCheckBox" name="show_hide_password">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>390</y>
+     <width>121</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Show Password</string>
    </property>
   </widget>
  </widget>
