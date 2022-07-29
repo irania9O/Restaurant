@@ -22,7 +22,7 @@
    <property name="geometry">
     <rect>
      <x>150</x>
-     <y>590</y>
+     <y>620</y>
      <width>321</width>
      <height>61</height>
     </rect>
@@ -58,7 +58,7 @@ QPushButton:pressed   {
    <property name="geometry">
     <rect>
      <x>150</x>
-     <y>110</y>
+     <y>80</y>
      <width>321</width>
      <height>61</height>
     </rect>
@@ -85,7 +85,7 @@ QPushButton:pressed   {
    <property name="geometry">
     <rect>
      <x>150</x>
-     <y>460</y>
+     <y>430</y>
      <width>321</width>
      <height>61</height>
     </rect>
@@ -114,21 +114,29 @@ QPushButton:pressed   {
   <widget class="QLabel" name="error">
    <property name="geometry">
     <rect>
-     <x>160</x>
-     <y>530</y>
-     <width>301</width>
-     <height>16</height>
+     <x>140</x>
+     <y>570</y>
+     <width>361</width>
+     <height>20</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+color: rgb(255, 30, 10);
+}</string>
    </property>
    <property name="text">
     <string/>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="header">
    <property name="geometry">
     <rect>
      <x>140</x>
-     <y>30</y>
+     <y>10</y>
      <width>341</width>
      <height>61</height>
     </rect>
@@ -184,7 +192,7 @@ QPushButton:pressed   {
    <property name="geometry">
     <rect>
      <x>360</x>
-     <y>660</y>
+     <y>690</y>
      <width>121</width>
      <height>51</height>
     </rect>
@@ -197,7 +205,7 @@ QPushButton:pressed   {
    <property name="geometry">
     <rect>
      <x>150</x>
-     <y>250</y>
+     <y>220</y>
      <width>321</width>
      <height>61</height>
     </rect>
@@ -213,8 +221,11 @@ QPushButton:pressed   {
 
 </string>
    </property>
+   <property name="frame">
+    <bool>true</bool>
+   </property>
    <property name="echoMode">
-    <enum>QLineEdit::Password</enum>
+    <enum>QLineEdit::Normal</enum>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -227,7 +238,7 @@ QPushButton:pressed   {
    <property name="geometry">
     <rect>
      <x>150</x>
-     <y>180</y>
+     <y>150</y>
      <width>321</width>
      <height>61</height>
     </rect>
@@ -254,7 +265,7 @@ QPushButton:pressed   {
    <property name="geometry">
     <rect>
      <x>150</x>
-     <y>320</y>
+     <y>290</y>
      <width>321</width>
      <height>61</height>
     </rect>
@@ -281,7 +292,7 @@ QPushButton:pressed   {
    <property name="geometry">
     <rect>
      <x>150</x>
-     <y>390</y>
+     <y>360</y>
      <width>321</width>
      <height>61</height>
     </rect>
@@ -304,25 +315,34 @@ QPushButton:pressed   {
     <string>national code</string>
    </property>
   </widget>
-  <widget class="QLabel" name="error_2">
+  <widget class="QLineEdit" name="password2">
    <property name="geometry">
     <rect>
-     <x>160</x>
-     <y>530</y>
-     <width>301</width>
-     <height>16</height>
+     <x>150</x>
+     <y>500</y>
+     <width>321</width>
+     <height>61</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">QLabel {
-color: rgb(255, 30, 10);
-}</string>
+    <string notr="true">QLineEdit{
+	color: rgb(58, 134, 255);
+	background-color: white;
+	font: 12pt &quot;MS Shell Dlg 2&quot;;
+	border: 2px solid rgb(58, 134, 255);
+    border-radius: 12px;
+}
+
+</string>
    </property>
-   <property name="text">
-    <string/>
+   <property name="echoMode">
+    <enum>QLineEdit::Password</enum>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
+   </property>
+   <property name="placeholderText">
+    <string>repeat password</string>
    </property>
   </widget>
  </widget>
