@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>600</width>
-    <height>500</height>
+    <height>750</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,11 +18,11 @@
 	background-color: rgb(222, 222, 220)
 }</string>
   </property>
-  <widget class="QPushButton" name="login">
+  <widget class="QPushButton" name="signup">
    <property name="geometry">
     <rect>
      <x>150</x>
-     <y>310</y>
+     <y>590</y>
      <width>321</width>
      <height>61</height>
     </rect>
@@ -48,13 +48,13 @@ QPushButton:pressed   {
 </string>
    </property>
    <property name="text">
-    <string>Login</string>
+    <string>Sing Up</string>
    </property>
    <property name="checkable">
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="QLineEdit" name="username">
+  <widget class="QLineEdit" name="firstname">
    <property name="geometry">
     <rect>
      <x>150</x>
@@ -78,14 +78,14 @@ QPushButton:pressed   {
     <set>Qt::AlignCenter</set>
    </property>
    <property name="placeholderText">
-    <string>email or national code</string>
+    <string>first name</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="password">
    <property name="geometry">
     <rect>
      <x>150</x>
-     <y>180</y>
+     <y>460</y>
      <width>321</width>
      <height>61</height>
     </rect>
@@ -115,21 +115,13 @@ QPushButton:pressed   {
    <property name="geometry">
     <rect>
      <x>160</x>
-     <y>250</y>
+     <y>530</y>
      <width>301</width>
      <height>16</height>
     </rect>
    </property>
-   <property name="styleSheet">
-    <string notr="true">QLabel {
-color: rgb(255, 30, 10);
-}</string>
-   </property>
    <property name="text">
     <string/>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QLabel" name="header">
@@ -145,7 +137,7 @@ color: rgb(255, 30, 10);
     <string notr="true">	font: 12pt &quot;MS Shell Dlg 2&quot;;</string>
    </property>
    <property name="text">
-    <string>Login To your Restaurant Account</string>
+    <string>Sign Up Restaurant Account</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -188,30 +180,128 @@ QPushButton:pressed   {
     <string>X</string>
    </property>
   </widget>
-  <widget class="QCommandLinkButton" name="signup">
+  <widget class="QCommandLinkButton" name="login">
    <property name="geometry">
     <rect>
-     <x>350</x>
-     <y>380</y>
+     <x>360</x>
+     <y>660</y>
      <width>121</width>
      <height>51</height>
     </rect>
    </property>
    <property name="text">
-    <string>Sing Up</string>
+    <string>Login</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="show_hide_password">
+  <widget class="QLineEdit" name="phonenumber">
    <property name="geometry">
     <rect>
-     <x>160</x>
-     <y>390</y>
-     <width>121</width>
-     <height>20</height>
+     <x>150</x>
+     <y>250</y>
+     <width>321</width>
+     <height>61</height>
     </rect>
    </property>
-   <property name="text">
-    <string>Show Password</string>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit{
+	color: rgb(58, 134, 255);
+	background-color: white;
+	font: 12pt &quot;MS Shell Dlg 2&quot;;
+	border: 2px solid rgb(58, 134, 255);
+    border-radius: 12px;
+}
+
+</string>
+   </property>
+   <property name="echoMode">
+    <enum>QLineEdit::Password</enum>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+   <property name="placeholderText">
+    <string>phone number</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lastname">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>180</y>
+     <width>321</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit{
+	color: rgb(58, 134, 255);
+	background-color: white;
+	font: 12pt &quot;MS Shell Dlg 2&quot;;
+	border: 2px solid rgb(58, 134, 255);
+    border-radius: 12px;
+}
+
+</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+   <property name="placeholderText">
+    <string>last name</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="email">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>320</y>
+     <width>321</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit{
+	color: rgb(58, 134, 255);
+	background-color: white;
+	font: 12pt &quot;MS Shell Dlg 2&quot;;
+	border: 2px solid rgb(58, 134, 255);
+    border-radius: 12px;
+}
+
+</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+   <property name="placeholderText">
+    <string>email</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="nationacode">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>390</y>
+     <width>321</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit{
+	color: rgb(58, 134, 255);
+	background-color: white;
+	font: 12pt &quot;MS Shell Dlg 2&quot;;
+	border: 2px solid rgb(58, 134, 255);
+    border-radius: 12px;
+}
+
+</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+   <property name="placeholderText">
+    <string>national code</string>
    </property>
   </widget>
  </widget>
