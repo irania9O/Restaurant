@@ -11,7 +11,7 @@ class SignUpScreen(QDialog):
         self.centralize()
         self.login.clicked.connect(self.GoToLoginScreen)
         self.signup.clicked.connect(self.signupfunction)
-        self.exit_button.clicked.connect(lambda x: self.widget.close())
+        self.exit_button.clicked.connect(lambda x : QtCore.QCoreApplication.quit())
 
     def centralize(self):
         frameGm = self.frameGeometry()
