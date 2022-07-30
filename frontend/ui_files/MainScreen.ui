@@ -130,11 +130,14 @@ QTabBar::tab:selected {
     <widget class="QLabel" name="drinks">
      <property name="geometry">
       <rect>
-       <x>850</x>
+       <x>849</x>
        <y>2</y>
-       <width>300</width>
+       <width>302</width>
        <height>120</height>
       </rect>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::WinPanel</enum>
      </property>
      <property name="text">
       <string>DRINKS HEADER</string>
@@ -445,9 +448,9 @@ QTabBar::tab:selected {
      <property name="geometry">
       <rect>
        <x>840</x>
-       <y>85</y>
+       <y>119</y>
        <width>20</width>
-       <height>555</height>
+       <height>521</height>
       </rect>
      </property>
      <property name="frameShadow">
@@ -483,9 +486,9 @@ QTabBar::tab:selected {
      <property name="geometry">
       <rect>
        <x>1140</x>
-       <y>73</y>
+       <y>112</y>
        <width>20</width>
-       <height>570</height>
+       <height>531</height>
       </rect>
      </property>
      <property name="frameShadow">
