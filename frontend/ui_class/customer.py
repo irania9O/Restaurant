@@ -8,12 +8,14 @@ from PyQt5.QtWidgets import (
     QLabel,
     QLineEdit,
     QFormLayout,
+    QVBoxLayout,
     QPushButton,
 )
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.uic import loadUi
+import random
 
-indexes = {0: "Menu", 1: "Orders", 2: "History"}
+indexes = {0: "Menu", 1: "Cart", 2: "Orders"}
 
 
 class MainScreen(QDialog):
@@ -26,13 +28,20 @@ class MainScreen(QDialog):
         self.exit_button.clicked.connect(lambda x: QtCore.QCoreApplication.quit())
 
         pixmap = QtGui.QPixmap("frontend/icons/drinks.png").scaled(300, 100)
-        self.drinks.setPixmap(pixmap)
+        self.drinks_header.setPixmap(pixmap)
 
         pixmap = QtGui.QPixmap("frontend/icons/foods.png").scaled(300, 100)
-        self.foods.setPixmap(pixmap)
+        self.foods_header.setPixmap(pixmap)
 
         pixmap = QtGui.QPixmap("frontend/icons/factor.png").scaled(350, 100)
-        self.factor.setPixmap(pixmap)
+        self.factor_header.setPixmap(pixmap)
+        
+        pixmap = QtGui.QPixmap("frontend/icons/restaurant_info.png").scaled(350, 100)
+        self.restaurant_info_header.setPixmap(pixmap)
+
+        pixmap = QtGui.QPixmap("frontend/icons/user_info.png").scaled(350, 100)
+        self.profile_header.setPixmap(pixmap)
+
 
         # print(self.lcdNumber.intValue())
         # self.lcdNumber.display(150)
@@ -50,23 +59,28 @@ class MainScreen(QDialog):
         self.drinks_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.drinks_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
-        self.orders_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
-        self.orders_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.cart_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        self.cart_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
 
         self.tabWidget.tabBarClicked.connect(self.handle_tabbar_clicked)
 
+        formFrameNews = QFrame()
+        self.layout_news = QVBoxLayout(formFrameNews)
+        self.news_area.setWidget(formFrameNews)
+            
     def doSomething(self, new_text):
         print(new_text)
 
     def handle_tabbar_clicked(self, index):
         if index == 0:
             self.update_foods()
-            
-        if index == 1:
-            self.update_orders()
+        elif index == 1:
+            self.update_cart()   
         elif index == 2:
-            self.update_history()
-
+            self.update_orders()     
+        elif index == 3:
+            self.update_news()
+            
     def enable_disable_spin_box(self, name):
         counter_drinks = self.findChild(QSpinBox, f"{self.sender().objectName()}_count")
         if counter_drinks.isEnabled():
@@ -80,12 +94,26 @@ class MainScreen(QDialog):
         spin_box = self.sender()
         print(spin_box)
         print(value)
+        
+    def update_news(self):
+        for i in reversed(range(self.layout_news.count())): 
+            self.layout_news.itemAt(i).widget().deleteLater()
+        
+        try:
+            for i in range(40):
+                label = QLabel(f" news {i} {random.randint(3, 90)}")
+                label.setStyleSheet('QLabel { font: 12pt "MV Boli"; min-height: 20px; }')
+                self.layout_news.addWidget(label)
+        except Exception as e:
+            print(e)
 
-    def update_orders(self):
-        formFrameOrders = QFrame()
-        self.layout_orders = QFormLayout(formFrameOrders)
-        self.orders_area.setWidget(formFrameOrders)
 
+
+    def update_cart(self):
+        formFrameCart = QFrame()
+        self.layout_cart = QFormLayout(formFrameCart)
+        self.cart_area.setWidget(formFrameCart)
+            
         for i in range(40):
             date = self.calendarWidget.selectedDate().toString("yyyy-MM-dd")
             label = QLabel(
@@ -104,7 +132,6 @@ class MainScreen(QDialog):
                                         border: 2px solid rgb(58, 134, 255);
                                         border-radius: 12px;
                                     }
-                                    
                                     QPushButton:pressed   {
                                         background-color: rgba(255, 0, 0, 255);
                                         color: white;
@@ -112,12 +139,12 @@ class MainScreen(QDialog):
                                 """
             )
 
-            self.layout_orders.addRow(label, button)
+            self.layout_cart.addRow(label, button)
             
-    def update_history(self):
-        formFrameHistory = QFrame()
-        self.layout_payed = QFormLayout(formFrameHistory)
-        self.payed_area.setWidget(formFrameHistory)
+    def update_orders(self):
+        formFrameOrders = QFrame()
+        self.layout_orders = QFormLayout(formFrameOrders)
+        self.orders_area.setWidget(formFrameOrders)
 
         for i in range(40):
             date = self.calendarWidget.selectedDate().toString("yyyy-MM-dd")
@@ -140,7 +167,7 @@ class MainScreen(QDialog):
                                 """
             )
 
-            self.layout_payed.addRow(label, button)
+            self.layout_orders.addRow(label, button)
             
     def update_foods(self):
         print(self.calendarWidget.selectedDate().toString("yyyy-MM-dd"))
