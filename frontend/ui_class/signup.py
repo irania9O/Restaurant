@@ -5,8 +5,8 @@ import re
 
 class SignUpScreen(QDialog):
     def __init__(self, widget):
-        self.widget = widget
         super(SignUpScreen, self).__init__()
+        self.widget_pages = widget
         loadUi("frontend/ui_files/signup.ui", self)
         self.centralize()
         self.login.clicked.connect(self.GoToLoginScreen)
@@ -20,7 +20,8 @@ class SignUpScreen(QDialog):
         )
         centerPoint = QApplication.desktop().screenGeometry(screen).center()
         frameGm.moveCenter(centerPoint)
-        self.widget.move(frameGm.topLeft())
+        self.widget_pages.move(frameGm.topLeft())
+        
     def signupfunction(self):
         firstname = self.firstname.text()
         lastname = self.lastname.text()
@@ -71,7 +72,7 @@ class SignUpScreen(QDialog):
         self.nationacode.setText("")
         self.password.setText("")
         self.password2.setText("")
-        self.widget.setFixedHeight(500)
-        self.widget.setFixedWidth(600)
-        self.widget.setCurrentIndex(0)
+        self.widget_pages.setFixedHeight(500)
+        self.widget_pages.setFixedWidth(600)
+        self.widget_pages.setCurrentIndex(0)
         self.centralize()

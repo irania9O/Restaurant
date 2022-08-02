@@ -5,8 +5,8 @@ from PyQt5.uic import loadUi
 
 class LoginScreen(QDialog):
     def __init__(self, widget):
-        self.widget = widget
         super(LoginScreen, self).__init__()
+        self.widget_pages = widget
         loadUi("frontend/ui_files/login.ui", self)
         self.centralize()
         self.exit_button.clicked.connect(lambda x : QtCore.QCoreApplication.quit())
@@ -32,12 +32,12 @@ class LoginScreen(QDialog):
         )
         centerPoint = QApplication.desktop().screenGeometry(screen).center()
         frameGm.moveCenter(centerPoint)
-        self.widget.move(frameGm.topLeft())
+        self.widget_pages.move(frameGm.topLeft())
 
     def GotoMainScreen(self):
-        self.widget.setFixedHeight(800)
-        self.widget.setFixedWidth(1200)
-        self.widget.setCurrentIndex(2)
+        self.widget_pages.setFixedHeight(800)
+        self.widget_pages.setFixedWidth(1200)
+        self.widget_pages.setCurrentIndex(2)
         self.centralize()
 
     def loginfunction(self):
@@ -57,7 +57,7 @@ class LoginScreen(QDialog):
         self.error.setText("")
         self.username.setText("")
         self.password.setText("")
-        self.widget.setFixedHeight(750)
-        self.widget.setFixedWidth(600)
-        self.widget.setCurrentIndex(1)
+        self.widget_pages.setFixedHeight(750)
+        self.widget_pages.setFixedWidth(600)
+        self.widget_pages.setCurrentIndex(1)
         self.centralize()

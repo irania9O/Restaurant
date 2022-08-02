@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1194</width>
-    <height>820</height>
+    <height>816</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -115,7 +115,7 @@ QTabBar::tab:selected {
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideMiddle</enum>
@@ -364,7 +364,7 @@ QTabBar::tab:selected {
       <enum>Qt::Vertical</enum>
      </property>
     </widget>
-    <widget class="QLCDNumber" name="lcdNumber">
+    <widget class="QLCDNumber" name="MenuTotalAmount">
      <property name="geometry">
       <rect>
        <x>860</x>
@@ -395,7 +395,7 @@ QTabBar::tab:selected {
       <number>0</number>
      </property>
     </widget>
-    <widget class="QLabel" name="label">
+    <widget class="QLabel" name="dollar">
      <property name="geometry">
       <rect>
        <x>1080</x>
@@ -471,7 +471,7 @@ color: rgb(64, 64, 64);
 </string>
      </property>
      <property name="firstDayOfWeek">
-      <enum>Qt::Saturday</enum>
+      <enum>Qt::Sunday</enum>
      </property>
      <property name="gridVisible">
       <bool>true</bool>
@@ -504,7 +504,7 @@ color: rgb(64, 64, 64);
      <property name="styleSheet">
       <string notr="true">QPushButton{
 	color: rgb(58, 134, 255);
-	font: 12pt &quot;MS Shell Dlg 2&quot;;
+	font: 12pt &quot;MV Boli&quot;;
 	background-color: white;
 	border: 2px solid rgb(58, 134, 255);
     border-radius: 12px;
@@ -647,8 +647,8 @@ QPushButton:pressed   {
     <zorder>line_7</zorder>
     <zorder>factor</zorder>
     <zorder>line_9</zorder>
-    <zorder>lcdNumber</zorder>
-    <zorder>label</zorder>
+    <zorder>MenuTotalAmount</zorder>
+    <zorder>dollar</zorder>
     <zorder>calendarWidget</zorder>
     <zorder>line_8</zorder>
     <zorder>order</zorder>
@@ -659,13 +659,302 @@ QPushButton:pressed   {
    </widget>
    <widget class="QWidget" name="widget">
     <attribute name="title">
-     <string>Profile</string>
+     <string>Orders</string>
     </attribute>
+    <widget class="QScrollArea" name="orders_area">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>50</y>
+       <width>1001</width>
+       <height>551</height>
+      </rect>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>997</width>
+        <height>547</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QLineEdit" name="search_orders">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>20</y>
+       <width>1001</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MV Boli</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="placeholderText">
+      <string>Search ...</string>
+     </property>
+     <property name="clearButtonEnabled">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pay">
+     <property name="geometry">
+      <rect>
+       <x>990</x>
+       <y>620</y>
+       <width>130</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MV Boli</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+	color: rgb(58, 134, 255);
+	font: 12pt &quot;MV Boli&quot;;
+	background-color: white;
+	border: 2px solid rgb(58, 134, 255);
+    border-radius: 12px;
+}
+
+QPushButton:hover:!pressed   {
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0.857143, y2:0.857955, stop:1 rgba(10, 242, 251, 255), stop:0 rgba(224, 6, 159, 255));
+  color: white;
+}
+
+QPushButton:pressed   {
+  background-color: rgba(224, 6, 159, 255);
+  color: white;
+}
+</string>
+     </property>
+     <property name="text">
+      <string>Pay</string>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QLCDNumber" name="OrdersTotalAmount">
+     <property name="geometry">
+      <rect>
+       <x>800</x>
+       <y>620</y>
+       <width>141</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="smallDecimalPoint">
+      <bool>false</bool>
+     </property>
+     <property name="digitCount">
+      <number>6</number>
+     </property>
+     <property name="segmentStyle">
+      <enum>QLCDNumber::Filled</enum>
+     </property>
+     <property name="intValue" stdset="0">
+      <number>0</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="dollar_2">
+     <property name="geometry">
+      <rect>
+       <x>940</x>
+       <y>620</y>
+       <width>41</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MV Boli</family>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <property name="text">
+      <string>$</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="discount_code">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>620</y>
+       <width>221</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MV Boli</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="placeholderText">
+      <string>Discount code</string>
+     </property>
+     <property name="clearButtonEnabled">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="use_copon">
+     <property name="geometry">
+      <rect>
+       <x>360</x>
+       <y>620</y>
+       <width>131</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MV Boli</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+	color: rgb(58, 134, 255);
+	font: 12pt &quot;MV Boli&quot;;
+	background-color: white;
+	border: 2px solid rgb(58, 134, 255);
+    border-radius: 12px;
+}
+
+QPushButton:hover:!pressed   {
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0.857143, y2:0.857955, stop:1 rgba(10, 242, 251, 255), stop:0 rgba(224, 6, 159, 255));
+  color: white;
+}
+
+QPushButton:pressed   {
+  background-color: rgba(224, 6, 159, 255);
+  color: white;
+}
+</string>
+     </property>
+     <property name="text">
+      <string>submit</string>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <zorder>orders_area</zorder>
+    <zorder>search_orders</zorder>
+    <zorder>pay</zorder>
+    <zorder>dollar_2</zorder>
+    <zorder>discount_code</zorder>
+    <zorder>use_copon</zorder>
+    <zorder>OrdersTotalAmount</zorder>
    </widget>
    <widget class="QWidget" name="widget">
     <attribute name="title">
-     <string>Page</string>
+     <string>History</string>
     </attribute>
+    <widget class="QScrollArea" name="payed_area">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>50</y>
+       <width>1001</width>
+       <height>591</height>
+      </rect>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents_3">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>997</width>
+        <height>587</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QLineEdit" name="payed_orders">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>20</y>
+       <width>1001</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MV Boli</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="placeholderText">
+      <string>Search ...</string>
+     </property>
+     <property name="clearButtonEnabled">
+      <bool>true</bool>
+     </property>
+    </widget>
    </widget>
   </widget>
   <zorder>tabWidget</zorder>
