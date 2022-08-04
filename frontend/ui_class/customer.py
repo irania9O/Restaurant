@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import (
     QFormLayout,
     QVBoxLayout,
     QPushButton,
+    QRadioButton 
 )
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.uic import loadUi
@@ -24,7 +25,8 @@ class MainScreen(QDialog):
         self.widget_pages = widget
         loadUi("frontend/ui_files/MainScreen.ui", self)
         self.tabWidget.setCurrentIndex(0)
-        self.order.clicked.connect(self.GoToLoginScreen)
+        
+        #self.order.clicked.connect(self.GoToLoginScreen)
         self.exit_button.clicked.connect(lambda x: QtCore.QCoreApplication.quit())
 
         pixmap = QtGui.QPixmap("frontend/icons/drinks.png").scaled(300, 100)
@@ -42,13 +44,20 @@ class MainScreen(QDialog):
         pixmap = QtGui.QPixmap("frontend/icons/user_info.png").scaled(350, 100)
         self.profile_header.setPixmap(pixmap)
 
+        pixmap = QtGui.QPixmap("frontend/icons/register_vote.png").scaled(300, 100)
+        self.register_vote_header.setPixmap(pixmap)
 
+        pixmap = QtGui.QPixmap("frontend/icons/foods_drinks.png").scaled(300, 100)
+        self.food_drinks_header.setPixmap(pixmap)
+        
         # print(self.lcdNumber.intValue())
         # self.lcdNumber.display(150)
         # print(self.lcdNumber.intValue())
         self.search_food.textChanged.connect(lambda x: self.doSomething(x))
         self.search_drink.textChanged.connect(lambda x: self.doSomething(x))
 
+        self.calendarWidget_vote.selectionChanged.connect(self.update_foods)
+        
         self.calendarWidget.setMinimumDate(self.calendarWidget.selectedDate())
         self.calendarWidget.selectionChanged.connect(self.update_foods)
         self.update_foods()
@@ -64,10 +73,20 @@ class MainScreen(QDialog):
 
         self.tabWidget.tabBarClicked.connect(self.handle_tabbar_clicked)
 
+        self.foods_orderd.currentTextChanged.connect(self.on_combobox_changed)
+        
         formFrameNews = QFrame()
         self.layout_news = QVBoxLayout(formFrameNews)
         self.news_area.setWidget(formFrameNews)
-            
+
+        formFrameVotes = QFrame()
+        self.layout_votes = QVBoxLayout(formFrameVotes)
+        self.votes_area.setWidget(formFrameVotes)
+        
+        formFrameVotesFoodsDrinks = QFrame()
+        self.layout_votes_foods_drinks = QVBoxLayout(formFrameVotesFoodsDrinks)
+        self.foods_and_drinks_area.setWidget(formFrameVotesFoodsDrinks)
+        
     def doSomething(self, new_text):
         print(new_text)
 
@@ -77,8 +96,10 @@ class MainScreen(QDialog):
         elif index == 1:
             self.update_cart()   
         elif index == 2:
-            self.update_orders()     
+            self.update_orders()
         elif index == 3:
+            self.update_vote()
+        elif index == 4:
             self.update_news()
             
     def enable_disable_spin_box(self, name):
@@ -107,8 +128,46 @@ class MainScreen(QDialog):
         except Exception as e:
             print(e)
 
+    def update_vote(self):
+        for i in reversed(range(self.layout_votes.count())): 
+            self.layout_votes.itemAt(i).widget().deleteLater()
+        
+        try:
+            for i in range(40):
+                label = QLabel(f" vote {i} {random.randint(3, 90)}")
+                label.setStyleSheet('QLabel { font: 12pt "MV Boli"; min-height: 20px; }')
+                self.layout_votes.addWidget(label)
+        except Exception as e:
+            print(e)
 
+        for i in reversed(range(self.layout_votes_foods_drinks.count())): 
+            self.layout_votes_foods_drinks.itemAt(i).widget().deleteLater()
+        
+        try:
+            for i in range(40):
+                radiobutton = QRadioButton(f" vote {i} {random.randint(3, 90)}")
+                radiobutton.setStyleSheet('QRadioButton { font: 12pt "MV Boli"; min-height: 20px; }')
+                self.layout_votes_foods_drinks.addWidget(radiobutton)
+        except Exception as e:
+            print(e)
+            
+        try:
+            self.foods_orderd.clear()
+            self.foods_orderd.addItems(["-- Select An Order --", "f2", "f3", "f4"])
+            self.foods_orderd.setCurrentIndex(0)
+        except Exception as e:
+            print(e)
 
+            
+
+        
+    def on_combobox_changed(self, value):
+        if value == "-- Select An Order --" or value == "":
+            self.vote_text_area.setDisabled(True)
+        else:
+            self.vote_text_area.setDisabled(False)
+            print("combobox changed", value , self.sender())
+    
     def update_cart(self):
         formFrameCart = QFrame()
         self.layout_cart = QFormLayout(formFrameCart)
