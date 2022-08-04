@@ -56,7 +56,7 @@ class MainScreen(QDialog):
         self.search_food.textChanged.connect(lambda x: self.doSomething(x))
         self.search_drink.textChanged.connect(lambda x: self.doSomething(x))
 
-        self.calendarWidget_vote.selectionChanged.connect(self.update_foods)
+        self.calendarWidget_vote.selectionChanged.connect(self.update_vote)
         
         self.calendarWidget.setMinimumDate(self.calendarWidget.selectedDate())
         self.calendarWidget.selectionChanged.connect(self.update_foods)
@@ -131,23 +131,16 @@ class MainScreen(QDialog):
     def update_vote(self):
         for i in reversed(range(self.layout_votes.count())): 
             self.layout_votes.itemAt(i).widget().deleteLater()
-        
-        try:
-            for i in range(40):
-                label = QLabel(f" vote {i} {random.randint(3, 90)}")
-                label.setStyleSheet('QLabel { font: 12pt "MV Boli"; min-height: 20px; }')
-                self.layout_votes.addWidget(label)
-        except Exception as e:
-            print(e)
-
+            
         for i in reversed(range(self.layout_votes_foods_drinks.count())): 
             self.layout_votes_foods_drinks.itemAt(i).widget().deleteLater()
         
         try:
             for i in range(40):
-                radiobutton = QRadioButton(f" vote {i} {random.randint(3, 90)}")
-                radiobutton.setStyleSheet('QRadioButton { font: 12pt "MV Boli"; min-height: 20px; }')
-                self.layout_votes_foods_drinks.addWidget(radiobutton)
+                radio_button = QRadioButton(f" button radio {i} {random.randint(3, 90)}")
+                radio_button.setStyleSheet('QRadioButton { font: 12pt "MV Boli"; min-height: 20px; }')
+                radio_button.toggled.connect(self.radio_button_selection)
+                self.layout_votes_foods_drinks.addWidget(radio_button)
         except Exception as e:
             print(e)
             
@@ -160,7 +153,20 @@ class MainScreen(QDialog):
 
             
 
-        
+    def radio_button_selection(self ):
+        radioButton = self.sender()
+        if radioButton.isChecked():
+            print(radioButton)
+            for i in reversed(range(self.layout_votes.count())): 
+                self.layout_votes.itemAt(i).widget().deleteLater()
+            try:
+                for i in range(40):
+                    label = QLabel(f" vote {i} {random.randint(3, 90)}")
+                    label.setStyleSheet('QLabel { font: 12pt "MV Boli"; min-height: 20px; }')
+                    self.layout_votes.addWidget(label)
+            except Exception as e:
+                print(e)
+            
     def on_combobox_changed(self, value):
         if value == "-- Select An Order --" or value == "":
             self.vote_text_area.setDisabled(True)
