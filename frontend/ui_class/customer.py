@@ -203,9 +203,14 @@ class MainScreen(QDialog):
                                     }
                                 """
             )
-
+            button.clicked.connect(self.delete_function)
             self.layout_cart.addRow(label, button)
             
+    def delete_function(self):
+        print(self.sender())
+        print(self.sender().objectName())
+        print()
+        
     def update_orders(self):
         formFrameOrders = QFrame()
         self.layout_orders = QFormLayout(formFrameOrders)
