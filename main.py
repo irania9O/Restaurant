@@ -5,8 +5,9 @@ import sys
 from frontend.ui_class.login import LoginScreen
 from frontend.ui_class.signup import SignUpScreen
 from frontend.ui_class.customer import MainScreen
+from frontend.ui_class.manager import  ManagerScreen
 
-indexes = {"LoginScreen": 0, "SignUpScreen": 1, "MainScreen": 2}
+indexes = {"LoginScreen": 0, "SignUpScreen": 1, "MainScreen": 2 , "ManagerScreen": 3}
 
 def main():
     try:
@@ -18,6 +19,7 @@ def main():
         widget.addWidget(LoginScreen(widget))
         widget.addWidget(SignUpScreen(widget))
         widget.addWidget(MainScreen(widget))
+        widget.addWidget(ManagerScreen(widget))
         widget.setFixedHeight(500)
         widget.setFixedWidth(600)
         widget.setCurrentIndex(0)

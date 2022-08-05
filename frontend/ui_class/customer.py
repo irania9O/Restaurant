@@ -26,7 +26,7 @@ class MainScreen(QDialog):
         loadUi("frontend/ui_files/MainScreen.ui", self)
         self.tabWidget.setCurrentIndex(0)
         
-        #self.order.clicked.connect(self.GoToLoginScreen)
+        self.go_to_admin_screen.clicked.connect(self.GoToAdminScreen)
         self.exit_button.clicked.connect(lambda x: QtCore.QCoreApplication.quit())
 
         pixmap = QtGui.QPixmap("frontend/icons/drinks.png").scaled(300, 100)
@@ -291,4 +291,10 @@ class MainScreen(QDialog):
         self.widget_pages.setFixedHeight(500)
         self.widget_pages.setFixedWidth(600)
         self.widget_pages.setCurrentIndex(0)
+        self.centralize()
+        
+    def GoToAdminScreen(self):
+        self.widget_pages.setFixedHeight(800)
+        self.widget_pages.setFixedWidth(1200)
+        self.widget_pages.setCurrentIndex(3)
         self.centralize()

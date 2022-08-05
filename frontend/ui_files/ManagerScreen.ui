@@ -59,7 +59,7 @@ QPushButton:pressed   {
    <property name="geometry">
     <rect>
      <x>-10</x>
-     <y>20</y>
+     <y>10</y>
      <width>1200</width>
      <height>800</height>
     </rect>
@@ -115,7 +115,7 @@ QTabBar::tab:selected {
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>2</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideMiddle</enum>
