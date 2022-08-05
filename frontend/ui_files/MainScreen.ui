@@ -66,7 +66,7 @@ QPushButton:pressed   {
    </property>
    <property name="font">
     <font>
-     <family>Segoe UI</family>
+     <family>MV Boli</family>
      <pointsize>12</pointsize>
     </font>
    </property>
@@ -115,7 +115,7 @@ QTabBar::tab:selected {
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideMiddle</enum>
@@ -2516,8 +2516,27 @@ color: rgb(0, 0, 0);
     </widget>
    </widget>
   </widget>
+  <widget class="QCommandLinkButton" name="go_to_admin_screen">
+   <property name="geometry">
+    <rect>
+     <x>1011</x>
+     <y>17</y>
+     <width>121</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>Segoe UI</family>
+    </font>
+   </property>
+   <property name="text">
+    <string>As Admin</string>
+   </property>
+  </widget>
   <zorder>tabWidget</zorder>
   <zorder>exit_button</zorder>
+  <zorder>go_to_admin_screen</zorder>
  </widget>
  <resources/>
  <connections/>
