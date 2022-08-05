@@ -115,7 +115,7 @@ QTabBar::tab:selected {
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>5</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideMiddle</enum>
@@ -2083,7 +2083,7 @@ color: rgb(0, 0, 0);
       <bool>false</bool>
      </property>
      <property name="placeholderText">
-      <string>national code</string>
+      <string>Address</string>
      </property>
      <property name="clearButtonEnabled">
       <bool>false</bool>
