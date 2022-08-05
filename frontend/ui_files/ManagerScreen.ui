@@ -115,7 +115,7 @@ QTabBar::tab:selected {
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideMiddle</enum>
@@ -2501,6 +2501,12 @@ QPushButton:pressed   {
        <width>311</width>
        <height>321</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MV Boli</family>
+       <pointsize>12</pointsize>
+      </font>
      </property>
      <property name="placeholderText">
       <string>write your news content ...</string>
