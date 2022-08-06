@@ -1,7 +1,8 @@
-from PyQt5.QtWidgets import QDialog, QApplication, QDesktopWidget
+from PyQt5.QtWidgets import QDialog, QMainWindow, QApplication, QDesktopWidget, QFrame, QFormLayout, QLabel, QPushButton
 from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5.QtCore import QThread , pyqtSignal, pyqtSlot
 from PyQt5.uic import loadUi
-import sys
+import sys , random, time
 from frontend.ui_class.login import LoginScreen
 from frontend.ui_class.signup import SignUpScreen
 from frontend.ui_class.customer import MainScreen
@@ -11,7 +12,7 @@ indexes = {"LoginScreen": 0, "SignUpScreen": 1, "MainScreen": 2 , "ManagerScreen
 
 def main():
     try:
-        app = QApplication(sys.argv)
+        #app = QApplication(sys.argv)
 
         widget = QtWidgets.QStackedWidget()
         widget.setWindowFlags(QtCore.Qt.FramelessWindowHint)
@@ -34,13 +35,142 @@ def main():
 
         widget.offset = None
 
-        widget.show()
+        #widget.show()
+        return widget
 
-        sys.exit(app.exec_())
+        #sys.exit(app.exec_())
 
     except Exception as error:
         print(error)
+        
+class ThreadProgress(QThread):
+    mysignal = pyqtSignal(int)
+    def __init__(self, parent=None):
+        QThread.__init__(self, parent)
+        
+    def run(self):
+        i = 0
+        while i<101:
+            time.sleep(0.03)
+            self.mysignal.emit(i)
+            i += 1
+            
+class Splash(QDialog):
+    def __init__(self, parent = None):
+        super(Splash, self).__init__(parent)
+        
+        self.load_int = random.randint(40, 80)
+        
+        loadUi("frontend/ui_files/SplashScreen.ui", self)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.centralize()
 
+        pixmap = QtGui.QPixmap("frontend/icons/restaurant.png").scaled(320, 320)
+        self.logo.setPixmap(pixmap)
+        
+        progress = ThreadProgress(self)
+        progress.mysignal.connect(self.progress)
+        progress.start()
+        
+    @pyqtSlot(int)
+    def progress(self, i):
+        self.progressBar.setValue(i)
+        if i == self.load_int:
+            self.w_l = main()
+        if i == 100:
+            self.hide()
+            self.w_l.show()
+            
+    def centralize(self):
+        frameGm = self.frameGeometry()
+        screen = QApplication.desktop().screenNumber(
+            QApplication.desktop().cursor().pos()
+        )
+        centerPoint = QApplication.desktop().screenGeometry(screen).center()
+        frameGm.moveCenter(centerPoint)
+        self.move(frameGm.topLeft())
+        
+class Restaurants(QDialog):
+    def __init__(self):
+        super(Restaurants, self).__init__()        
+        loadUi("frontend/ui_files/Restaurants.ui", self)
+        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.tabWidget.setCurrentIndex(0)
+        self.centralize()
+        
+        self.show_restaurants()
+        
+        pixmap = QtGui.QPixmap("frontend/icons/restaurant_info.png").scaled(350, 100)
+        self.restaurant_info_header.setPixmap(pixmap)
+        
+        self.restaurants_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        self.restaurants_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        
+        self.exit_button.clicked.connect(lambda x: sys.exit())
 
-if __name__ == "__main__":
-    main()
+        self.tabWidget.tabBarClicked.connect(self.handle_tabbar_clicked)
+        
+    def handle_tabbar_clicked(self, index):
+        if index == 0:
+            self.show_restaurants()
+        elif index == 1:
+            pass
+            
+    def show_new_window(self):
+        try:
+            self.hide()
+            self.w = Splash()
+            self.w.show()
+        except Exception as e:
+            print(e)
+
+    def show_restaurants(self):
+        print(0)
+        formFrameRestaurants = QFrame()
+        self.restaurants = QFormLayout(formFrameRestaurants)
+        self.restaurants_area.setWidget(formFrameRestaurants)
+        for i in range(40):
+            label = QLabel(
+                f"label{i} {random.randint(3, 90)}",
+                self,
+                objectName=f"label{i}",
+            )
+            label.setStyleSheet('QLabel { font: 8pt "MV Boli"; min-height: 30px; max-height: 30px; min-width: 230px; }')
+
+            button = QPushButton(f"Enter", self, objectName=f"food{i}_count")
+            button.setStyleSheet(
+                                """QPushButton{
+                                        background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0.857143, y2:0.857955, stop:1 rgb(255, 189, 108), stop:0 rgb(255, 0, 0));
+                                        color: white;
+                                        font: 12pt "MV Boli";
+                                        border: 2px solid rgb(0, 0, 0);
+                                        border-radius: 12px;
+                                        min-width: 60px;
+                                        max-width: 60px;
+                                        max-height: 30px;
+                                    }
+                                    QPushButton:pressed   {
+                                        background-color: rgba(255, 0, 0, 255);
+                                        color: white;
+                                    }
+                                """
+            )
+            button.clicked.connect(self.show_new_window)
+            self.restaurants.addRow(label, button)
+            
+    def centralize(self):
+        frameGm = self.frameGeometry()
+        screen = QApplication.desktop().screenNumber(
+            QApplication.desktop().cursor().pos()
+        )
+        centerPoint = QApplication.desktop().screenGeometry(screen).center()
+        frameGm.moveCenter(centerPoint)
+        self.move(frameGm.topLeft())
+        
+app = QApplication(sys.argv)
+w = Restaurants()
+w.show()
+app.exec()
+
+#if __name__ == "__main__":
+#    main()
