@@ -7,7 +7,7 @@ class LoginScreen(QDialog):
     def __init__(self, widget):
         super(LoginScreen, self).__init__()
         self.widget_pages = widget
-        loadUi("frontend/ui_files/login.ui", self)
+        loadUi("frontend/ui_files/LoginScreen.ui", self)
         self.centralize()
         self.exit_button.clicked.connect(lambda x: sys.exit())
         self.signup.clicked.connect(self.GotoSignUpScreen)
