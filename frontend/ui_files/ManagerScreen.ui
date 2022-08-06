@@ -115,7 +115,7 @@ QTabBar::tab:selected {
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideMiddle</enum>
@@ -308,9 +308,9 @@ QTabBar::tab:selected {
      <property name="geometry">
       <rect>
        <x>1150</x>
-       <y>113</y>
+       <y>3</y>
        <width>20</width>
-       <height>531</height>
+       <height>641</height>
       </rect>
      </property>
      <property name="frameShadow">
@@ -326,32 +326,13 @@ QTabBar::tab:selected {
       <enum>Qt::Vertical</enum>
      </property>
     </widget>
-    <widget class="QLabel" name="factor_header">
-     <property name="geometry">
-      <rect>
-       <x>799</x>
-       <y>2</y>
-       <width>362</width>
-       <height>120</height>
-      </rect>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::WinPanel</enum>
-     </property>
-     <property name="text">
-      <string>ADD HEADER</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
     <widget class="Line" name="line_9">
      <property name="geometry">
       <rect>
        <x>790</x>
-       <y>120</y>
+       <y>3</y>
        <width>20</width>
-       <height>521</height>
+       <height>641</height>
       </rect>
      </property>
      <property name="frameShadow">
@@ -368,7 +349,7 @@ QTabBar::tab:selected {
      <property name="geometry">
       <rect>
        <x>815</x>
-       <y>130</y>
+       <y>40</y>
        <width>331</width>
        <height>221</height>
       </rect>
@@ -444,10 +425,13 @@ color: rgb(64, 64, 64);
      </property>
     </widget>
     <widget class="QPushButton" name="submit_new">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>820</x>
-       <y>580</y>
+       <y>560</y>
        <width>321</width>
        <height>51</height>
       </rect>
@@ -588,10 +572,13 @@ QPushButton:pressed   {
      </widget>
     </widget>
     <widget class="QLineEdit" name="name_input">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>890</x>
-       <y>370</y>
+       <y>330</y>
        <width>251</width>
        <height>31</height>
       </rect>
@@ -609,7 +596,7 @@ QPushButton:pressed   {
      <property name="geometry">
       <rect>
        <x>820</x>
-       <y>370</y>
+       <y>330</y>
        <width>51</width>
        <height>31</height>
       </rect>
@@ -624,10 +611,13 @@ QPushButton:pressed   {
      </property>
     </widget>
     <widget class="QSpinBox" name="count_input">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>890</x>
-       <y>410</y>
+       <y>370</y>
        <width>251</width>
        <height>31</height>
       </rect>
@@ -642,7 +632,7 @@ QPushButton:pressed   {
      <property name="geometry">
       <rect>
        <x>820</x>
-       <y>410</y>
+       <y>370</y>
        <width>55</width>
        <height>31</height>
       </rect>
@@ -657,10 +647,13 @@ QPushButton:pressed   {
      </property>
     </widget>
     <widget class="QSpinBox" name="cost_input">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>890</x>
-       <y>450</y>
+       <y>410</y>
        <width>251</width>
        <height>31</height>
       </rect>
@@ -675,7 +668,7 @@ QPushButton:pressed   {
      <property name="geometry">
       <rect>
        <x>820</x>
-       <y>450</y>
+       <y>410</y>
        <width>55</width>
        <height>31</height>
       </rect>
@@ -693,7 +686,7 @@ QPushButton:pressed   {
      <property name="geometry">
       <rect>
        <x>820</x>
-       <y>490</y>
+       <y>450</y>
        <width>71</width>
        <height>31</height>
       </rect>
@@ -708,10 +701,13 @@ QPushButton:pressed   {
      </property>
     </widget>
     <widget class="QLineEdit" name="material_input">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>890</x>
-       <y>490</y>
+       <y>450</y>
        <width>251</width>
        <height>31</height>
       </rect>
@@ -729,7 +725,7 @@ QPushButton:pressed   {
      <property name="geometry">
       <rect>
        <x>820</x>
-       <y>530</y>
+       <y>490</y>
        <width>71</width>
        <height>31</height>
       </rect>
@@ -750,7 +746,7 @@ QPushButton:pressed   {
      <property name="geometry">
       <rect>
        <x>890</x>
-       <y>530</y>
+       <y>490</y>
        <width>251</width>
        <height>31</height>
       </rect>
@@ -784,6 +780,44 @@ QPushButton:pressed   {
       </property>
      </item>
     </widget>
+    <widget class="Line" name="line_31">
+     <property name="geometry">
+      <rect>
+       <x>800</x>
+       <y>2</y>
+       <width>361</width>
+       <height>2</height>
+      </rect>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>2</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+    <widget class="Line" name="line_48">
+     <property name="geometry">
+      <rect>
+       <x>800</x>
+       <y>300</y>
+       <width>360</width>
+       <height>2</height>
+      </rect>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>2</number>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
     <zorder>drinks_header</zorder>
     <zorder>line</zorder>
     <zorder>line_2</zorder>
@@ -793,7 +827,6 @@ QPushButton:pressed   {
     <zorder>line_5</zorder>
     <zorder>line_6</zorder>
     <zorder>line_7</zorder>
-    <zorder>factor_header</zorder>
     <zorder>line_9</zorder>
     <zorder>calendarWidget</zorder>
     <zorder>line_8</zorder>
@@ -812,12 +845,14 @@ QPushButton:pressed   {
     <zorder>material_input</zorder>
     <zorder>type_label_3</zorder>
     <zorder>comboBox</zorder>
+    <zorder>line_31</zorder>
+    <zorder>line_48</zorder>
    </widget>
    <widget class="QWidget" name="widget">
     <attribute name="title">
      <string>Admins</string>
     </attribute>
-    <widget class="QLabel" name="restaurant_info_header_2">
+    <widget class="QLabel" name="admins_info_header">
      <property name="geometry">
       <rect>
        <x>230</x>
@@ -1142,7 +1177,7 @@ QPushButton:pressed   {
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QLabel" name="profile_header_2">
+    <widget class="QLabel" name="add_admin_header">
      <property name="geometry">
       <rect>
        <x>620</x>
@@ -1425,6 +1460,9 @@ color: rgb(0, 0, 0);
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
      <property name="placeholderText">
       <string>first name</string>
      </property>
@@ -1475,6 +1513,9 @@ color: rgb(0, 0, 0);
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
      <property name="placeholderText">
       <string>email</string>
      </property>
@@ -1506,6 +1547,9 @@ color: rgb(0, 0, 0);
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
      <property name="placeholderText">
       <string>phone number</string>
      </property>
@@ -1533,6 +1577,9 @@ color: rgb(0, 0, 0);
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
      </property>
      <property name="placeholderText">
       <string>password</string>
@@ -1619,6 +1666,9 @@ color: rgb(0, 0, 0);
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
      <property name="placeholderText">
       <string>last name</string>
      </property>
@@ -1646,6 +1696,9 @@ color: rgb(0, 0, 0);
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
      </property>
      <property name="placeholderText">
       <string>repeat password</string>
@@ -1703,7 +1756,7 @@ color: rgb(0, 0, 0);
       <set>Qt::AlignCenter</set>
      </property>
      <property name="readOnly">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="placeholderText">
       <string>national code</string>
@@ -1712,7 +1765,7 @@ color: rgb(0, 0, 0);
       <bool>false</bool>
      </property>
     </widget>
-    <widget class="QComboBox" name="comboBox_3">
+    <widget class="QComboBox" name="admin_list">
      <property name="geometry">
       <rect>
        <x>250</x>
@@ -1965,7 +2018,7 @@ color: rgb(0, 0, 0);
      <property name="geometry">
       <rect>
        <x>787</x>
-       <y>8</y>
+       <y>11</y>
        <width>20</width>
        <height>631</height>
       </rect>
@@ -2104,9 +2157,9 @@ color: rgb(64, 64, 64);
      <property name="geometry">
       <rect>
        <x>796</x>
-       <y>0</y>
+       <y>10</y>
        <width>361</width>
-       <height>20</height>
+       <height>2</height>
       </rect>
      </property>
      <property name="frameShadow">
@@ -2167,10 +2220,10 @@ color: rgb(64, 64, 64);
     <widget class="QPushButton" name="create_copon">
      <property name="geometry">
       <rect>
-       <x>1050</x>
+       <x>1030</x>
        <y>430</y>
-       <width>91</width>
-       <height>45</height>
+       <width>111</width>
+       <height>50</height>
       </rect>
      </property>
      <property name="styleSheet">
@@ -2269,9 +2322,9 @@ QPushButton:pressed   {
     <widget class="QPushButton" name="copon_code_copy">
      <property name="geometry">
       <rect>
-       <x>1050</x>
+       <x>1030</x>
        <y>580</y>
-       <width>91</width>
+       <width>111</width>
        <height>50</height>
       </rect>
      </property>
@@ -2315,7 +2368,7 @@ QPushButton:pressed   {
      <property name="geometry">
       <rect>
        <x>820</x>
-       <y>520</y>
+       <y>510</y>
        <width>321</width>
        <height>50</height>
       </rect>
@@ -2339,7 +2392,52 @@ QPushButton:pressed   {
       <string>Discount code</string>
      </property>
      <property name="clearButtonEnabled">
-      <bool>true</bool>
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="send_new">
+     <property name="geometry">
+      <rect>
+       <x>910</x>
+       <y>580</y>
+       <width>111</width>
+       <height>50</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MV Boli</family>
+       <pointsize>12</pointsize>
+       <weight>50</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton{
+	color: rgb(58, 134, 255);
+	font: 12pt &quot;MV Boli&quot;;
+	background-color: white;
+	border: 2px solid rgb(58, 134, 255);
+    border-radius: 12px;
+}
+
+QPushButton:hover:!pressed   {
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0.857143, y2:0.857955, stop:1 rgba(10, 242, 251, 255), stop:0 rgba(224, 6, 159, 255));
+  color: white;
+}
+
+QPushButton:pressed   {
+  background-color: rgba(224, 6, 159, 255);
+  color: white;
+}
+</string>
+     </property>
+     <property name="text">
+      <string>send news</string>
+     </property>
+     <property name="checkable">
+      <bool>false</bool>
      </property>
     </widget>
    </widget>
