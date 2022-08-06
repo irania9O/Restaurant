@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QDialog, QApplication, QDesktopWidget
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.uic import loadUi
-
+import sys
 
 class LoginScreen(QDialog):
     def __init__(self, widget):
@@ -9,7 +9,7 @@ class LoginScreen(QDialog):
         self.widget_pages = widget
         loadUi("frontend/ui_files/login.ui", self)
         self.centralize()
-        self.exit_button.clicked.connect(lambda x : QtCore.QCoreApplication.quit())
+        self.exit_button.clicked.connect(lambda x: sys.exit())
         self.signup.clicked.connect(self.GotoSignUpScreen)
         self.login.clicked.connect(self.loginfunction)
 

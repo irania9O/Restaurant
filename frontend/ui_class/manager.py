@@ -16,7 +16,7 @@ from PyQt5.QtWidgets import (
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.Qt import QClipboard
 from PyQt5.uic import loadUi
-import random, os
+import random, os, sys
 import pyperclip
 
 class ManagerScreen(QDialog):
@@ -29,7 +29,7 @@ class ManagerScreen(QDialog):
         self.copon_code_copy.clicked.connect(self.copy_copon)
         
         self.go_to_user_screen.clicked.connect(self.GoToUserScreen)
-        self.exit_button.clicked.connect(lambda x: QtCore.QCoreApplication.quit())
+        self.exit_button.clicked.connect(lambda x: sys.exit())
 
         pixmap = QtGui.QPixmap("frontend/icons/drinks.png").scaled(300, 100)
         self.drinks_header.setPixmap(pixmap)

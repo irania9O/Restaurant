@@ -14,6 +14,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.uic import loadUi
+import sys
 import random
 
 indexes = {0: "Menu", 1: "Cart", 2: "Orders"}
@@ -27,7 +28,7 @@ class MainScreen(QDialog):
         self.tabWidget.setCurrentIndex(0)
         
         self.go_to_admin_screen.clicked.connect(self.GoToAdminScreen)
-        self.exit_button.clicked.connect(lambda x: QtCore.QCoreApplication.quit())
+        self.exit_button.clicked.connect(lambda x: sys.exit())
 
         pixmap = QtGui.QPixmap("frontend/icons/drinks.png").scaled(300, 100)
         self.drinks_header.setPixmap(pixmap)

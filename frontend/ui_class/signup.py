@@ -1,7 +1,7 @@
 from PyQt5.QtWidgets import QDialog, QApplication, QDesktopWidget
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.uic import loadUi
-import re 
+import re, sys
 
 class SignUpScreen(QDialog):
     def __init__(self, widget):
@@ -11,7 +11,7 @@ class SignUpScreen(QDialog):
         self.centralize()
         self.login.clicked.connect(self.GoToLoginScreen)
         self.signup.clicked.connect(self.signupfunction)
-        self.exit_button.clicked.connect(lambda x : QtCore.QCoreApplication.quit())
+        self.exit_button.clicked.connect(lambda x: sys.exit())
 
     def centralize(self):
         frameGm = self.frameGeometry()
