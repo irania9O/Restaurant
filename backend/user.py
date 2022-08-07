@@ -1,4 +1,4 @@
-from base import DATABASE
+from backend.base import DATABASE
 
 
 class User(DATABASE):
@@ -243,7 +243,7 @@ class User(DATABASE):
         """
         # person info
         PERSON_ID = self.national_code
-        PERSON = self.Person()
+        PERSON = self.Person(PERSON_ID)
         MESSAGE = PERSON["EMAIL"] + " : \n" + COMMENT
         self.c.execute(
             f"SELECT * FROM VOTE WHERE PERSON_ID = '{PERSON_ID}' AND FOOD_ID = '{FOOD_ID}'"
@@ -271,18 +271,3 @@ class User(DATABASE):
 
         self.conn.commit()
         return True
-
-    # -------------------------------------------------------------------------
-    def Person(self):
-        """
-        Task:
-            Get person account info with email or national code.
-
-        Arguments:
-            EMAIL_OR_NATIONALCODE   -- Customer or Manager National code or email            -- type : str(chr)   -- default : not null
-
-        Return :
-            HAS PROBLEM             --Error like not exist email or national code            -- type : tuple       -- value   : False , Message
-            NO  PROBLEM             --Successfully retrun                                    -- type : tuple       -- value   : True  , Message
-        """
-        return super().Person(self.national_code)

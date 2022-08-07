@@ -1,4 +1,4 @@
-from base import DATABASE
+from backend.base import DATABASE
 import random
 
 

@@ -4,9 +4,13 @@ from PyQt5.uic import loadUi
 import sys
 
 class LoginScreen(QDialog):
-    def __init__(self, widget):
+    def __init__(self, widget, admin, market, user):
         super(LoginScreen, self).__init__()
         self.widget_pages = widget
+        self.admin = admin
+        self.market = market
+        self.user = user
+        
         loadUi("frontend/ui_files/LoginScreen.ui", self)
         self.centralize()
         self.exit_button.clicked.connect(lambda x: sys.exit())
@@ -45,13 +49,24 @@ class LoginScreen(QDialog):
         password = self.password.text()
 
         if len(user) == 0 or len(password) == 0:
+            ##elf.database[0].national_code = "22"
+            ##print(self.database[0].national_code)
+            ##print(self.database)
             self.error.setText("USER OR PASSWORD NOT IMPORTED")
 
         else:
-            self.error.setText("")
-            self.username.setText("")
-            self.password.setText("")
-            self.GotoMainScreen()
+            status , msg  = self.user.Login(user, password)
+            if status == True:
+                self.admin.national_code = msg
+                self.market.national_code = msg
+                self.user.national_code = msg         
+                self.error.setText("")
+                self.username.setText("")
+                self.password.setText("")
+                self.GotoMainScreen()
+            else:
+                self.error.setText(msg)
+
 
     def GotoSignUpScreen(self):
         self.error.setText("")

@@ -21,9 +21,13 @@ indexes = {0: "Menu", 1: "Cart", 2: "Orders"}
 
 
 class MainScreen(QDialog):
-    def __init__(self, widget):
+    def __init__(self, widget, admin, market, user):
         super(MainScreen, self).__init__()
         self.widget_pages = widget
+        self.admin = admin
+        self.market = market
+        self.user = user
+        
         loadUi("frontend/ui_files/MainScreen.ui", self)
         self.tabWidget.setCurrentIndex(0)
         
@@ -242,7 +246,8 @@ class MainScreen(QDialog):
             
     def update_foods(self):
         print(self.calendarWidget.selectedDate().toString("yyyy-MM-dd"))
-
+        print(self.admin.national_code)
+        
         formFrameFoods = QFrame()
         self.layout_foods = QFormLayout(formFrameFoods)
         self.foods_area.setWidget(formFrameFoods)

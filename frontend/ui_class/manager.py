@@ -20,9 +20,13 @@ import random, os, sys
 import pyperclip
 
 class ManagerScreen(QDialog):
-    def __init__(self, widget):
+    def __init__(self, widget, admin, market, user):
         super(ManagerScreen, self).__init__()
         self.widget_pages = widget
+        self.admin = admin
+        self.market = market
+        self.user = user
+        
         loadUi("frontend/ui_files/ManagerScreen.ui", self)
         self.tabWidget.setCurrentIndex(0)
 

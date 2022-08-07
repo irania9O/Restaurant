@@ -1,26 +1,36 @@
-from PyQt5.QtWidgets import QDialog, QMainWindow, QApplication, QDesktopWidget, QFrame, QFormLayout, QLabel, QPushButton
-from PyQt5 import QtWidgets, QtCore, QtGui
-from PyQt5.QtCore import QThread , pyqtSignal, pyqtSlot
+from PyQt5.QtWidgets import QDialog, QMainWindow, QApplication, QDesktopWidget, QFrame, QFormLayout, QLabel, QPushButton, QStackedWidget
+from PyQt5 import QtGui
+from PyQt5.QtCore import QThread, Qt, pyqtSignal, pyqtSlot
 from PyQt5.uic import loadUi
-import sys , random, time, os
+import sys , random, time, os, re
+import datetime 
+
 from frontend.ui_class.login import LoginScreen
 from frontend.ui_class.signup import SignUpScreen
 from frontend.ui_class.customer import MainScreen
 from frontend.ui_class.manager import  ManagerScreen
 
+from backend.base import DATABASE
+from backend.admin import Admin
+from backend.market import Market
+from backend.user import User
 indexes = {"LoginScreen": 0, "SignUpScreen": 1, "MainScreen": 2 , "ManagerScreen": 3}
   
-def main():
+def main(restaurant_name):
     try:
         #app = QApplication(sys.argv)
+        print(restaurant_name)
+        widget = QStackedWidget()
+        widget.setWindowFlags(Qt.FramelessWindowHint)
 
-        widget = QtWidgets.QStackedWidget()
-        widget.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        admin = Admin(restaurant_name , "0")
+        market = Market(restaurant_name, "0")
+        user = User(restaurant_name, "0")
 
-        widget.addWidget(LoginScreen(widget))
-        widget.addWidget(SignUpScreen(widget))
-        widget.addWidget(MainScreen(widget))
-        widget.addWidget(ManagerScreen(widget))
+        widget.addWidget(LoginScreen(widget, admin, market, user))
+        widget.addWidget(SignUpScreen(widget, admin, market, user))
+        widget.addWidget(MainScreen(widget, admin, market, user))
+        widget.addWidget(ManagerScreen(widget, admin, market, user))
         widget.setFixedHeight(500)
         widget.setFixedWidth(600)
         widget.setCurrentIndex(0)
@@ -58,11 +68,11 @@ class ThreadProgress(QThread):
 class Splash(QDialog):
     def __init__(self, restaurant_name, parent = None):
         super(Splash, self).__init__(parent)
-        
+        self._restaurant_name = restaurant_name
         self.load_int = random.randint(40, 80)
         
         loadUi("frontend/ui_files/SplashScreen.ui", self)
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setWindowFlags(Qt.FramelessWindowHint)
         self.centralize()
 
         pixmap = QtGui.QPixmap("frontend/icons/restaurant.png").scaled(320, 320)
@@ -78,7 +88,7 @@ class Splash(QDialog):
     def progress(self, i):
         self.progressBar.setValue(i)
         if i == self.load_int:
-            self.w_l = main()
+            self.w_l = main(self._restaurant_name)
         if i == 100:
             self.hide()
             self.w_l.show()
@@ -96,7 +106,7 @@ class Restaurants(QDialog):
     def __init__(self):
         super(Restaurants, self).__init__()        
         loadUi("frontend/ui_files/Restaurants.ui", self)
-        self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.setWindowFlags(Qt.FramelessWindowHint)
         self.tabWidget.setCurrentIndex(0)
         self.centralize()
         
@@ -108,8 +118,8 @@ class Restaurants(QDialog):
         pixmap = QtGui.QPixmap("frontend/icons/restaurants.png").scaled(350, 100)
         self.restaurants_header.setPixmap(pixmap)
         
-        self.restaurants_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
-        self.restaurants_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.restaurants_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.restaurants_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
         self.add_new_restaurant.clicked.connect(self.add_new_restaurant_button)
         
@@ -124,26 +134,95 @@ class Restaurants(QDialog):
             self.clear_restaurant_inputs()
             
     def add_new_restaurant_button(self):
-        print(self.restaurant_name_input.text(),
-        self.manager_first_name_input.text(),
-        self.manager_last_name_input.text(),
-        self.restaurant_phone_number_input.text(),
-        self.restaurant_email_input.text(),
-        self.location_input.text(),
-        self.type_input.text(),
-        self.address_input.text())
+        try:
+            restaurant_name_input = self.restaurant_name_input.text()
+            manager_first_name_input = self.manager_first_name_input.text()
+            manager_last_name_input = self.manager_last_name_input.text()
+            restaurant_phone_number_input = self.restaurant_phone_number_input.text()
+            restaurant_email_input = self.restaurant_email_input.text()
+            national_code_input = self.national_code_input.text()
+            location_input = self.location_input.text()
+            type_input = self.type_input.text()
+            address_input = self.address_input.text()
+            password_input = self.password_input.text()
+            re_password_input = self.re_password_input.text()
 
-        self.clear_restaurant_inputs()
-        
+
+            if not re.search(r'^[A-z \d]{2,}$', restaurant_name_input):
+                self.error.setText("Invalid Restaurant Name")
+                return False
+            
+            elif not re.search(r'^[A-z ]{2,}$', manager_first_name_input):
+                self.error.setText("Invalid First Name")
+                return False
+            
+            elif not re.search(r'^[A-z ]{2,}$', manager_last_name_input):
+                self.error.setText("Invalid Last Name")
+                return False
+                        
+            elif not re.search(r'(0|\+98|0098)?([ ]|-|[()]){0,2}9[1|2|3|4]([ ]|-|[()]){0,2}(?:[0-9]([ ]|-|[()]){0,2}){8}', restaurant_phone_number_input):
+                self.error.setText("Invalid Phone Number")
+                return False
+            
+            elif not re.search(r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}', restaurant_email_input):
+                self.error.setText("Invalid Email")
+                return False
+            
+            elif not re.search(r'^\d{10}$', national_code_input):
+                self.error.setText("Invalid National Code")
+                return False
+
+            elif not re.search(r'^[A-z ]{2,}$', location_input):
+                self.error.setText("Invalid Location")
+                return False
+            
+            elif not re.search(r'^[A-z ]{2,}$', type_input):
+                self.error.setText("Invalid Type")
+                return False
+            
+            elif not re.search(r'^[A-z ]{2,}$', address_input):
+                self.error.setText("Invalid Address")
+                return False
+            
+            elif not re.search(r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$", password_input):
+                self.error.setText("8 characters, at least 1 letter, 1 number & 1 special character")
+                return False
+            
+            elif not password_input == re_password_input:
+                self.error.setText("Password and Re-password are not equal")
+                return False
+
+            DATABASE(restaurant_name_input,
+                     manager_first_name_input,
+                     manager_last_name_input,
+                     restaurant_phone_number_input,
+                     restaurant_email_input,
+                     national_code_input,
+                     password_input,
+                     "",
+                     restaurant_name_input,
+                     type_input,
+                     address_input,
+                     datetime.date.today().strftime("%Y-%m-%d"),
+                     location_input
+                     )
+            self.clear_restaurant_inputs()
+            self.error.setText("Added Successfully.")
+        except Exception as e:
+            print(e)
     def clear_restaurant_inputs(self):
         self.restaurant_name_input.clear()
         self.manager_first_name_input.clear()
         self.manager_last_name_input.clear()
         self.restaurant_phone_number_input.clear()
         self.restaurant_email_input.clear()
+        self.national_code_input.clear()
         self.location_input.clear()
         self.type_input.clear()
         self.address_input.clear()
+        password_input = self.password_input.clear()
+        re_password_input = self.re_password_input.clear()
+        self.error.setText("")
         
     def show_new_window(self):
         restaurant_name = self.sender().objectName()
@@ -155,7 +234,6 @@ class Restaurants(QDialog):
             print(e)
 
     def show_restaurants(self):
-        print(0)
         formFrameRestaurants = QFrame()
         self.restaurants = QFormLayout(formFrameRestaurants)
         self.restaurants_area.setWidget(formFrameRestaurants)

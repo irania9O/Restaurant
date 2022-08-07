@@ -4,9 +4,13 @@ from PyQt5.uic import loadUi
 import re, sys
 
 class SignUpScreen(QDialog):
-    def __init__(self, widget):
+    def __init__(self, widget, admin, market, user):
         super(SignUpScreen, self).__init__()
         self.widget_pages = widget
+        self.admin = admin
+        self.market = market
+        self.user = user
+        
         loadUi("frontend/ui_files/SignUpScreen.ui", self)
         self.centralize()
         self.login.clicked.connect(self.GoToLoginScreen)
@@ -30,7 +34,6 @@ class SignUpScreen(QDialog):
         nationacode = self.nationacode.text()
         password = self.password.text()
         password_2 = self.password2.text()
-
         if len(firstname) == 0 or len(lastname) == 0 or len(phonenumber) == 0 or len(email) == 0 or len(email) == 0 or len(nationacode) == 0 or len(password) == 0 or len(password_2) == 0:
             self.error.setText("ONE FILED NOT IMPORTED")
             return False

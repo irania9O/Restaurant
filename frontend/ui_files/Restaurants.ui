@@ -115,7 +115,7 @@ QTabBar::tab:selected {
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideMiddle</enum>
@@ -151,7 +151,7 @@ QTabBar::tab:selected {
       <rect>
        <x>70</x>
        <y>140</y>
-       <width>341</width>
+       <width>340</width>
        <height>31</height>
       </rect>
      </property>
@@ -269,9 +269,9 @@ QTabBar::tab:selected {
      <property name="geometry">
       <rect>
        <x>60</x>
-       <y>648</y>
+       <y>682</y>
        <width>361</width>
-       <height>20</height>
+       <height>2</height>
       </rect>
      </property>
      <property name="frameShadow">
@@ -288,9 +288,9 @@ QTabBar::tab:selected {
      <property name="geometry">
       <rect>
        <x>411</x>
-       <y>120</y>
+       <y>110</y>
        <width>20</width>
-       <height>531</height>
+       <height>571</height>
       </rect>
      </property>
      <property name="frameShadow">
@@ -310,9 +310,9 @@ QTabBar::tab:selected {
      <property name="geometry">
       <rect>
        <x>51</x>
-       <y>130</y>
+       <y>120</y>
        <width>20</width>
-       <height>521</height>
+       <height>561</height>
       </rect>
      </property>
      <property name="frameShadow">
@@ -329,7 +329,7 @@ QTabBar::tab:selected {
      <property name="geometry">
       <rect>
        <x>60</x>
-       <y>10</y>
+       <y>0</y>
        <width>362</width>
        <height>120</height>
       </rect>
@@ -351,7 +351,7 @@ QTabBar::tab:selected {
      <property name="geometry">
       <rect>
        <x>230</x>
-       <y>430</y>
+       <y>460</y>
        <width>171</width>
        <height>31</height>
       </rect>
@@ -390,7 +390,7 @@ color: rgb(0, 0, 0);
      <property name="geometry">
       <rect>
        <x>230</x>
-       <y>190</y>
+       <y>180</y>
        <width>171</width>
        <height>31</height>
       </rect>
@@ -426,7 +426,7 @@ color: rgb(0, 0, 0);
      <property name="geometry">
       <rect>
        <x>80</x>
-       <y>312</y>
+       <y>302</y>
        <width>141</width>
        <height>31</height>
       </rect>
@@ -448,7 +448,7 @@ color: rgb(0, 0, 0);
      <property name="geometry">
       <rect>
        <x>230</x>
-       <y>350</y>
+       <y>380</y>
        <width>171</width>
        <height>31</height>
       </rect>
@@ -487,7 +487,7 @@ color: rgb(0, 0, 0);
      <property name="geometry">
       <rect>
        <x>230</x>
-       <y>232</y>
+       <y>222</y>
        <width>171</width>
        <height>31</height>
       </rect>
@@ -526,7 +526,7 @@ color: rgb(0, 0, 0);
      <property name="geometry">
       <rect>
        <x>230</x>
-       <y>312</y>
+       <y>302</y>
        <width>171</width>
        <height>31</height>
       </rect>
@@ -562,7 +562,7 @@ color: rgb(0, 0, 0);
      <property name="geometry">
       <rect>
        <x>80</x>
-       <y>232</y>
+       <y>222</y>
        <width>141</width>
        <height>31</height>
       </rect>
@@ -581,7 +581,7 @@ color: rgb(0, 0, 0);
      <property name="geometry">
       <rect>
        <x>80</x>
-       <y>272</y>
+       <y>262</y>
        <width>141</width>
        <height>31</height>
       </rect>
@@ -600,7 +600,7 @@ color: rgb(0, 0, 0);
      <property name="geometry">
       <rect>
        <x>80</x>
-       <y>430</y>
+       <y>460</y>
        <width>141</width>
        <height>31</height>
       </rect>
@@ -622,7 +622,7 @@ color: rgb(0, 0, 0);
      <property name="geometry">
       <rect>
        <x>230</x>
-       <y>272</y>
+       <y>262</y>
        <width>171</width>
        <height>31</height>
       </rect>
@@ -658,7 +658,7 @@ color: rgb(0, 0, 0);
      <property name="geometry">
       <rect>
        <x>80</x>
-       <y>390</y>
+       <y>420</y>
        <width>141</width>
        <height>31</height>
       </rect>
@@ -680,7 +680,7 @@ color: rgb(0, 0, 0);
      <property name="geometry">
       <rect>
        <x>230</x>
-       <y>390</y>
+       <y>420</y>
        <width>171</width>
        <height>31</height>
       </rect>
@@ -716,7 +716,7 @@ color: rgb(0, 0, 0);
      <property name="geometry">
       <rect>
        <x>80</x>
-       <y>350</y>
+       <y>380</y>
        <width>141</width>
        <height>31</height>
       </rect>
@@ -735,7 +735,7 @@ color: rgb(0, 0, 0);
      <property name="geometry">
       <rect>
        <x>80</x>
-       <y>190</y>
+       <y>180</y>
        <width>141</width>
        <height>31</height>
       </rect>
@@ -757,7 +757,7 @@ color: rgb(0, 0, 0);
      <property name="geometry">
       <rect>
        <x>230</x>
-       <y>150</y>
+       <y>140</y>
        <width>171</width>
        <height>31</height>
       </rect>
@@ -793,7 +793,7 @@ color: rgb(0, 0, 0);
      <property name="geometry">
       <rect>
        <x>80</x>
-       <y>150</y>
+       <y>140</y>
        <width>141</width>
        <height>31</height>
       </rect>
@@ -812,7 +812,7 @@ color: rgb(0, 0, 0);
      <property name="geometry">
       <rect>
        <x>130</x>
-       <y>560</y>
+       <y>620</y>
        <width>241</width>
        <height>51</height>
       </rect>
@@ -857,7 +857,7 @@ QPushButton:pressed   {
      <property name="geometry">
       <rect>
        <x>70</x>
-       <y>490</y>
+       <y>590</y>
        <width>341</width>
        <height>20</height>
       </rect>
@@ -872,6 +872,180 @@ color: rgb(255, 30, 10);
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="national_code_label">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>340</y>
+       <width>141</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MV Boli</family>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>National Code :</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="national_code_input">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>340</y>
+       <width>171</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MV Boli</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit:disabled{
+color: rgb(0, 0, 0);
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="readOnly">
+      <bool>false</bool>
+     </property>
+     <property name="placeholderText">
+      <string>national code admin</string>
+     </property>
+     <property name="clearButtonEnabled">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="re_password_input">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>540</y>
+       <width>171</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MV Boli</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit:disabled{
+color: rgb(0, 0, 0);
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="readOnly">
+      <bool>false</bool>
+     </property>
+     <property name="placeholderText">
+      <string>re password</string>
+     </property>
+     <property name="clearButtonEnabled">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="password_input">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>230</x>
+       <y>500</y>
+       <width>171</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MV Boli</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit:disabled{
+color: rgb(0, 0, 0);
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <property name="readOnly">
+      <bool>false</bool>
+     </property>
+     <property name="placeholderText">
+      <string>password</string>
+     </property>
+     <property name="clearButtonEnabled">
+      <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="re_password_label">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>540</y>
+       <width>141</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MV Boli</family>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Re-Password :</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="password_label">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>500</y>
+       <width>141</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>MV Boli</family>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Password :</string>
      </property>
     </widget>
    </widget>

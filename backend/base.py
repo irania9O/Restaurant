@@ -1,13 +1,13 @@
 import sqlite3
 import base64
-from data import sendemail
+from backend.data import sendemail
 
 
 class DATABASE:
     def __init__(self, returant_name, *arg):
 
         self.conn = sqlite3.connect(
-            f"data/{returant_name}.db", check_same_thread=False
+            f"backend/data/{returant_name}.db", check_same_thread=False
         )  # connecting to database
         self.conn.row_factory = self.dict_factory  # to return rows in new mode
         self.c = self.conn.cursor()  # cursor
@@ -245,7 +245,7 @@ class DATABASE:
 
         # Couldn't find any data
         if records is None:
-            return False, "NATIONAL_CODE OR EMAIL DOES NOT EXIST IN DATABASE"
+            return False, "Wrong Username"
 
         elif not records["PASSWORD"] == PASSWORD:
             # Another error was recorded
@@ -269,7 +269,7 @@ class DATABASE:
         elif records["PASSWORD"] == PASSWORD:
             # logged in successfully
             self.Update(NATIONAL_CODE=records["NATIONAL_CODE"], FAILS=0)
-            return True, records["POSITION"]
+            return True, records["NATIONAL_CODE"]
 
     # -------------------------------------------------------------------------
     def Person(self, EMAIL_OR_NATIONALCODE):
