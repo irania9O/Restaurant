@@ -3,7 +3,7 @@ __pycache__/
 *.py[cod]
 
 #database files
-backend/data/
+*.db
 
 # C extensions
 *.so
