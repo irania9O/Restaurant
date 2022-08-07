@@ -56,7 +56,7 @@ class ThreadProgress(QThread):
             i += 1
             
 class Splash(QDialog):
-    def __init__(self, parent = None):
+    def __init__(self, restaurant_name, parent = None):
         super(Splash, self).__init__(parent)
         
         self.load_int = random.randint(40, 80)
@@ -67,6 +67,8 @@ class Splash(QDialog):
 
         pixmap = QtGui.QPixmap("frontend/icons/restaurant.png").scaled(320, 320)
         self.logo.setPixmap(pixmap)
+
+        self.restaurant_name.setText(restaurant_name)
         
         progress = ThreadProgress(self)
         progress.mysignal.connect(self.progress)
@@ -102,9 +104,14 @@ class Restaurants(QDialog):
         
         pixmap = QtGui.QPixmap("frontend/icons/restaurant_info.png").scaled(350, 100)
         self.restaurant_info_header.setPixmap(pixmap)
+
+        pixmap = QtGui.QPixmap("frontend/icons/restaurants.png").scaled(350, 100)
+        self.restaurants_header.setPixmap(pixmap)
         
         self.restaurants_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.restaurants_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+
+        self.add_new_restaurant.clicked.connect(self.add_new_restaurant_button)
         
         self.exit_button.clicked.connect(lambda x: sys.exit())
 
@@ -114,12 +121,35 @@ class Restaurants(QDialog):
         if index == 0:
             self.show_restaurants()
         elif index == 1:
-            pass
+            self.clear_restaurant_inputs()
             
+    def add_new_restaurant_button(self):
+        print(self.restaurant_name_input.text(),
+        self.manager_first_name_input.text(),
+        self.manager_last_name_input.text(),
+        self.restaurant_phone_number_input.text(),
+        self.restaurant_email_input.text(),
+        self.location_input.text(),
+        self.type_input.text(),
+        self.address_input.text())
+
+        self.clear_restaurant_inputs()
+        
+    def clear_restaurant_inputs(self):
+        self.restaurant_name_input.clear()
+        self.manager_first_name_input.clear()
+        self.manager_last_name_input.clear()
+        self.restaurant_phone_number_input.clear()
+        self.restaurant_email_input.clear()
+        self.location_input.clear()
+        self.type_input.clear()
+        self.address_input.clear()
+        
     def show_new_window(self):
+        restaurant_name = self.sender().objectName()
         try:
             self.hide()
-            self.w = Splash()
+            self.w = Splash(restaurant_name)
             self.w.show()
         except Exception as e:
             print(e)
@@ -131,13 +161,11 @@ class Restaurants(QDialog):
         self.restaurants_area.setWidget(formFrameRestaurants)
         for i in range(40):
             label = QLabel(
-                f"label{i} {random.randint(3, 90)}",
-                self,
-                objectName=f"label{i}",
+                f"label{i} {random.randint(3, 90)}"
             )
             label.setStyleSheet('QLabel { font: 8pt "MV Boli"; min-height: 30px; max-height: 30px; min-width: 230px; }')
 
-            button = QPushButton(f"Enter", self, objectName=f"food{i}_count")
+            button = QPushButton(f"Enter", objectName=f"label{i}")
             button.setStyleSheet(
                                 """QPushButton{
                                         background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0.857143, y2:0.857955, stop:1 rgb(255, 189, 108), stop:0 rgb(255, 0, 0));

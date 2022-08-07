@@ -115,7 +115,7 @@ QTabBar::tab:selected {
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideMiddle</enum>
@@ -222,7 +222,7 @@ QTabBar::tab:selected {
       <enum>Qt::Vertical</enum>
      </property>
     </widget>
-    <widget class="QLabel" name="food_drinks_header">
+    <widget class="QLabel" name="restaurants_header">
      <property name="geometry">
       <rect>
        <x>59</x>
@@ -235,7 +235,7 @@ QTabBar::tab:selected {
       <enum>QFrame::WinPanel</enum>
      </property>
      <property name="text">
-      <string>FOODS AND DRINKS HEADER</string>
+      <string>RESTAURANTS HEADER</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -752,7 +752,7 @@ color: rgb(0, 0, 0);
     </widget>
     <widget class="QLineEdit" name="restaurant_name_input">
      <property name="enabled">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="geometry">
       <rect>
@@ -808,7 +808,7 @@ color: rgb(0, 0, 0);
       <string>Restaurant Name :</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="update_restaurant_profile">
+    <widget class="QPushButton" name="add_new_restaurant">
      <property name="geometry">
       <rect>
        <x>130</x>
@@ -847,10 +847,31 @@ QPushButton:pressed   {
 </string>
      </property>
      <property name="text">
-      <string>Update Restaurant Profile</string>
+      <string>Add New Restaurant</string>
      </property>
      <property name="checkable">
       <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="error">
+     <property name="geometry">
+      <rect>
+       <x>70</x>
+       <y>490</y>
+       <width>341</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel {
+color: rgb(255, 30, 10);
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </widget>
