@@ -2,14 +2,14 @@ from PyQt5.QtWidgets import QDialog, QMainWindow, QApplication, QDesktopWidget, 
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import QThread , pyqtSignal, pyqtSlot
 from PyQt5.uic import loadUi
-import sys , random, time
+import sys , random, time, os
 from frontend.ui_class.login import LoginScreen
 from frontend.ui_class.signup import SignUpScreen
 from frontend.ui_class.customer import MainScreen
 from frontend.ui_class.manager import  ManagerScreen
 
 indexes = {"LoginScreen": 0, "SignUpScreen": 1, "MainScreen": 2 , "ManagerScreen": 3}
-
+  
 def main():
     try:
         #app = QApplication(sys.argv)
@@ -159,32 +159,41 @@ class Restaurants(QDialog):
         formFrameRestaurants = QFrame()
         self.restaurants = QFormLayout(formFrameRestaurants)
         self.restaurants_area.setWidget(formFrameRestaurants)
-        for i in range(40):
+        files = [name for name in os.listdir("backend/data") if name.endswith(".db")]
+        if len(files) == 0:
             label = QLabel(
-                f"label{i} {random.randint(3, 90)}"
+                f"No restaurant has been added yet."
             )
-            label.setStyleSheet('QLabel { font: 8pt "MV Boli"; min-height: 30px; max-height: 30px; min-width: 230px; }')
+            label.setStyleSheet('QLabel { font: 10pt "MV Boli"; min-height: 30px; max-height: 30px; min-width: 230px; }')
+            self.restaurants.addRow(label)
+        else:
+            for file in files:
+                name = file.replace(".db","")
+                label = QLabel(
+                    f"{name}"
+                )
+                label.setStyleSheet('QLabel { font: 12pt "MV Boli"; min-height: 30px; max-height: 30px; min-width: 230px; }')
 
-            button = QPushButton(f"Enter", objectName=f"label{i}")
-            button.setStyleSheet(
-                                """QPushButton{
-                                        background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0.857143, y2:0.857955, stop:1 rgb(255, 189, 108), stop:0 rgb(255, 0, 0));
-                                        color: white;
-                                        font: 12pt "MV Boli";
-                                        border: 2px solid rgb(0, 0, 0);
-                                        border-radius: 12px;
-                                        min-width: 60px;
-                                        max-width: 60px;
-                                        max-height: 30px;
-                                    }
-                                    QPushButton:pressed   {
-                                        background-color: rgba(255, 0, 0, 255);
-                                        color: white;
-                                    }
-                                """
-            )
-            button.clicked.connect(self.show_new_window)
-            self.restaurants.addRow(label, button)
+                button = QPushButton(f"Enter", objectName=f"{name}")
+                button.setStyleSheet(
+                                    """QPushButton{
+                                            background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0.857143, y2:0.857955, stop:1 rgb(255, 189, 108), stop:0 rgb(255, 0, 0));
+                                            color: white;
+                                            font: 12pt "MV Boli";
+                                            border: 2px solid rgb(0, 0, 0);
+                                            border-radius: 12px;
+                                            min-width: 60px;
+                                            max-width: 60px;
+                                            max-height: 30px;
+                                        }
+                                        QPushButton:pressed   {
+                                            background-color: rgba(255, 0, 0, 255);
+                                            color: white;
+                                        }
+                                    """
+                )
+                button.clicked.connect(self.show_new_window)
+                self.restaurants.addRow(label, button)
             
     def centralize(self):
         frameGm = self.frameGeometry()
