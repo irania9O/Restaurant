@@ -83,7 +83,7 @@ class Admin(DATABASE):
         return True, CODE
 
     # -------------------------------------------------------------------------
-    def NewNews(self, SUBJECT, CONTENT, DATE, STATUS):
+    def NewNews(self, SUBJECT, CONTENT, DATE, STATUS = "PUBLISH"):
         """
         Task:
             Add new news to database.
@@ -92,7 +92,7 @@ class Admin(DATABASE):
             SUBJECT              -- News subject                                          -- type : str        -- default : not null
             CONTENT              -- News content                                          -- type : str        -- default : not null
             DATE                 -- Food date YYYY-MM-DD                                  -- type : str        -- default : not null
-            STATUS               -- 0 , 1                                                 -- type : int        -- default : not null
+            STATUS               -- PUBLISH , DRAFT                                       -- type : int        -- default : not null
 
         Return :
             HAS PROBLEM          --Error                                                  -- type : tuple       -- value   : False , Message
