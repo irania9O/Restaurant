@@ -313,4 +313,9 @@ class ManagerScreen(QDialog):
         self.widget_pages.setFixedHeight(800)
         self.widget_pages.setFixedWidth(1200)
         self.widget_pages.setCurrentIndex(2)
+        
+        widget_to_update = self.widget_pages.widget(2)
+        currnt_index = widget_to_update.tabWidget.currentIndex()
+        widget_to_update.handle_tabbar_clicked(currnt_index)
+        
         self.centralize()
