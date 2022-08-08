@@ -130,15 +130,17 @@ class MainScreen(QDialog):
     def update_news(self):
         for i in reversed(range(self.layout_news.count())): 
             self.layout_news.itemAt(i).widget().deleteLater()
-        
-        try:
-            for i in range(40):
-                label = QLabel(f" news {i} {random.randint(3, 90)}")
-                label.setStyleSheet('QLabel { font: 12pt "MV Boli"; min-height: 20px; }')
+        status , data = self.user.AllNews()
+        if not len(data) == 0:
+            for news in data:
+                label = QLabel(news["CONTENT"])
+                label.setStyleSheet('QLabel { font: 12pt "MV Boli"; min-height: 20px; max-height: 20px;}')
                 self.layout_news.addWidget(label)
-        except Exception as e:
-            print(e)
-
+        else:
+            label = QLabel("No News Published Yet.")
+            label.setStyleSheet('QLabel { font: 12pt "MV Boli"; min-height: 20px; }')
+            self.layout_news.addWidget(label)
+            
     def update_vote(self):
         for i in reversed(range(self.layout_votes.count())): 
             self.layout_votes.itemAt(i).widget().deleteLater()

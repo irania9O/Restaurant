@@ -109,6 +109,10 @@ class ManagerScreen(QDialog):
         
     def add_new(self):
         text = self.news_content_input.toPlainText()
+        if text == "":
+            self.error.setText("Can't add empty news.")
+            return False
+        
         self.admin.NewNews(
             text[0:5],
             text,
@@ -138,6 +142,7 @@ class ManagerScreen(QDialog):
         spin_box = self.sender()
         print(spin_box)
         print(value)
+        
     def update_news(self):
         self.news_content_input.clear()
         
