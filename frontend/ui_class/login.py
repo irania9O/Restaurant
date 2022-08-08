@@ -47,7 +47,7 @@ class LoginScreen(QDialog):
     def loginfunction(self):
         user = self.username.text()
         password = self.password.text()
-
+  
         if len(user) == 0 or len(password) == 0:
             ##elf.database[0].national_code = "22"
             ##print(self.database[0].national_code)
@@ -59,7 +59,11 @@ class LoginScreen(QDialog):
             if status == True:
                 self.admin.national_code = msg
                 self.market.national_code = msg
-                self.user.national_code = msg         
+                self.user.national_code = msg   
+                try:
+                    self.widget_pages.widget(2).check_admin()
+                except Exception as e:
+                    print(e)      
                 self.error.setText("")
                 self.username.setText("")
                 self.password.setText("")

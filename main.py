@@ -147,7 +147,6 @@ class Restaurants(QDialog):
             password_input = self.password_input.text()
             re_password_input = self.re_password_input.text()
 
-
             if not re.search(r'^[A-z \d]{2,}$', restaurant_name_input):
                 self.error.setText("Invalid Restaurant Name")
                 return False

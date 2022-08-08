@@ -92,6 +92,12 @@ class MainScreen(QDialog):
         self.layout_votes_foods_drinks = QVBoxLayout(formFrameVotesFoodsDrinks)
         self.foods_and_drinks_area.setWidget(formFrameVotesFoodsDrinks)
         
+    def check_admin(self):
+        if self.user.Person(self.user.national_code)["POSITION"] == "Admin":
+            self.go_to_admin_screen.show()
+        else:
+            self.go_to_admin_screen.hide()
+        
     def doSomething(self, new_text):
         print(new_text)
 

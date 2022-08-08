@@ -34,9 +34,15 @@ class SignUpScreen(QDialog):
         nationacode = self.nationacode.text()
         password = self.password.text()
         password_2 = self.password2.text()
-        if len(firstname) == 0 or len(lastname) == 0 or len(phonenumber) == 0 or len(email) == 0 or len(email) == 0 or len(nationacode) == 0 or len(password) == 0 or len(password_2) == 0:
-            self.error.setText("ONE FILED NOT IMPORTED")
+        
+        if not re.search(r'^[A-z ]{2,}$', firstname):
+            self.error.setText("Invalid First Name")
             return False
+        
+        elif not re.search(r'^[A-z ]{2,}$', lastname):
+            self.error.setText("Invalid Last Name")
+            return False
+            
         elif not re.search(r'(0|\+98|0098)?([ ]|-|[()]){0,2}9[1|2|3|4]([ ]|-|[()]){0,2}(?:[0-9]([ ]|-|[()]){0,2}){8}', phonenumber):
             self.error.setText("Invalid Phone Number")
             return False
@@ -53,19 +59,23 @@ class SignUpScreen(QDialog):
             self.error.setText("8 characters, at least 1 letter, 1 number & 1 special character")
             return False
 
-
-        
+        elif not password == password_2:
+            self.error.setText("Password and Re-password are not equal")
+            return False
+    
         else:
-            self.error.setText("")
-            self.firstname.setText("")
-            self.lastname.setText("")
-            self.phonenumber.setText("")
-            self.email.setText("")
-            self.nationacode.setText("")
-            self.password.setText("")
-            self.password2.setText("")
-            self.GoToLoginScreen()
-            
+            status , msg  = self.user.Registery(firstname, lastname, phonenumber, email, nationacode, password, "/")
+            self.error.setText(msg)
+            if status == True:
+                self.firstname.setText("")
+                self.lastname.setText("")
+                self.phonenumber.setText("")
+                self.email.setText("")
+                self.nationacode.setText("")
+                self.password.setText("")
+                self.password2.setText("")
+                self.GoToLoginScreen()
+
     def GoToLoginScreen(self):
         self.error.setText("")
         self.firstname.setText("")
