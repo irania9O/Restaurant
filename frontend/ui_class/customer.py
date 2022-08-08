@@ -33,7 +33,7 @@ class MainScreen(QDialog):
         
         self.go_to_admin_screen.clicked.connect(self.GoToAdminScreen)
         self.exit_button.clicked.connect(lambda x: sys.exit())
-
+    
         pixmap = QtGui.QPixmap("frontend/icons/drinks.png").scaled(300, 100)
         self.drinks_header.setPixmap(pixmap)
 

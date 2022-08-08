@@ -2597,7 +2597,7 @@ QPushButton:pressed   {
        <x>445</x>
        <y>240</y>
        <width>311</width>
-       <height>321</height>
+       <height>301</height>
       </rect>
      </property>
      <property name="font">
@@ -2610,6 +2610,27 @@ QPushButton:pressed   {
       <string>write your news content ...</string>
      </property>
     </widget>
+    <widget class="QLabel" name="error">
+     <property name="geometry">
+      <rect>
+       <x>450</x>
+       <y>550</y>
+       <width>301</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel {
+color: rgb(255, 30, 10);
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
     <zorder>line_22</zorder>
     <zorder>line_24</zorder>
     <zorder>line_23</zorder>
@@ -2617,6 +2638,7 @@ QPushButton:pressed   {
     <zorder>submit_news</zorder>
     <zorder>label_2</zorder>
     <zorder>news_content_input</zorder>
+    <zorder>error</zorder>
    </widget>
    <widget class="QWidget" name="widget">
     <attribute name="title">

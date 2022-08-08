@@ -18,6 +18,7 @@ from PyQt5.Qt import QClipboard
 from PyQt5.uic import loadUi
 import random, os, sys
 import pyperclip
+import datetime
 
 class ManagerScreen(QDialog):
     def __init__(self, widget, admin, market, user):
@@ -34,6 +35,8 @@ class ManagerScreen(QDialog):
         
         self.go_to_user_screen.clicked.connect(self.GoToUserScreen)
         self.exit_button.clicked.connect(lambda x: sys.exit())
+        
+        self.submit_news.clicked.connect(self.add_new)
 
         pixmap = QtGui.QPixmap("frontend/icons/drinks.png").scaled(300, 100)
         self.drinks_header.setPixmap(pixmap)
@@ -103,6 +106,16 @@ class ManagerScreen(QDialog):
         
     def doSomething(self, new_text):
         print(new_text)
+        
+    def add_new(self):
+        text = self.news_content_input.toPlainText()
+        self.admin.NewNews(
+            text[0:5],
+            text,
+            datetime.date.today().strftime("%Y-%m-%d")
+            )
+        self.error.setText("Added Successfully.")
+        self.news_content_input.setText("")
 
     def handle_tabbar_clicked(self, index):
         try:
