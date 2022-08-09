@@ -115,7 +115,7 @@ QTabBar::tab:selected {
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>2</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideMiddle</enum>
@@ -2429,51 +2429,6 @@ QPushButton:pressed   {
       <string>Discount code</string>
      </property>
      <property name="clearButtonEnabled">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="send_new">
-     <property name="geometry">
-      <rect>
-       <x>910</x>
-       <y>580</y>
-       <width>111</width>
-       <height>50</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>MV Boli</family>
-       <pointsize>12</pointsize>
-       <weight>50</weight>
-       <italic>false</italic>
-       <bold>false</bold>
-      </font>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">QPushButton{
-	color: rgb(58, 134, 255);
-	font: 12pt &quot;MV Boli&quot;;
-	background-color: white;
-	border: 2px solid rgb(58, 134, 255);
-    border-radius: 12px;
-}
-
-QPushButton:hover:!pressed   {
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0.857143, y2:0.857955, stop:1 rgba(10, 242, 251, 255), stop:0 rgba(224, 6, 159, 255));
-  color: white;
-}
-
-QPushButton:pressed   {
-  background-color: rgba(224, 6, 159, 255);
-  color: white;
-}
-</string>
-     </property>
-     <property name="text">
-      <string>send news</string>
-     </property>
-     <property name="checkable">
       <bool>false</bool>
      </property>
     </widget>

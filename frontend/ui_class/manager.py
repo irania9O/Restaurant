@@ -42,6 +42,7 @@ class ManagerScreen(QDialog):
         self.update_restaurant_profile.clicked.connect(self.change_restaurant_info)
         self.submit_new.clicked.connect(self.submit_fookd_drink)
         self.add_new_admin.clicked.connect(self.add_new_admin_handle)
+        self.create_copon.clicked.connect(self.create_copon_handle)
         
         pixmap = QtGui.QPixmap("frontend/icons/drinks.png").scaled(300, 100)
         self.drinks_header.setPixmap(pixmap)
@@ -218,6 +219,7 @@ class ManagerScreen(QDialog):
         except Exception as e:
             print(e)
     def update_economy(self):
+        self.discount_code_show.setText("")
         formFrameEconomy = QFrame()
         self.layout_foods_and_drinks = QFormLayout(formFrameEconomy)
         self.foods_and_drinks_area.setWidget(formFrameEconomy)
@@ -582,6 +584,15 @@ class ManagerScreen(QDialog):
         except Exception as e:
             print(e)
             
+    def create_copon_handle(self):
+        percent = self.percent_input.value()
+        count = self.count_copon_input.value()
+        if percent == 0 or count == 0:
+            self.discount_code_show.setText("Can't create with 0 value.")
+        else:
+            status , code = self.admin.NewCopon(percent, count)
+            self.discount_code_show.setText(code)
+
     def centralize(self):
         frameGm = self.frameGeometry()
         screen = QApplication.desktop().screenNumber(
