@@ -11,7 +11,7 @@ class Admin(DATABASE):
     def NewFood(self, NAME, PRICE, INVENTORY, DATE, PROFILE, MEAL, MATERIAL):
         """
         Task:
-            Insert new food into database if dosn't exist and Update price or inventory if exists.
+            Insert new food into database.
 
         Arguments:
             NAME                 -- Food name                                             -- type : str        -- default : not null
@@ -19,7 +19,7 @@ class Admin(DATABASE):
             INVENTORY            -- Food inventory                                        -- type : int        -- default : not null
             DATE                 -- Food date YYYY-MM-DD                                  -- type : str        -- default : not null
             PROFILE              -- Food picture                                          -- type : str        -- default : not null
-            MEAL                 -- BREAKFAST, LUNCH, SUPPER                              -- type : str        -- default : not null
+            MEAL                 -- FOOD, DRINK                                           -- type : str        -- default : not null
             MATERIAL             -- Cheese|Yogurt,....                                    -- type : list       -- default : not null
 
         Return :
@@ -27,31 +27,68 @@ class Admin(DATABASE):
             NO  PROBLEM          --Successfully Update or insert                          -- type : tuple       -- value   : True  , Message
         """
         STRING_MEAL = "|".join(MATERIAL)
-        self.c.execute(
-            f"SELECT * FROM FOOD WHERE DATE = '{DATE}' AND NAME = '{NAME}' AND MEAL = '{MEAL}'"
-        )
-        FOOD = self.c.fetchone()
-        if FOOD == None:
-            try:
-                # Insert new food into database
-                self.c.execute(
-                    f"INSERT INTO FOOD ( 'NAME', 'PROFILE',   'PRICE' , 'INVENTORY' , 'DATE', 'MEAL' , 'MATERIAL') VALUES ('{NAME}','{PROFILE}' , {PRICE} , {INVENTORY} , '{DATE}', '{MEAL}','{STRING_MEAL}' )"
-                )
-            except Exception as e:
-                print(e)
-                return False
-        else:
-            try:
-                # Update price or inventory
-                self.c.execute(
-                    f"UPDATE FOOD SET INVENTORY = {INVENTORY} ,PRICE = {PRICE} ,PROFILE = '{PROFILE}',MATERIAL='{STRING_MEAL}'   WHERE DATE = '{DATE}' AND NAME = '{NAME}' AND MEAL = '{MEAL}'"
-                )
-            except Exception as e:
-                return False, e
+        try:
+            # Insert new food into database
+            self.c.execute(
+                f"INSERT INTO FOOD ( 'NAME', 'PROFILE',   'PRICE' , 'INVENTORY' , 'DATE', 'MEAL' , 'MATERIAL') VALUES ('{NAME}','{PROFILE}' , {PRICE} , {INVENTORY} , '{DATE}', '{MEAL}','{STRING_MEAL}' )"
+            )
+        except Exception as e:
+            print(e)
+            return False
+
 
         self.conn.commit()
         return True
+    # -------------------------------------------------------------------------
+    def UpdateFood(self, ID, NAME, PRICE, INVENTORY, MATERIAL):
+        """
+        Task:
+            Insert new food into database if dosn't exist and Update price or inventory if exists.
 
+        Arguments:
+            ID                   -- Food ID                                               -- type : int        -- default : not null
+            NAME                 -- Food name                                             -- type : str        -- default : not null
+            PRICE                -- Food price to sell                                    -- type : int        -- default : not null
+            INVENTORY            -- Food inventory                                        -- type : int        -- default : not null
+            PROFILE              -- Food picture                                          -- type : str        -- default : not null
+            MATERIAL             -- Cheese|Yogurt,....                                    -- type : list       -- default : not null
+
+        Return :
+            HAS PROBLEM          --Error                                                  -- type : tuple       -- value   : False , Message
+            NO  PROBLEM          --Successfully Update or insert                          -- type : tuple       -- value   : True  , Message
+        """
+        STRING_MEAL = "|".join(MATERIAL)
+        try:
+            # Update price or inventory
+            self.c.execute(
+                f"UPDATE FOOD SET NAME = '{NAME}', INVENTORY = {INVENTORY}, PRICE = {PRICE}, MATERIAL='{STRING_MEAL}' WHERE ID = '{ID}'"
+            )
+        except Exception as e:
+            return False, e
+
+        self.conn.commit()
+        return True
+    # -------------------------------------------------------------------------
+    def DeleteFoodDrink(self, ID):
+        """
+        Task:
+            Delete food or drink.
+
+        Arguments:
+            ID                      -- Food ID                                            -- type : int         -- default : not null
+
+        Return :
+            HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
+            NO  PROBLEM             --Successfully Update ot insert                       -- type : tuple       -- value   : True  , Message
+        """
+        try:
+            self.c.execute(f"DELETE FROM `FOOD` WHERE ID = {ID}")
+        except Exception as e:
+            return False, e
+
+        self.conn.commit()
+        return True, "Successfully deleted"
+        
     # -------------------------------------------------------------------------
     def NewCopon(self, PERCENT, COUNT):
         """
@@ -144,25 +181,6 @@ class Admin(DATABASE):
 
         else:
             return False, "Just kwargs acceptable"
-    # -------------------------------------------------------------------------
-    def ChangeResturantDate(self, DATE):
-        """
-        Task:
-            Change Resturant Date.
-
-        Arguments:
-            DATE                 -- Food date YYYY-MM-DD                                  -- type : str        -- default : not null
-
-        Return :
-            HAS PROBLEM          --Error                                                  -- type : tuple       -- value   : False , Message
-            NO  PROBLEM          --Successfully Update                                    -- type : tuple       -- value   : True  , Message
-        """
-        try:
-            self.c.execute(f"UPDATE INFO SET DATE = '{DATE}'")
-        except Exception as e:
-            return False, e
-        self.conn.commit()
-        return True, "Updated successfully"
 
     # -------------------------------------------------------------------------
     def Person(self):

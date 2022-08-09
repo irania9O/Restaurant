@@ -89,13 +89,35 @@ class Market(DATABASE):
         try:
             # Get food list
             # self.c.execute(f"SELECT ID,NAME,DATE FROM FOOD WHERE DATE = '{DATE}'")
-            self.c.execute(f"SELECT * FROM FOOD WHERE DATE = '{DATE}' ORDER BY MEAL")
+            self.c.execute(f"SELECT * FROM FOOD WHERE DATE = '{DATE}' AND MEAL = 'food'")
             records = self.c.fetchall()
             return list(records)
 
         except Exception as e:
             return False, e
+            
+    # -------------------------------------------------------------------------
+    def DrinkMenu(self, DATE):
+        """
+        Task:
+            Drinks that exists on Date
 
+        Arguments:
+            DATE                    -- Date format as YYYY-MM-DD                           -- type : str        -- default : ---
+
+        Return :
+            HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
+            NO  PROBLEM             --Successfully Update ot insert                       -- type : lsit        -- value   : []
+        """
+        try:
+            # Get drink list
+            # self.c.execute(f"SELECT ID,NAME,DATE FROM FOOD WHERE DATE = '{DATE}'")
+            self.c.execute(f"SELECT * FROM FOOD WHERE DATE = '{DATE}' AND MEAL = 'drink'")
+            records = self.c.fetchall()
+            return list(records)
+
+        except Exception as e:
+            return False, e
     # -------------------------------------------------------------------------
     def SearchFood(self, MATERIAL):
         """
