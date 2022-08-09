@@ -1,23 +1,18 @@
 from PyQt5.QtWidgets import (
     QDialog,
     QApplication,
-    QDesktopWidget,
     QFrame,
-    QSpinBox,
-    QCheckBox,
     QLabel,
-    QLineEdit,
     QFormLayout,
     QVBoxLayout,
     QPushButton,
     QRadioButton,
     QButtonGroup,
 )
-from PyQt5 import QtWidgets, QtCore, QtGui
-from PyQt5.Qt import QClipboard
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 from PyQt5.uic import loadUi
-import random, os, sys, re
+import random, sys, re
 import pyperclip
 import datetime
 
@@ -48,28 +43,28 @@ class ManagerScreen(QDialog):
         self.add_new_admin.clicked.connect(self.add_new_admin_handle)
         self.create_copon.clicked.connect(self.create_copon_handle)
 
-        pixmap = QtGui.QPixmap("frontend/icons/drinks.png").scaled(300, 100)
+        pixmap = QPixmap("frontend/icons/drinks.png").scaled(300, 100)
         self.drinks_header.setPixmap(pixmap)
 
-        pixmap = QtGui.QPixmap("frontend/icons/foods.png").scaled(300, 100)
+        pixmap = QPixmap("frontend/icons/foods.png").scaled(300, 100)
         self.foods_header.setPixmap(pixmap)
 
-        pixmap = QtGui.QPixmap("frontend/icons/foods_drinks.png").scaled(300, 100)
+        pixmap = QPixmap("frontend/icons/foods_drinks.png").scaled(300, 100)
         self.food_drinks_header.setPixmap(pixmap)
 
-        pixmap = QtGui.QPixmap("frontend/icons/restaurant_info.png").scaled(350, 100)
+        pixmap = QPixmap("frontend/icons/restaurant_info.png").scaled(350, 100)
         self.restaurant_info_header.setPixmap(pixmap)
 
-        pixmap = QtGui.QPixmap("frontend/icons/user_info.png").scaled(350, 100)
+        pixmap = QPixmap("frontend/icons/user_info.png").scaled(350, 100)
         self.profile_header.setPixmap(pixmap)
 
-        pixmap = QtGui.QPixmap("frontend/icons/admins_info.png").scaled(350, 100)
+        pixmap = QPixmap("frontend/icons/admins_info.png").scaled(350, 100)
         self.admins_info_header.setPixmap(pixmap)
 
-        pixmap = QtGui.QPixmap("frontend/icons/add_admin.png").scaled(350, 100)
+        pixmap = QPixmap("frontend/icons/add_admin.png").scaled(350, 100)
         self.add_admin_header.setPixmap(pixmap)
 
-        pixmap = QtGui.QPixmap("frontend/icons/income.png").scaled(350, 100)
+        pixmap = QPixmap("frontend/icons/income.png").scaled(350, 100)
         self.income_header.setPixmap(pixmap)
 
         data = self.market.ResturantInfo()
@@ -99,18 +94,14 @@ class ManagerScreen(QDialog):
         self.calendarWidget.selectionChanged.connect(self.update_foods)
         self.update_foods()
 
-        self.foods_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
-        self.foods_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.foods_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.foods_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
-        self.drinks_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
-        self.drinks_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.drinks_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.drinks_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
-        self.foods_and_drinks_area.setVerticalScrollBarPolicy(
-            QtCore.Qt.ScrollBarAsNeeded
-        )
-        self.foods_and_drinks_area.setHorizontalScrollBarPolicy(
-            QtCore.Qt.ScrollBarAlwaysOff
-        )
+        self.foods_and_drinks_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.foods_and_drinks_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
         self.admin_list.currentTextChanged.connect(self.on_combobox_changed)
 

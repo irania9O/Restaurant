@@ -9,7 +9,7 @@ from PyQt5.QtWidgets import (
     QPushButton,
     QStackedWidget,
 )
-from PyQt5 import QtGui
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import QThread, Qt, pyqtSignal, pyqtSlot
 from PyQt5.uic import loadUi
 import sys, random, time, os, re
@@ -90,7 +90,7 @@ class Splash(QDialog):
         self.setWindowFlags(Qt.FramelessWindowHint)
         self.centralize()
 
-        pixmap = QtGui.QPixmap("frontend/icons/restaurant.png").scaled(320, 320)
+        pixmap = QPixmap("frontend/icons/restaurant.png").scaled(320, 320)
         self.logo.setPixmap(pixmap)
 
         self.restaurant_name.setText(restaurant_name)
@@ -128,10 +128,10 @@ class Restaurants(QDialog):
 
         self.show_restaurants()
 
-        pixmap = QtGui.QPixmap("frontend/icons/restaurant_info.png").scaled(350, 100)
+        pixmap = QPixmap("frontend/icons/restaurant_info.png").scaled(350, 100)
         self.restaurant_info_header.setPixmap(pixmap)
 
-        pixmap = QtGui.QPixmap("frontend/icons/restaurants.png").scaled(350, 100)
+        pixmap = QPixmap("frontend/icons/restaurants.png").scaled(350, 100)
         self.restaurants_header.setPixmap(pixmap)
 
         self.restaurants_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)

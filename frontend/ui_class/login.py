@@ -1,5 +1,4 @@
-from PyQt5.QtWidgets import QDialog, QApplication, QDesktopWidget
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5.QtWidgets import QDialog, QApplication, QLineEdit
 from PyQt5.uic import loadUi
 import sys
 
@@ -26,9 +25,9 @@ class LoginScreen(QDialog):
     # A Method for checkbox to show or hide password.
     def show_hide_pass(self):
         if self.password.echoMode() == 0:
-            self.password.setEchoMode(QtWidgets.QLineEdit.Password)
+            self.password.setEchoMode(QLineEdit.Password)
         else:
-            self.password.setEchoMode(QtWidgets.QLineEdit.Normal)
+            self.password.setEchoMode(QLineEdit.Normal)
 
     def centralize(self):
         frameGm = self.frameGeometry()

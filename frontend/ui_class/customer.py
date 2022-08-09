@@ -1,22 +1,19 @@
 from PyQt5.QtWidgets import (
     QDialog,
     QApplication,
-    QDesktopWidget,
     QFrame,
     QSpinBox,
     QCheckBox,
     QLabel,
-    QLineEdit,
     QFormLayout,
     QVBoxLayout,
     QPushButton,
     QRadioButton,
 )
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 from PyQt5.uic import loadUi
 import sys, re
-import random
 import datetime
 
 indexes = {0: "Menu", 1: "Cart", 2: "Orders"}
@@ -42,25 +39,25 @@ class MainScreen(QDialog):
         self.pay.clicked.connect(self.pay_handle)
         self.submit_vote.clicked.connect(self.submit_vote_handle)
 
-        pixmap = QtGui.QPixmap("frontend/icons/drinks.png").scaled(300, 100)
+        pixmap = QPixmap("frontend/icons/drinks.png").scaled(300, 100)
         self.drinks_header.setPixmap(pixmap)
 
-        pixmap = QtGui.QPixmap("frontend/icons/foods.png").scaled(300, 100)
+        pixmap = QPixmap("frontend/icons/foods.png").scaled(300, 100)
         self.foods_header.setPixmap(pixmap)
 
-        pixmap = QtGui.QPixmap("frontend/icons/factor.png").scaled(350, 100)
+        pixmap = QPixmap("frontend/icons/factor.png").scaled(350, 100)
         self.factor_header.setPixmap(pixmap)
 
-        pixmap = QtGui.QPixmap("frontend/icons/restaurant_info.png").scaled(350, 100)
+        pixmap = QPixmap("frontend/icons/restaurant_info.png").scaled(350, 100)
         self.restaurant_info_header.setPixmap(pixmap)
 
-        pixmap = QtGui.QPixmap("frontend/icons/user_info.png").scaled(350, 100)
+        pixmap = QPixmap("frontend/icons/user_info.png").scaled(350, 100)
         self.profile_header.setPixmap(pixmap)
 
-        pixmap = QtGui.QPixmap("frontend/icons/register_vote.png").scaled(300, 100)
+        pixmap = QPixmap("frontend/icons/register_vote.png").scaled(300, 100)
         self.register_vote_header.setPixmap(pixmap)
 
-        pixmap = QtGui.QPixmap("frontend/icons/foods_drinks.png").scaled(300, 100)
+        pixmap = QPixmap("frontend/icons/foods_drinks.png").scaled(300, 100)
         self.food_drinks_header.setPixmap(pixmap)
 
         self.search_food.textChanged.connect(lambda x: self.search_food_handle(x))
@@ -72,14 +69,14 @@ class MainScreen(QDialog):
         self.calendarWidget.selectionChanged.connect(self.update_foods)
         self.update_foods()
 
-        self.foods_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
-        self.foods_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.foods_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.foods_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
-        self.drinks_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
-        self.drinks_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.drinks_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.drinks_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
-        self.cart_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
-        self.cart_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.cart_area.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.cart_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
         self.tabWidget.tabBarClicked.connect(self.handle_tabbar_clicked)
 

@@ -1,5 +1,4 @@
-from PyQt5.QtWidgets import QDialog, QApplication, QDesktopWidget
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5.QtWidgets import QDialog, QApplication
 from PyQt5.uic import loadUi
 import re, sys
 
