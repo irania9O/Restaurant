@@ -307,8 +307,8 @@ class ManagerScreen(QDialog):
             self.password_input_5.clear()
         else:
             data = self.user.Person(value)
-            self.last_name_input_5.setText(data["FIRST_NAME"])
-            self.first_name_input_5.setText(data["LAST_NAME"])
+            self.first_name_input_5.setText(data["FIRST_NAME"])
+            self.last_name_input_5.setText(data["LAST_NAME"])
             self.phone_number_input_5.setText(data["PHONE_NUMBER"])
             self.email_input_5.setText(data["EMAIL"])
             self.national_code_input_5.setText(data["NATIONAL_CODE"])
