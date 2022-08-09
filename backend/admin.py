@@ -111,7 +111,7 @@ class Admin(DATABASE):
         return True, "Successfully added"
 
     # -------------------------------------------------------------------------
-    def ChangeInfo(self, arg):
+    def ChangeInfo(self, *arg, **kwargs):
         """
         Task:
             Change Resturant info.
@@ -123,25 +123,27 @@ class Admin(DATABASE):
             HAS PROBLEM          --Error                                                  -- type : tuple       -- value   : False , Message
             NO  PROBLEM          --Successfully Update                                    -- type : tuple       -- value   : True  , Message
         """
-        try:
-            # insert
-            self.c.execute("DELETE FROM INFO ")
+        # Chceking not enter any positional arguments
+        if arg == tuple():
+            # Create key value pairs as format sqlite3 and convert to string
+            # using join method
+            LIST = []
+            for key, value in kwargs.items():
+                LIST.append(f" `{key}` = '{value}' ")
+            try:
+                # Update person table
+                self.c.execute(
+                    "UPDATE INFO SET "
+                    + ",".join(LIST)
+                )
+            except Exception as e:
+                return False, e
+
             self.conn.commit()
-        except Exception as e:
-            return False, e
+            return True, "Updated successfully"
 
-        try:
-            # Insert new info to database
-            self.c.execute(
-                f"""INSERT INTO INFO( 'MANAGER_FIRST_NAME', 'MANAGER_LAST_NAME',   'PHONE_NUMBER',   'EMAIL',  'PERSON_ID' , 'PASSWORD' , 'PROFILE' , 'NAME_RESTURANT' , 'TYPE' , 'ADDRESS' , 'DATE' , 'LOCATION' ) VALUES (? ,? , ? , ?, ? ,? ,? ,? , ?, ?, ?, ?)""",
-                arg,
-            )
-            self.conn.commit()
-        except Exception as e:
-            return False, e
-
-        return True, "Successfully changed"
-
+        else:
+            return False, "Just kwargs acceptable"
     # -------------------------------------------------------------------------
     def ChangeResturantDate(self, DATE):
         """
