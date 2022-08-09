@@ -15,6 +15,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.Qt import QClipboard
+from PyQt5.QtCore import Qt
 from PyQt5.uic import loadUi
 import random, os, sys, re
 import pyperclip
@@ -39,6 +40,7 @@ class ManagerScreen(QDialog):
         self.submit_news.clicked.connect(self.add_new)
         self.update_profile_submit.clicked.connect(self.change_user_info)
         self.update_restaurant_profile.clicked.connect(self.change_restaurant_info)
+        self.submit_new.clicked.connect(self.submit_fookd_drink)
         
         pixmap = QtGui.QPixmap("frontend/icons/drinks.png").scaled(300, 100)
         self.drinks_header.setPixmap(pixmap)
@@ -64,13 +66,10 @@ class ManagerScreen(QDialog):
         pixmap = QtGui.QPixmap("frontend/icons/income.png").scaled(350, 100)
         self.income_header.setPixmap(pixmap)
 
-                
-        formFrameFoods = QFrame()
-        self.layout_foods = QVBoxLayout(formFrameFoods)
-        self.foods_area.setWidget(formFrameFoods)
-
+        
         formFrameDrinks = QFrame()
         self.layout_drinks = QVBoxLayout(formFrameDrinks)
+        self.layout_drinks.setAlignment(Qt.AlignTop)
         self.drinks_area.setWidget(formFrameDrinks)
 
         formFrameIncome = QFrame()
@@ -242,7 +241,7 @@ class ManagerScreen(QDialog):
                 for i in range(40):
                     label = QLabel(f" vote {i} {random.randint(3, 90)}")
                     label.setStyleSheet('QLabel { font: 12pt "MV Boli"; min-height: 20px; }')
-                    self.layout_votes.addWidget(label)
+                    self.layout_votes.addWidget(label, AlignTop)
             except Exception as e:
                 print(e)
             
@@ -255,45 +254,150 @@ class ManagerScreen(QDialog):
 
             
     def update_foods(self):
-        print(self.calendarWidget.selectedDate().toString("yyyy-MM-dd"))
+        date = self.calendarWidget.selectedDate().toString("yyyy-MM-dd")
+        self.comboBox.setCurrentIndex(-1)
+        self.name_input.clear()
+        self.cost_input.setValue(0)
+        self.count_input.setValue(0)
+        self.material_input.clear()
+        self.name_input.setDisabled(True)
+        self.count_input.setDisabled(True)
+        self.cost_input.setDisabled(True)
+        self.material_input.setDisabled(True)
+        self.submit_new.setDisabled(True)
+        self.error4.setText("")
+        self.submit_new.setObjectName("")
         
-        for i in reversed(range(self.layout_foods.count())): 
-            self.layout_foods.itemAt(i).widget().deleteLater()
-            
-        for i in reversed(range(self.layout_drinks.count())): 
-            self.layout_drinks.itemAt(i).widget().deleteLater()
-
-        for button in self.group.buttons():
-               self.group.removeButton(button)
-
+        formFrameFood = QFrame()
+        self.layout_foods = QFormLayout(formFrameFood)
+        self.foods_area.setWidget(formFrameFood)
         try:
             radio_button = QRadioButton(f"new food")
-            radio_button.setStyleSheet('QRadioButton { font: 12pt "MV Boli"; min-height: 20px; }')
-            self.layout_foods.addWidget(radio_button)
+            radio_button.setStyleSheet('QRadioButton { font: 12pt "MV Boli"; min-height: 20px; min-width: 200px;}')
+            self.layout_foods.addRow(radio_button)
             self.group.addButton(radio_button)
-            for i in range(20):
-                radio_button = QRadioButton(f"button radio f {i} {random.randint(3, 90)}")
-                radio_button.setStyleSheet('QRadioButton { font: 12pt "MV Boli"; min-height: 20px; }')
-                self.layout_foods.addWidget(radio_button)
+            for data in self.market.FoodMenu(date):
+                radio_button = QRadioButton(f"{data['NAME']}\t {data['PRICE']}$", objectName= str(data["ID"]))
+                radio_button.setStyleSheet('QRadioButton { font: 10pt "MV Boli"; min-height: 20px; min-width: 200px;}')
                 self.group.addButton(radio_button)
+                button_delete = QPushButton("", self, objectName= str(data["ID"]))
+                button_delete.setStyleSheet(
+                                    """QPushButton{
+                                            background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0.857143, y2:0.857955, stop:1 rgb(255, 189, 108), stop:0 rgb(255, 0, 0));
+                                            color: white;
+                                            font: 12pt "MV Boli";
+                                            border: 2px solid rgb(0, 0, 0);
+                                            border-radius: 12px;
+                                            min-width: 20px;
+                                            max-width: 20px;
+                                            max-height: 20px;
+                                        }
+                                        QPushButton:pressed   {
+                                            background-color: rgba(255, 0, 0, 255);
+                                            color: white;
+                                        }
+                                    """
+                )
+                button_delete.clicked.connect(self.delete_food_drink)
+                self.layout_foods.addRow(radio_button, button_delete)
         except Exception as e:
             print(e)
             
+        formFrameDrink = QFrame()
+        self.layout_drinks = QFormLayout(formFrameDrink)
+        self.drinks_area.setWidget(formFrameDrink)
+        
         try:
             radio_button = QRadioButton(f"new drink")
-            radio_button.setStyleSheet('QRadioButton { font: 12pt "MV Boli"; min-height: 20px; }')
-            self.layout_drinks.addWidget(radio_button)
+            radio_button.setStyleSheet('QRadioButton { font: 10pt "MV Boli"; min-height: 20px; min-width: 200px;}')
+            self.layout_drinks.addRow(radio_button)
             self.group.addButton(radio_button)
-            for i in range(20):
-                radio_button = QRadioButton(f"button radio d {i} {random.randint(3, 90)}")
-                radio_button.setStyleSheet('QRadioButton { font: 12pt "MV Boli"; min-height: 20px; }')
-                self.layout_drinks.addWidget(radio_button)
+            for data in self.market.DrinkMenu(date):
+                radio_button = QRadioButton(f"{data['NAME']}\t {data['PRICE']}$", objectName= str(data["ID"]))
+                radio_button.setStyleSheet('QRadioButton { font: 10pt "MV Boli"; min-height: 20px; min-width: 200px;}')
                 self.group.addButton(radio_button)
+                button_delete = QPushButton("", self, objectName= str(data["ID"]))
+                button_delete.setStyleSheet(
+                                    """QPushButton{
+                                            background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0.857143, y2:0.857955, stop:1 rgb(255, 189, 108), stop:0 rgb(255, 0, 0));
+                                            color: white;
+                                            font: 12pt "MV Boli";
+                                            border: 2px solid rgb(0, 0, 0);
+                                            border-radius: 12px;
+                                            min-width: 20px;
+                                            max-width: 20px;
+                                            max-height: 20px;
+                                        }
+                                        QPushButton:pressed   {
+                                            background-color: rgba(255, 0, 0, 255);
+                                            color: white;
+                                        }
+                                    """
+                )
+                button_delete.clicked.connect(self.delete_food_drink)
+                self.layout_drinks.addRow(radio_button, button_delete)
         except Exception as e:
-            print(e)            
-
+            print(e)
+            
+    def delete_food_drink(self):
+        self.admin.DeleteFoodDrink(self.sender().objectName())
+        self.update_foods()
+        
     def check_buttons(self, radioButton):
-        print(radioButton.text())
+        self.name_input.setDisabled(False)
+        self.count_input.setDisabled(False)
+        self.cost_input.setDisabled(False)
+        self.material_input.setDisabled(False)
+        self.submit_new.setDisabled(False)
+        self.count_input.setMinimum(1)
+        
+        text = radioButton.text()
+        
+        if text == "new food":
+            self.comboBox.setCurrentIndex(0)
+            self.name_input.clear()
+            self.cost_input.setValue(0)
+            self.count_input.setValue(1)
+            self.material_input.clear()
+            self.submit_new.setObjectName("new")
+        elif text == "new drink":
+            self.comboBox.setCurrentIndex(1)
+            self.name_input.clear()
+            self.cost_input.setValue(0)
+            self.count_input.setValue(1)
+            self.material_input.clear()
+            self.submit_new.setObjectName("new")
+        else:
+            data = self.admin.FoodInfo(radioButton.objectName())
+            self.submit_new.setObjectName(str(data["ID"]))
+            self.name_input.setText(data["NAME"])
+            self.cost_input.setValue(data["PRICE"])
+            self.count_input.setValue(data["INVENTORY"])
+            self.material_input.setText(data["MATERIAL"].replace("|","-"))
+            if data["MEAL"] == "food":
+                self.comboBox.setCurrentIndex(0)
+            elif data["MEAL"] == "drink":
+                self.comboBox.setCurrentIndex(1)
+
+
+    def submit_fookd_drink(self):
+        type_do = self.submit_new.objectName()
+        name = self.name_input.text()
+        date = self.calendarWidget.selectedDate().toString("yyyy-MM-dd")
+        cost = self.cost_input.value()
+        count = self.count_input.value()
+        material = self.material_input.text().split("-")
+        meal = self.comboBox.currentText()
+        if name == "":
+            self.error4.setText("Name input is empty.")
+            return False
+        
+        if type_do == "new":
+            self.admin.NewFood(name, cost, count, date, "", meal, material)
+        else:
+            self.admin.UpdateFood(type_do, name, cost, count, material)
+            
+        self.update_foods()
         
     def update_profile(self):
         self.error2.setText("")

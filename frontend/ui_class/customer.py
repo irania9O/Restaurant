@@ -13,6 +13,7 @@ from PyQt5.QtWidgets import (
     QRadioButton 
 )
 from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5.QtCore import Qt
 from PyQt5.uic import loadUi
 import sys, re
 import random
@@ -33,7 +34,6 @@ class MainScreen(QDialog):
         
         self.go_to_admin_screen.clicked.connect(self.GoToAdminScreen)
         self.exit_button.clicked.connect(lambda x: sys.exit())
-
         self.update_profile_submit.clicked.connect(self.change_user_info)
         
         pixmap = QtGui.QPixmap("frontend/icons/drinks.png").scaled(300, 100)
@@ -84,6 +84,7 @@ class MainScreen(QDialog):
         
         formFrameNews = QFrame()
         self.layout_news = QVBoxLayout(formFrameNews)
+        self.layout_news.setAlignment(Qt.AlignTop)
         self.news_area.setWidget(formFrameNews)
 
         formFrameVotes = QFrame()
