@@ -32,6 +32,13 @@ python main.py
 ```
 <br>
 
+# Ideas 💡:
+
+- It can be connected to a online database and be an online restaurant management system.
+- Images for food and restaurants can be added.
+
+<br>
+
 # Screenshots
 ![add_restaurant](./screenshots/add_restaurant.jpg)
 ![restaurants](./screenshots/restaurants.jpg)
