@@ -37,6 +37,9 @@ class ManagerScreen(QDialog):
         self.go_to_user_screen.clicked.connect(self.GoToUserScreen)
         self.exit_button.clicked.connect(lambda x: sys.exit())
         
+        self.search_food.textChanged.connect(lambda x: self.search_food_handle(x))
+        self.search_drink.textChanged.connect(lambda x: self.search_drink_handle(x))
+        
         self.submit_news.clicked.connect(self.add_new)
         self.update_profile_submit.clicked.connect(self.change_user_info)
         self.update_restaurant_profile.clicked.connect(self.change_restaurant_info)
@@ -86,8 +89,8 @@ class ManagerScreen(QDialog):
         self.group.setExclusive(True)
         self.group.buttonClicked.connect(self.check_buttons)
         
-        self.search_food.textChanged.connect(lambda x: self.doSomething(x))
-        self.search_drink.textChanged.connect(lambda x: self.doSomething(x))
+        self.search_food.textChanged.connect(lambda x: self.search_food_handle(x))
+        self.search_drink.textChanged.connect(lambda x: self.search_drink_handle(x))
 
         self.calendarWidget_economy.selectionChanged.connect(self.update_economy)
         
@@ -113,9 +116,73 @@ class ManagerScreen(QDialog):
         if not text == "":
             pyperclip.copy(text)
         
-    def doSomething(self, new_text):
-        print(new_text)
+    def search_food_handle(self, new_text):
+        date = self.calendarWidget.selectedDate().toString("yyyy-MM-dd")
+        formFrameFood = QFrame()
+        self.layout_foods = QFormLayout(formFrameFood)
+        self.foods_area.setWidget(formFrameFood)
+        try:
+            for data in self.market.SearchFood(new_text, date):
+                radio_button = QRadioButton(f"{data['NAME']}\t {data['PRICE']}$", objectName= str(data["ID"]))
+                radio_button.setStyleSheet('QRadioButton { font: 10pt "MV Boli"; min-height: 20px; min-width: 200px;}')
+                self.group.addButton(radio_button)
+                button_delete = QPushButton("", self, objectName= str(data["ID"]))
+                button_delete.setStyleSheet(
+                                    """QPushButton{
+                                            background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0.857143, y2:0.857955, stop:1 rgb(255, 189, 108), stop:0 rgb(255, 0, 0));
+                                            color: white;
+                                            font: 12pt "MV Boli";
+                                            border: 2px solid rgb(0, 0, 0);
+                                            border-radius: 12px;
+                                            min-width: 20px;
+                                            max-width: 20px;
+                                            max-height: 20px;
+                                        }
+                                        QPushButton:pressed   {
+                                            background-color: rgba(255, 0, 0, 255);
+                                            color: white;
+                                        }
+                                    """
+                )
+                button_delete.clicked.connect(self.delete_food_drink)
+                self.layout_foods.addRow(radio_button, button_delete)
+        except Exception as e:
+            print(e)
+            
+    def search_drink_handle(self, new_text):
+        date = self.calendarWidget.selectedDate().toString("yyyy-MM-dd")
+        formFrameDrink = QFrame()
+        self.layout_drinks = QFormLayout(formFrameDrink)
+        self.drinks_area.setWidget(formFrameDrink)
         
+        try:
+            for data in self.market.SearchDrinks(new_text, date):
+                radio_button = QRadioButton(f"{data['NAME']}\t {data['PRICE']}$", objectName= str(data["ID"]))
+                radio_button.setStyleSheet('QRadioButton { font: 10pt "MV Boli"; min-height: 20px; min-width: 200px;}')
+                self.group.addButton(radio_button)
+                button_delete = QPushButton("", self, objectName= str(data["ID"]))
+                button_delete.setStyleSheet(
+                                    """QPushButton{
+                                            background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0.857143, y2:0.857955, stop:1 rgb(255, 189, 108), stop:0 rgb(255, 0, 0));
+                                            color: white;
+                                            font: 12pt "MV Boli";
+                                            border: 2px solid rgb(0, 0, 0);
+                                            border-radius: 12px;
+                                            min-width: 20px;
+                                            max-width: 20px;
+                                            max-height: 20px;
+                                        }
+                                        QPushButton:pressed   {
+                                            background-color: rgba(255, 0, 0, 255);
+                                            color: white;
+                                        }
+                                    """
+                )
+                button_delete.clicked.connect(self.delete_food_drink)
+                self.layout_drinks.addRow(radio_button, button_delete)
+        except Exception as e:
+            print(e)
+            
     def add_new(self):
         text = self.news_content_input.toPlainText()
         if text == "":

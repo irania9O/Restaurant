@@ -115,7 +115,7 @@ QTabBar::tab:selected {
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>0</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideMiddle</enum>
@@ -665,9 +665,9 @@ QPushButton:pressed   {
      <property name="geometry">
       <rect>
        <x>120</x>
-       <y>50</y>
+       <y>20</y>
        <width>1001</width>
-       <height>551</height>
+       <height>581</height>
       </rect>
      </property>
      <property name="frameShape">
@@ -682,38 +682,10 @@ QPushButton:pressed   {
         <x>0</x>
         <y>0</y>
         <width>997</width>
-        <height>547</height>
+        <height>577</height>
        </rect>
       </property>
      </widget>
-    </widget>
-    <widget class="QLineEdit" name="search_cart">
-     <property name="geometry">
-      <rect>
-       <x>120</x>
-       <y>20</y>
-       <width>1001</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>MV Boli</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <property name="placeholderText">
-      <string>Search ...</string>
-     </property>
-     <property name="clearButtonEnabled">
-      <bool>true</bool>
-     </property>
     </widget>
     <widget class="QPushButton" name="pay">
      <property name="geometry">
@@ -890,7 +862,6 @@ QPushButton:pressed   {
      </property>
     </widget>
     <zorder>cart_area</zorder>
-    <zorder>search_cart</zorder>
     <zorder>pay</zorder>
     <zorder>dollar_2</zorder>
     <zorder>discount_code</zorder>
@@ -905,9 +876,9 @@ QPushButton:pressed   {
      <property name="geometry">
       <rect>
        <x>120</x>
-       <y>50</y>
+       <y>20</y>
        <width>1001</width>
-       <height>591</height>
+       <height>621</height>
       </rect>
      </property>
      <property name="frameShape">
@@ -922,38 +893,10 @@ QPushButton:pressed   {
         <x>0</x>
         <y>0</y>
         <width>997</width>
-        <height>587</height>
+        <height>617</height>
        </rect>
       </property>
      </widget>
-    </widget>
-    <widget class="QLineEdit" name="orders_search">
-     <property name="geometry">
-      <rect>
-       <x>120</x>
-       <y>20</y>
-       <width>1001</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>MV Boli</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <property name="placeholderText">
-      <string>Search ...</string>
-     </property>
-     <property name="clearButtonEnabled">
-      <bool>true</bool>
-     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="widget">
@@ -1126,41 +1069,13 @@ QPushButton:pressed   {
       <enum>Qt::Vertical</enum>
      </property>
     </widget>
-    <widget class="QLineEdit" name="search_drink_2">
+    <widget class="QScrollArea" name="foods_and_drinks_area">
      <property name="geometry">
       <rect>
        <x>456</x>
        <y>140</y>
        <width>281</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>MV Boli</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <property name="placeholderText">
-      <string>Search ...</string>
-     </property>
-     <property name="clearButtonEnabled">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QScrollArea" name="foods_and_drinks_area">
-     <property name="geometry">
-      <rect>
-       <x>456</x>
-       <y>180</y>
-       <width>281</width>
-       <height>461</height>
+       <height>501</height>
       </rect>
      </property>
      <property name="frameShape">
@@ -1175,7 +1090,7 @@ QPushButton:pressed   {
         <x>0</x>
         <y>0</y>
         <width>281</width>
-        <height>461</height>
+        <height>501</height>
        </rect>
       </property>
      </widget>
@@ -1453,7 +1368,6 @@ color: rgb(255, 30, 10);
     <zorder>vote_text_area</zorder>
     <zorder>submit_vote</zorder>
     <zorder>line_19</zorder>
-    <zorder>search_drink_2</zorder>
     <zorder>foods_and_drinks_area</zorder>
     <zorder>line_20</zorder>
     <zorder>food_drinks_header</zorder>

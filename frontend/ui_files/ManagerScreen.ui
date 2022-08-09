@@ -1937,41 +1937,13 @@ color: rgb(255, 30, 10);
       <enum>Qt::Vertical</enum>
      </property>
     </widget>
-    <widget class="QLineEdit" name="search_drinks_foods_area">
+    <widget class="QScrollArea" name="foods_and_drinks_area">
      <property name="geometry">
       <rect>
        <x>456</x>
        <y>140</y>
        <width>281</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>MV Boli</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <property name="placeholderText">
-      <string>Search ...</string>
-     </property>
-     <property name="clearButtonEnabled">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QScrollArea" name="foods_and_drinks_area">
-     <property name="geometry">
-      <rect>
-       <x>456</x>
-       <y>180</y>
-       <width>281</width>
-       <height>461</height>
+       <height>501</height>
       </rect>
      </property>
      <property name="frameShape">
@@ -1986,7 +1958,7 @@ color: rgb(255, 30, 10);
         <x>0</x>
         <y>0</y>
         <width>281</width>
-        <height>461</height>
+        <height>501</height>
        </rect>
       </property>
      </widget>

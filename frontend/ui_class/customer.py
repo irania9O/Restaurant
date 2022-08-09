@@ -63,8 +63,8 @@ class MainScreen(QDialog):
         pixmap = QtGui.QPixmap("frontend/icons/foods_drinks.png").scaled(300, 100)
         self.food_drinks_header.setPixmap(pixmap)
         
-        self.search_food.textChanged.connect(lambda x: self.doSomething(x))
-        self.search_drink.textChanged.connect(lambda x: self.doSomething(x))
+        self.search_food.textChanged.connect(lambda x: self.search_food_handle(x))
+        self.search_drink.textChanged.connect(lambda x: self.search_drink_handle(x))
 
         self.calendarWidget_vote.selectionChanged.connect(self.update_vote)
         
@@ -106,9 +106,66 @@ class MainScreen(QDialog):
         else:
             self.go_to_admin_screen.hide()
         
-    def doSomething(self, new_text):
-        print(new_text)
+    def search_food_handle(self, new_text):
+        date = self.calendarWidget.selectedDate().toString("yyyy-MM-dd")
+        formFrameFoods = QFrame()
+        self.layout_foods = QFormLayout(formFrameFoods)
+        self.foods_area.setWidget(formFrameFoods)
 
+        for data in self.market.SearchFood(new_text, date):
+            if data['INVENTORY'] < 1:
+                continue
+            checkbox = QCheckBox(f"{data['NAME']}\t {data['PRICE']}$", objectName= str(data["ID"]))
+            checkbox.setStyleSheet(
+                'QCheckBox { font: 10pt "MV Boli"; min-width: 160px;}'
+            )
+            checkbox.stateChanged.connect(lambda x: self.enable_disable_spin_box(x))
+
+            spinbox = QSpinBox(self, objectName=f"{data['ID']}_count")
+            spinbox.setStyleSheet('QSpinBox { font: 10pt "MV Boli"; }')
+            spinbox.setDisabled(True)
+            spinbox.setMaximum(data["INVENTORY"])
+            spinbox.valueChanged.connect(lambda x: self.change_spin_box(x))
+
+            if data["ID"] in self.orders:
+                count = self.orders[data["ID"]]
+                if count > 0 :
+                    checkbox.setChecked(True)
+                    spinbox.setDisabled(False)
+                    spinbox.setValue(count)
+                
+            self.layout_foods.addRow(checkbox, spinbox)
+            
+    def search_drink_handle(self, new_text):
+        date = self.calendarWidget.selectedDate().toString("yyyy-MM-dd")
+        formFrameDrinks = QFrame()
+        self.layout_drinks = QFormLayout(formFrameDrinks)
+        self.drinks_area.setWidget(formFrameDrinks)
+
+        for data in self.market.SearchDrinks(new_text, date):
+            if data['INVENTORY'] < 1:
+                continue
+            checkbox = QCheckBox(f"{data['NAME']}\t {data['PRICE']}$", objectName= str(data["ID"]))
+            checkbox.setStyleSheet(
+                'QCheckBox { font: 10pt "MV Boli"; min-width: 160px;}'
+            )
+            checkbox.stateChanged.connect(lambda x: self.enable_disable_spin_box(x))
+
+            spinbox = QSpinBox(self, objectName=f"{data['ID']}_count")
+            spinbox.setStyleSheet('QSpinBox { font: 10pt "MV Boli"; }')
+            spinbox.setDisabled(True)
+            spinbox.setMaximum(data["INVENTORY"])
+            spinbox.valueChanged.connect(lambda x: self.change_spin_box(x))
+
+            if data["ID"] in self.orders:
+                count = self.orders[data["ID"]]
+                if count > 0 :
+                    checkbox.setChecked(True)
+                    spinbox.setDisabled(False)
+                    spinbox.setValue(count)
+            
+            self.layout_drinks.addRow(checkbox, spinbox)
+            
     def handle_tabbar_clicked(self, index):
         if index == 0:
             self.update_foods()

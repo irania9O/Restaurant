@@ -120,10 +120,10 @@ class Market(DATABASE):
         except Exception as e:
             return False, e
     # -------------------------------------------------------------------------
-    def SearchFood(self, MATERIAL):
+    def SearchFood(self, data , date):
         """
         Task:
-            Foods that exists on Date
+            Search Foods
 
         Arguments:
             DATE                    -- Date format as YYYY-MM-DD                           -- type : str        -- default : ---
@@ -132,13 +132,42 @@ class Market(DATABASE):
             HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
             NO  PROBLEM             --Successfully Update ot insert                       -- type : lsit        -- value   : []
         """
-        LIST = []
-        for data in MATERIAL:
-            LIST.append(f"MATERIAL LIKE '%{data}%' ")
+        #LIST = []
+        #for data in MATERIAL:
+        #    LIST.append(f"MATERIAL LIKE '%{data}%' ")
         try:
             # Get food list
             self.c.execute(
-                f"SELECT * FROM FOOD WHERE " + "AND ".join(LIST) + "OR NAME LIKE '%{MATERIAL}%'"
+            #    f"SELECT * FROM FOOD WHERE " + "AND ".join(LIST) + "OR NAME LIKE '%{MATERIAL}%'"
+                 f"SELECT * FROM FOOD WHERE (MATERIAL LIKE '%{data}%' OR NAME LIKE '%{data}%') AND MEAL = 'food' AND DATE = '{date}'"
+            )
+            records = self.c.fetchall()
+            return list(records)
+
+        except Exception as e:
+            return False, e
+            
+    # -------------------------------------------------------------------------
+    def SearchDrinks(self, data , date):
+        """
+        Task:
+            Search Drinks
+
+        Arguments:
+            DATE                    -- Date format as YYYY-MM-DD                           -- type : str        -- default : ---
+
+        Return :
+            HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
+            NO  PROBLEM             --Successfully Update ot insert                       -- type : lsit        -- value   : []
+        """
+        #LIST = []
+        #for data in MATERIAL:
+        #    LIST.append(f"MATERIAL LIKE '%{data}%' ")
+        try:
+            # Get food list
+            self.c.execute(
+            #    f"SELECT * FROM FOOD WHERE " + "AND ".join(LIST) + "OR NAME LIKE '%{MATERIAL}%'"
+                 f"SELECT * FROM FOOD WHERE (MATERIAL LIKE '%{data}%' OR NAME LIKE '%{data}%') AND MEAL = 'drink' AND DATE = '{date}'"
             )
             records = self.c.fetchall()
             return list(records)
