@@ -17,6 +17,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.uic import loadUi
 import sys, re
 import random
+import datetime
 
 indexes = {0: "Menu", 1: "Cart", 2: "Orders"}
 
@@ -28,6 +29,7 @@ class MainScreen(QDialog):
         self.admin = admin
         self.market = market
         self.user = user
+        self.orders = {}
         
         loadUi("frontend/ui_files/MainScreen.ui", self)
         self.tabWidget.setCurrentIndex(0)
@@ -35,6 +37,7 @@ class MainScreen(QDialog):
         self.go_to_admin_screen.clicked.connect(self.GoToAdminScreen)
         self.exit_button.clicked.connect(lambda x: sys.exit())
         self.update_profile_submit.clicked.connect(self.change_user_info)
+        self.order.clicked.connect(self.confirm_order)
         
         pixmap = QtGui.QPixmap("frontend/icons/drinks.png").scaled(300, 100)
         self.drinks_header.setPixmap(pixmap)
@@ -57,9 +60,6 @@ class MainScreen(QDialog):
         pixmap = QtGui.QPixmap("frontend/icons/foods_drinks.png").scaled(300, 100)
         self.food_drinks_header.setPixmap(pixmap)
         
-        # print(self.lcdNumber.intValue())
-        # self.lcdNumber.display(150)
-        # print(self.lcdNumber.intValue())
         self.search_food.textChanged.connect(lambda x: self.doSomething(x))
         self.search_drink.textChanged.connect(lambda x: self.doSomething(x))
 
@@ -129,8 +129,11 @@ class MainScreen(QDialog):
 
     def change_spin_box(self, value):
         spin_box = self.sender()
-        print(spin_box)
-        print(value)
+        changer = int(spin_box.objectName().replace("_count",""))
+        self.orders[changer] = value
+        self.MenuTotalAmount.display(self.calculate_total())
+        # print(self.lcdNumber.intValue())
+       
         
     def update_news(self):
         for i in reversed(range(self.layout_news.count())): 
@@ -139,11 +142,11 @@ class MainScreen(QDialog):
         if not len(data) == 0:
             for news in data:
                 label = QLabel(news["CONTENT"])
-                label.setStyleSheet('QLabel { font: 12pt "MV Boli"; min-height: 20px; max-height: 20px;}')
+                label.setStyleSheet('QLabel { font: 12pt "MV Boli"; min-height: 30px; max-height: 20px;}')
                 self.layout_news.addWidget(label)
         else:
             label = QLabel("No News Published Yet.")
-            label.setStyleSheet('QLabel { font: 12pt "MV Boli"; min-height: 20px; }')
+            label.setStyleSheet('QLabel { font: 12pt "MV Boli"; min-height: 30px; }')
             self.layout_news.addWidget(label)
             
     def update_vote(self):
@@ -258,45 +261,80 @@ class MainScreen(QDialog):
             self.layout_orders.addRow(label, button)
             
     def update_foods(self):
-        print(self.calendarWidget.selectedDate().toString("yyyy-MM-dd"))
-        print(self.admin.national_code)
+        self.MenuTotalAmount.display(0)
+        date = self.calendarWidget.selectedDate().toString("yyyy-MM-dd")
         
         formFrameFoods = QFrame()
         self.layout_foods = QFormLayout(formFrameFoods)
         self.foods_area.setWidget(formFrameFoods)
 
-        for i in range(5):
-            checkbox = QCheckBox(f"food{i} \t {i*10}$", self, objectName=f"food{i}")
+        for data in self.market.FoodMenu(date):
+            
+            checkbox = QCheckBox(f"{data['NAME']}\t {data['PRICE']}$", objectName= str(data["ID"]))
             checkbox.setStyleSheet(
                 'QCheckBox { font: 10pt "MV Boli"; min-width: 160px;}'
             )
             checkbox.stateChanged.connect(lambda x: self.enable_disable_spin_box(x))
 
-            spinbox = QSpinBox(self, objectName=f"food{i}_count")
+            spinbox = QSpinBox(self, objectName=f"{data['ID']}_count")
             spinbox.setStyleSheet('QSpinBox { font: 10pt "MV Boli"; }')
             spinbox.setDisabled(True)
+            spinbox.setMaximum(data["INVENTORY"])
             spinbox.valueChanged.connect(lambda x: self.change_spin_box(x))
 
+            if data["ID"] in self.orders:
+                count = self.orders[data["ID"]]
+                if count > 0 :
+                    checkbox.setChecked(True)
+                    spinbox.setDisabled(False)
+                    spinbox.setValue(count)
+                
             self.layout_foods.addRow(checkbox, spinbox)
 
         formFrameDrinks = QFrame()
         self.layout_drinks = QFormLayout(formFrameDrinks)
         self.drinks_area.setWidget(formFrameDrinks)
 
-        for i in range(5):
-            checkbox = QCheckBox(f"drink{i} \t {i*10}$", self, objectName=f"drink{i}")
+        for data in self.market.DrinkMenu(date):
+            checkbox = QCheckBox(f"{data['NAME']}\t {data['PRICE']}$", objectName= str(data["ID"]))
             checkbox.setStyleSheet(
                 'QCheckBox { font: 10pt "MV Boli"; min-width: 160px;}'
             )
             checkbox.stateChanged.connect(lambda x: self.enable_disable_spin_box(x))
 
-            spinbox = QSpinBox(self, objectName=f"drink{i}_count")
+            spinbox = QSpinBox(self, objectName=f"{data['ID']}_count")
             spinbox.setStyleSheet('QSpinBox { font: 10pt "MV Boli"; }')
             spinbox.setDisabled(True)
+            spinbox.setMaximum(data["INVENTORY"])
             spinbox.valueChanged.connect(lambda x: self.change_spin_box(x))
 
+            if data["ID"] in self.orders:
+                count = self.orders[data["ID"]]
+                if count > 0 :
+                    checkbox.setChecked(True)
+                    spinbox.setDisabled(False)
+                    spinbox.setValue(count)
+            
             self.layout_drinks.addRow(checkbox, spinbox)
             
+    def calculate_total(self):
+        try:
+            sum_orders = 0
+            for key, value in self.orders.items():
+                if value > 0:
+                    sum_orders += self.user.FoodInfo(key)["PRICE"] * value
+            return sum_orders
+        except Exception as e:
+            print(e)
+            
+    def confirm_order(self):
+        date = datetime.date.today().strftime("%Y-%m-%d")
+        for key, value in self.orders.items():
+            self.user.NewOrder(key, date, value)
+        self.orders = {}
+        self.update_foods()
+        self.tabWidget.setCurrentIndex(1)
+        
     def update_profile(self):
         self.error.setText("")
         self.re_password_input.setText("")
