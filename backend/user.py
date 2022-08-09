@@ -1,6 +1,7 @@
 from backend.base import DATABASE
 import random
 
+
 class User(DATABASE):
     def __init__(self, returant_name, national_code):
         super().__init__(returant_name)
@@ -90,9 +91,9 @@ class User(DATABASE):
 
         self.conn.commit()
         return True, "Successfully deleted"
-        
+
     # -------------------------------------------------------------------------
-    def Pay(self, SUMINCOME, DATE, Copon= ""):
+    def Pay(self, SUMINCOME, DATE, Copon=""):
         """
         Task:
             Pay Orders .
@@ -113,22 +114,24 @@ class User(DATABASE):
         records = self.c.fetchall()
         # add votes
         for data in records:
-            food_id = data['FOOD_ID']
-            inventory = self.FoodInfo(food_id)['INVENTORY']
+            food_id = data["FOOD_ID"]
+            inventory = self.FoodInfo(food_id)["INVENTORY"]
             self.c.execute(
                 f"UPDATE FOOD SET INVENTORY = {inventory - data['COUNT']}  WHERE ID = '{food_id}'"
             )
-            
+
         self.c.execute(
             f"UPDATE `ORDER` SET STATE = 'SENDING' WHERE PERSON_ID = '{PERSON_ID}' AND STATE = 'PAYING'"
         )
-        
+
         if not Copon == "":
             status, percent = self.UseCopon(Copon)
 
         try:
             Tracking_Code = "".join(
-                random.choice("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+                random.choice(
+                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+                )
                 for x in range(8)
             )
             # add new comment to datebase
@@ -138,7 +141,7 @@ class User(DATABASE):
             )
         except Exception as e:
             return False, e
-            
+
         self.conn.commit()
         return True, "Successfully"
 

@@ -72,7 +72,7 @@ class Market(DATABASE):
 
         except Exception as e:
             return False, e
-           
+
     # -------------------------------------------------------------------------
     def FoodMenu(self, DATE):
         """
@@ -89,13 +89,15 @@ class Market(DATABASE):
         try:
             # Get food list
             # self.c.execute(f"SELECT ID,NAME,DATE FROM FOOD WHERE DATE = '{DATE}'")
-            self.c.execute(f"SELECT * FROM FOOD WHERE DATE = '{DATE}' AND MEAL = 'food'")
+            self.c.execute(
+                f"SELECT * FROM FOOD WHERE DATE = '{DATE}' AND MEAL = 'food'"
+            )
             records = self.c.fetchall()
             return list(records)
 
         except Exception as e:
             return False, e
-            
+
     # -------------------------------------------------------------------------
 
     def DrinkMenu(self, DATE):
@@ -113,14 +115,17 @@ class Market(DATABASE):
         try:
             # Get drink list
             # self.c.execute(f"SELECT ID,NAME,DATE FROM FOOD WHERE DATE = '{DATE}'")
-            self.c.execute(f"SELECT * FROM FOOD WHERE DATE = '{DATE}' AND MEAL = 'drink'")
+            self.c.execute(
+                f"SELECT * FROM FOOD WHERE DATE = '{DATE}' AND MEAL = 'drink'"
+            )
             records = self.c.fetchall()
             return list(records)
 
         except Exception as e:
             return False, e
+
     # -------------------------------------------------------------------------
-    def SearchFood(self, data , date):
+    def SearchFood(self, data, date):
         """
         Task:
             Search Foods
@@ -132,23 +137,23 @@ class Market(DATABASE):
             HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
             NO  PROBLEM             --Successfully Update ot insert                       -- type : lsit        -- value   : []
         """
-        #LIST = []
-        #for data in MATERIAL:
+        # LIST = []
+        # for data in MATERIAL:
         #    LIST.append(f"MATERIAL LIKE '%{data}%' ")
         try:
             # Get food list
             self.c.execute(
-            #    f"SELECT * FROM FOOD WHERE " + "AND ".join(LIST) + "OR NAME LIKE '%{MATERIAL}%'"
-                 f"SELECT * FROM FOOD WHERE (MATERIAL LIKE '%{data}%' OR NAME LIKE '%{data}%') AND MEAL = 'food' AND DATE = '{date}'"
+                #    f"SELECT * FROM FOOD WHERE " + "AND ".join(LIST) + "OR NAME LIKE '%{MATERIAL}%'"
+                f"SELECT * FROM FOOD WHERE (MATERIAL LIKE '%{data}%' OR NAME LIKE '%{data}%') AND MEAL = 'food' AND DATE = '{date}'"
             )
             records = self.c.fetchall()
             return list(records)
 
         except Exception as e:
             return False, e
-            
+
     # -------------------------------------------------------------------------
-    def SearchDrinks(self, data , date):
+    def SearchDrinks(self, data, date):
         """
         Task:
             Search Drinks
@@ -160,14 +165,14 @@ class Market(DATABASE):
             HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
             NO  PROBLEM             --Successfully Update ot insert                       -- type : lsit        -- value   : []
         """
-        #LIST = []
-        #for data in MATERIAL:
+        # LIST = []
+        # for data in MATERIAL:
         #    LIST.append(f"MATERIAL LIKE '%{data}%' ")
         try:
             # Get food list
             self.c.execute(
-            #    f"SELECT * FROM FOOD WHERE " + "AND ".join(LIST) + "OR NAME LIKE '%{MATERIAL}%'"
-                 f"SELECT * FROM FOOD WHERE (MATERIAL LIKE '%{data}%' OR NAME LIKE '%{data}%') AND MEAL = 'drink' AND DATE = '{date}'"
+                #    f"SELECT * FROM FOOD WHERE " + "AND ".join(LIST) + "OR NAME LIKE '%{MATERIAL}%'"
+                f"SELECT * FROM FOOD WHERE (MATERIAL LIKE '%{data}%' OR NAME LIKE '%{data}%') AND MEAL = 'drink' AND DATE = '{date}'"
             )
             records = self.c.fetchall()
             return list(records)
@@ -266,9 +271,7 @@ class Market(DATABASE):
         """
 
         try:
-            self.c.execute(
-                f"SELECT * FROM `ORDER` WHERE DATE = '{DATE}'"
-            )
+            self.c.execute(f"SELECT * FROM `ORDER` WHERE DATE = '{DATE}'")
             records = self.c.fetchall()
             # add votes
             for data in records:
@@ -277,7 +280,7 @@ class Market(DATABASE):
 
         except Exception as e:
             return False, e
-            
+
     # -------------------------------------------------------------------------
     def ResturantInfo(self):
         """

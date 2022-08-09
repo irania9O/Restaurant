@@ -317,7 +317,7 @@ class DATABASE:
                 self.c.execute(
                     "UPDATE PERSON SET "
                     + ",".join(LIST)
-                    + f" WHERE NATIONAL_CODE= \'{kwargs['NATIONAL_CODE']}\'"
+                    + f" WHERE NATIONAL_CODE= '{kwargs['NATIONAL_CODE']}'"
                 )
             except Exception as e:
                 return False, e

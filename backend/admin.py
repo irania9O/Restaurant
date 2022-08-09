@@ -36,9 +36,9 @@ class Admin(DATABASE):
             print(e)
             return False
 
-
         self.conn.commit()
         return True
+
     # -------------------------------------------------------------------------
     def UpdateFood(self, ID, NAME, PRICE, INVENTORY, MATERIAL):
         """
@@ -68,6 +68,7 @@ class Admin(DATABASE):
 
         self.conn.commit()
         return True
+
     # -------------------------------------------------------------------------
     def DeleteFoodDrink(self, ID):
         """
@@ -88,7 +89,7 @@ class Admin(DATABASE):
 
         self.conn.commit()
         return True, "Successfully deleted"
-        
+
     # -------------------------------------------------------------------------
     def NewCopon(self, PERCENT, COUNT):
         """
@@ -120,7 +121,7 @@ class Admin(DATABASE):
         return True, CODE
 
     # -------------------------------------------------------------------------
-    def NewNews(self, SUBJECT, CONTENT, DATE, STATUS = "PUBLISH"):
+    def NewNews(self, SUBJECT, CONTENT, DATE, STATUS="PUBLISH"):
         """
         Task:
             Add new news to database.
@@ -169,10 +170,7 @@ class Admin(DATABASE):
                 LIST.append(f" `{key}` = '{value}' ")
             try:
                 # Update person table
-                self.c.execute(
-                    "UPDATE INFO SET "
-                    + ",".join(LIST)
-                )
+                self.c.execute("UPDATE INFO SET " + ",".join(LIST))
             except Exception as e:
                 return False, e
 
@@ -190,7 +188,7 @@ class Admin(DATABASE):
 
         Arguments:
             --
-            
+
         Return :
             HAS PROBLEM             --Error like not exist email or national code            -- type : tuple       -- value   : False , Message
             NO  PROBLEM             --Successfully retrun                                    -- type : tuple       -- value   : True  , Message
