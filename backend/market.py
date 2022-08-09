@@ -72,7 +72,7 @@ class Market(DATABASE):
 
         except Exception as e:
             return False, e
-
+           
     # -------------------------------------------------------------------------
     def FoodMenu(self, DATE):
         """
@@ -97,6 +97,7 @@ class Market(DATABASE):
             return False, e
             
     # -------------------------------------------------------------------------
+
     def DrinkMenu(self, DATE):
         """
         Task:
@@ -137,7 +138,7 @@ class Market(DATABASE):
         try:
             # Get food list
             self.c.execute(
-                f"SELECT * FROM FOOD WHERE " + "AND ".join(LIST) + "ORDER BY MEAL"
+                f"SELECT * FROM FOOD WHERE " + "AND ".join(LIST) + "OR NAME LIKE '%{MATERIAL}%'"
             )
             records = self.c.fetchall()
             return list(records)
@@ -221,6 +222,33 @@ class Market(DATABASE):
         except Exception as e:
             return False, e
 
+    # -------------------------------------------------------------------------
+    def AllOrders(self, DATE):
+        """
+        Task:
+            All Orders .
+
+        Arguments:
+            DATE                    -- Date format as YYYY-MM-DD                           -- type : str        -- default : ---
+
+        Return :
+            HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
+            NO  PROBLEM             --Successfully                                        -- type : tuple       -- value   : True  , []
+        """
+
+        try:
+            self.c.execute(
+                f"SELECT * FROM `ORDER` WHERE DATE = '{DATE}'"
+            )
+            records = self.c.fetchall()
+            # add votes
+            for data in records:
+                data["info"] = self.FoodInfo(data["FOOD_ID"])
+            return True, records
+
+        except Exception as e:
+            return False, e
+            
     # -------------------------------------------------------------------------
     def ResturantInfo(self):
         """

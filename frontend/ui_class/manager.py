@@ -79,6 +79,7 @@ class ManagerScreen(QDialog):
 
         formFrameIncome = QFrame()
         self.layout_income = QVBoxLayout(formFrameIncome)
+        self.layout_income.setAlignment(Qt.AlignTop)
         self.income_area.setWidget(formFrameIncome)
         
         self.group = QButtonGroup()
@@ -218,22 +219,22 @@ class ManagerScreen(QDialog):
                 self.update_admins()
         except Exception as e:
             print(e)
+            
     def update_economy(self):
         self.discount_code_show.setText("")
         formFrameEconomy = QFrame()
         self.layout_foods_and_drinks = QFormLayout(formFrameEconomy)
         self.foods_and_drinks_area.setWidget(formFrameEconomy)
         date = self.calendarWidget.selectedDate().toString("yyyy-MM-dd")
-        for i in range(40):
+        status , all_data = self.market.AllOrders(date)
+        for data in all_data:
             label = QLabel(
-                f"label{i} {random.randint(3, 90)}",
-                self,
-                objectName=f"label{i}",
+                f"{data['info']['NAME']} \t {data['COUNT']} \t {data['DATE']} \t {data['info']['PRICE']}$"
             )
-            label.setStyleSheet('QLabel { font: 8pt "MV Boli"; min-height: 20px; max-height: 20px; min-width: 210px; }')
-
-            button = QPushButton(f"", self, objectName=f"food{i}_count")
-            if i % 2 == 0 :
+            label.setStyleSheet('QLabel { font: 7pt "MV Boli"; min-height: 20px; max-height: 20px; min-width: 200px; }')
+            button = QPushButton(f"")
+            
+            if data["STATE"] == "PAYING":
                 button.setStyleSheet(
                                     """QPushButton{
                                             background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0.857143, y2:0.857955, stop:1 rgb(255, 189, 108), stop:0 rgb(255, 0, 0));
@@ -277,8 +278,9 @@ class ManagerScreen(QDialog):
             self.layout_income.itemAt(i).widget().deleteLater()
             
         try:
-            for i in range(40):
-                label = QLabel(f"economy {i} {random.randint(3, 90)}")
+            status, all_data = self.market.Income(date)
+            for data in all_data:
+                label = QLabel(f"{data['TRACKINGCODE']}\t {data['SUMINCOME']}$")
                 label.setStyleSheet('QLabel { font: 12pt "MV Boli"; min-height: 20px; }')
                 self.layout_income.addWidget(label)
         except Exception as e:
