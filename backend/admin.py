@@ -183,19 +183,24 @@ class Admin(DATABASE):
             return False, "Just kwargs acceptable"
 
     # -------------------------------------------------------------------------
-    def Person(self):
+    def AdminsList(self):
         """
         Task:
-            Get person account info with email or national code.
+            Get all admins account info.
 
         Arguments:
-            EMAIL_OR_NATIONALCODE   -- Customer or Manager National code or email            -- type : str(chr)   -- default : not null
-
+            --
+            
         Return :
             HAS PROBLEM             --Error like not exist email or national code            -- type : tuple       -- value   : False , Message
             NO  PROBLEM             --Successfully retrun                                    -- type : tuple       -- value   : True  , Message
         """
-        return super().Person(self.national_code)
+
+        self.c.execute(
+            f"SELECT * FROM PERSON WHERE POSITION = 'Admin'"
+        )  # select data from database to get a persons account infos
+        records = self.c.fetchall()
+        return records
 
     # -------------------------------------------------------------------------
     def PayInfo(self, STATUS, DATE):
