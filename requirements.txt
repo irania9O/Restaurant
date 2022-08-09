@@ -1,1 +1,2 @@
-tkcalendar
+PyQt5
+pyperclip
