@@ -1,5 +1,5 @@
 from backend.base import DATABASE
-
+import random
 
 class User(DATABASE):
     def __init__(self, returant_name, national_code):
@@ -57,13 +57,6 @@ class User(DATABASE):
         """
 
         PERSON_ID = self.national_code
-        self.c.execute(
-            f"SELECT * FROM `ORDER` WHERE FOOD_ID = {FOOD_ID} AND PERSON_ID = '{PERSON_ID}' AND DATE = '{DATE}'"
-        )
-        records = self.c.fetchone()
-        # if exists delete order
-        if not records == None:
-            self.DeleteOrder(records["ID"])
         try:
             # Order
             self.c.execute(
@@ -97,99 +90,47 @@ class User(DATABASE):
 
         self.conn.commit()
         return True, "Successfully deleted"
-
+        
     # -------------------------------------------------------------------------
-    # for not importing from admin
-    def NewFood(self, NAME, PRICE, INVENTORY, DATE, PROFILE, MEAL, MATERIAL):
-        """
-        Task:
-            Insert new food into database if dosn't exist and Update price or inventory if exists.
-
-        Arguments:
-            NAME                 -- Food name                                             -- type : str        -- default : not null
-            PRICE                -- Food price to sell                                    -- type : int        -- default : not null
-            INVENTORY            -- Food inventory                                        -- type : int        -- default : not null
-            DATE                 -- Food date YYYY-MM-DD                                  -- type : str        -- default : not null
-            PROFILE              -- Food picture                                          -- type : str        -- default : not null
-            MEAL                 -- BREAKFAST, LUNCH, SUPPER                              -- type : str        -- default : not null
-            MATERIAL             -- Cheese|Yogurt,....                                    -- type : list       -- default : not null
-
-        Return :
-            HAS PROBLEM          --Error                                                  -- type : tuple       -- value   : False , Message
-            NO  PROBLEM          --Successfully Update ot insert                          -- type : tuple       -- value   : True  , Message
-        """
-        STRING_MEAL = "|".join(MATERIAL)
-        self.c.execute(
-            f"SELECT * FROM FOOD WHERE DATE = '{DATE}' AND NAME = '{NAME}' AND MEAL = '{MEAL}'"
-        )
-        FOOD = self.c.fetchone()
-        if FOOD == None:
-            try:
-                # Insert new food into database
-                self.c.execute(
-                    f"INSERT INTO FOOD ( 'NAME', 'PROFILE',   'PRICE' , 'INVENTORY' , 'DATE', 'MEAL' , 'MATERIAL') VALUES ('{NAME}','{PROFILE}' , {PRICE} , {INVENTORY} , '{DATE}', '{MEAL}','{STRING_MEAL}' )"
-                )
-            except Exception as e:
-                print(e)
-                return False
-        else:
-            try:
-                # Update price or inventory
-                self.c.execute(
-                    f"UPDATE FOOD SET INVENTORY = {INVENTORY} ,PRICE = {PRICE} ,PROFILE = '{PROFILE}',MATERIAL='{STRING_MEAL}'   WHERE DATE = '{DATE}' AND NAME = '{NAME}' AND MEAL = '{MEAL}'"
-                )
-            except Exception as e:
-                return False, e
-
-        self.conn.commit()
-        return True
-
-    # -------------------------------------------------------------------------
-    def Pay(self, Tracking_Code, DATE, Copon=""):
+    def Pay(self, SUMINCOME, DATE, Copon= ""):
         """
         Task:
             Pay Orders .
 
         Arguments:
-            PERSON_ID              -- Customer National code                              -- type : str(chr)    -- default : not null
-            Tracking_Code          -- Pay to order                                        -- type : str         -- default : not null
+            SUMINCOME              -- Total Amount                                        -- type : int         -- default : not null
+            DATE                   -- Date format as YYYY-MM-DD                           -- type : str        -- default : ---
+            Copon                  -- Copon Code                                          -- type : str        -- default : 0
 
         Return :
             HAS PROBLEM             --Error                                               -- type : tuple       -- value   : False , Message
             NO  PROBLEM             --Successfully                                        -- type : tuple       -- value   : True  , Message
         """
         PERSON_ID = self.national_code
-        data = self.base64_decode(Tracking_Code).split("|")[:-1]
-        SUMINCOME = 0
-        for Order in data:
-            try:
-                FOOD_ID, COUNT = Order.split("/")
-                self.c.execute(f"SELECT * FROM FOOD WHERE ID = '{FOOD_ID}' ")
-                FOOD = self.c.fetchone()
-                self.NewFood(
-                    FOOD["NAME"],
-                    FOOD["PRICE"],
-                    FOOD["INVENTORY"] - int(COUNT),
-                    FOOD["DATE"],
-                    FOOD["PROFILE"],
-                    FOOD["MEAL"],
-                    FOOD["MATERIAL"].split("|"),
-                )
-
-                self.c.execute(
-                    f"UPDATE `ORDER` SET STATE = 'SENDING'  WHERE PERSON_ID = '{PERSON_ID}' AND STATE = 'PAYING' AND FOOD_ID = '{FOOD_ID}'"
-                )
-
-                SUMINCOME += float(FOOD["PRICE"])
-            except Exception as e:
-                return False, e
-
+        self.c.execute(
+            f"SELECT * FROM `ORDER` WHERE PERSON_ID = '{PERSON_ID}' AND STATE = 'PAYING'"
+        )
+        records = self.c.fetchall()
+        # add votes
+        for data in records:
+            food_id = data['FOOD_ID']
+            inventory = self.FoodInfo(food_id)['INVENTORY']
+            self.c.execute(
+                f"UPDATE FOOD SET INVENTORY = {inventory - data['COUNT']}  WHERE ID = '{food_id}'"
+            )
+            
+        self.c.execute(
+            f"UPDATE `ORDER` SET STATE = 'SENDING' WHERE PERSON_ID = '{PERSON_ID}' AND STATE = 'PAYING'"
+        )
+        
         if not Copon == "":
             status, percent = self.UseCopon(Copon)
-            if status == True:
-                SUMINCOME *= (100 - percent) / 100
 
         try:
+            Tracking_Code = "".join(
+                random.choice("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
+                for x in range(8)
+            )
             # add new comment to datebase
             self.c.execute(
                 "INSERT INTO ECONOMY ('SUMINCOME' , 'TRACKINGCODE', 'DATE') VALUES (?,?,?)",
@@ -197,6 +138,7 @@ class User(DATABASE):
             )
         except Exception as e:
             return False, e
+            
         self.conn.commit()
         return True, "Successfully"
 

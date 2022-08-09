@@ -38,6 +38,8 @@ class MainScreen(QDialog):
         self.exit_button.clicked.connect(lambda x: sys.exit())
         self.update_profile_submit.clicked.connect(self.change_user_info)
         self.order.clicked.connect(self.confirm_order)
+        self.use_copon.clicked.connect(self.use_copon_handle)
+        self.pay.clicked.connect(self.pay_handle)
         
         pixmap = QtGui.QPixmap("frontend/icons/drinks.png").scaled(300, 100)
         self.drinks_header.setPixmap(pixmap)
@@ -196,57 +198,62 @@ class MainScreen(QDialog):
             print("combobox changed", value , self.sender())
     
     def update_cart(self):
+        sum_orders = 0
+        self.discount_code.setDisabled(False)
+        self.use_copon.setDisabled(False)
+        self.discount_code.clear()
+        
         formFrameCart = QFrame()
         self.layout_cart = QFormLayout(formFrameCart)
         self.cart_area.setWidget(formFrameCart)
-            
-        for i in range(40):
-            date = self.calendarWidget.selectedDate().toString("yyyy-MM-dd")
-            label = QLabel(
-                f"label{i} \t {i*10}$ \t {i*2 + 5} \t {date} \t",
-                self,
-                objectName=f"label{i}",
-            )
-            label.setStyleSheet('QLabel { font: 12pt "MV Boli"; min-width: 850px;}')
+        try:
+            status , all_data = self.market.PayingOrders(self.user.national_code)
+            for data in all_data:
+                sum_orders += data['COUNT'] * data['info']['PRICE']
+                label = QLabel(
+                    f"{data['info']['NAME']} \t {data['info']['PRICE']}$ \t {data['COUNT']} \t {data['DATE']}"
+                )
+                label.setStyleSheet('QLabel { font: 12pt "MV Boli"; min-width: 850px;}')
 
-            button = QPushButton(f"DELETE", self, objectName=f"food{i}_count")
-            button.setStyleSheet(
-                                """QPushButton{
-                                        background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0.857143, y2:0.857955, stop:1 rgb(255, 189, 108), stop:0 rgb(255, 0, 0));
-                                        color: white;
-                                        font: 12pt "MV Boli";
-                                        border: 2px solid rgb(58, 134, 255);
-                                        border-radius: 12px;
-                                    }
-                                    QPushButton:pressed   {
-                                        background-color: rgba(255, 0, 0, 255);
-                                        color: white;
-                                    }
-                                """
-            )
-            button.clicked.connect(self.delete_function)
-            self.layout_cart.addRow(label, button)
-            
+                button = QPushButton(f"DELETE", self, objectName= f"del_{data['ID']}")
+                button.setStyleSheet(
+                                    """QPushButton{
+                                            background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0.857143, y2:0.857955, stop:1 rgb(255, 189, 108), stop:0 rgb(255, 0, 0));
+                                            color: white;
+                                            font: 12pt "MV Boli";
+                                            border: 2px solid rgb(58, 134, 255);
+                                            border-radius: 12px;
+                                        }
+                                        QPushButton:pressed   {
+                                            background-color: rgba(255, 0, 0, 255);
+                                            color: white;
+                                        }
+                                    """
+                )
+                button.clicked.connect(self.delete_function)
+                self.layout_cart.addRow(label, button)
+        except Exception as e:
+            print(e)
+        self.CartTotalAmount.display(sum_orders)
+        
     def delete_function(self):
-        print(self.sender())
-        print(self.sender().objectName())
-        print()
+        order_id = int(self.sender().objectName().replace("del_",""))
+        self.user.DeleteOrder(order_id)
+        self.update_cart()
         
     def update_orders(self):
         formFrameOrders = QFrame()
         self.layout_orders = QFormLayout(formFrameOrders)
         self.orders_area.setWidget(formFrameOrders)
 
-        for i in range(40):
-            date = self.calendarWidget.selectedDate().toString("yyyy-MM-dd")
+        status , all_data = self.market.PayedOrders(self.user.national_code)
+        for data in all_data:
             label = QLabel(
-                f"label{i} \t {i*10}$ \t {i*2 + 5} \t {date} \t",
-                self,
-                objectName=f"label{i}",
+                f"{data['info']['NAME']} \t {data['info']['PRICE']}$ \t {data['COUNT']} \t {data['DATE']}"
             )
             label.setStyleSheet('QLabel { font: 12pt "MV Boli"; min-width: 850px;}')
 
-            button = QPushButton(f"PAYED", self, objectName=f"food{i}_count")
+            button = QPushButton(f"PAYED")
             button.setStyleSheet(
                                 """QPushButton{
                                         background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0.857143, y2:0.857955, stop:1 rgba(7, 76, 0, 255), stop:0 rgba(66, 163, 65, 255));
@@ -269,7 +276,8 @@ class MainScreen(QDialog):
         self.foods_area.setWidget(formFrameFoods)
 
         for data in self.market.FoodMenu(date):
-            
+            if data['INVENTORY'] < 1:
+                continue
             checkbox = QCheckBox(f"{data['NAME']}\t {data['PRICE']}$", objectName= str(data["ID"]))
             checkbox.setStyleSheet(
                 'QCheckBox { font: 10pt "MV Boli"; min-width: 160px;}'
@@ -296,6 +304,8 @@ class MainScreen(QDialog):
         self.drinks_area.setWidget(formFrameDrinks)
 
         for data in self.market.DrinkMenu(date):
+            if data['INVENTORY'] < 1:
+                continue
             checkbox = QCheckBox(f"{data['NAME']}\t {data['PRICE']}$", objectName= str(data["ID"]))
             checkbox.setStyleSheet(
                 'QCheckBox { font: 10pt "MV Boli"; min-width: 160px;}'
@@ -333,8 +343,9 @@ class MainScreen(QDialog):
             self.user.NewOrder(key, date, value)
         self.orders = {}
         self.update_foods()
+        self.update_cart()
         self.tabWidget.setCurrentIndex(1)
-        
+            
     def update_profile(self):
         self.error.setText("")
         self.re_password_input.setText("")
@@ -403,6 +414,31 @@ class MainScreen(QDialog):
                              )
             self.update_profile()
             
+    def use_copon_handle(self):
+        status, msg = self.market.InfoCopon(self.discount_code.text())
+        if status == False :
+            self.discount_code.setText(msg)
+        else:
+            self.discount_code.setDisabled(True)
+            self.use_copon.setDisabled(True)
+            if msg["COUNT"] > 0:
+                new_total = int(self.CartTotalAmount.intValue() * (100 - msg["PERCENT"]) / 100)
+                self.CartTotalAmount.display(new_total)
+            else:
+                self.discount_code.setText("Copon Consumed.")
+            
+    def pay_handle(self):
+        try:
+            date = datetime.date.today().strftime("%Y-%m-%d")
+            if self.discount_code.isEnabled() or self.discount_code.text() == "":
+                self.user.Pay(self.CartTotalAmount.intValue(), date)
+            else:
+                self.user.Pay(self.CartTotalAmount.intValue(), date, self.discount_code.text())
+            self.update_cart()
+            self.update_orders()
+            self.tabWidget.setCurrentIndex(2)
+        except Exception as e:
+            print(e)
     def centralize(self):
         frameGm = self.frameGeometry()
         screen = QApplication.desktop().screenNumber(
