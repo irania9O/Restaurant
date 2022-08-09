@@ -41,6 +41,7 @@ class ManagerScreen(QDialog):
         self.update_profile_submit.clicked.connect(self.change_user_info)
         self.update_restaurant_profile.clicked.connect(self.change_restaurant_info)
         self.submit_new.clicked.connect(self.submit_fookd_drink)
+        self.add_new_admin.clicked.connect(self.add_new_admin_handle)
         
         pixmap = QtGui.QPixmap("frontend/icons/drinks.png").scaled(300, 100)
         self.drinks_header.setPixmap(pixmap)
@@ -66,6 +67,9 @@ class ManagerScreen(QDialog):
         pixmap = QtGui.QPixmap("frontend/icons/income.png").scaled(350, 100)
         self.income_header.setPixmap(pixmap)
 
+        data = self.market.ResturantInfo()
+        self.email_input_2.setText(data["EMAIL"])
+        self.phone_number_input_2.setText(data["PHONE_NUMBER"])
         
         formFrameDrinks = QFrame()
         self.layout_drinks = QVBoxLayout(formFrameDrinks)
@@ -97,7 +101,9 @@ class ManagerScreen(QDialog):
         
         self.foods_and_drinks_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.foods_and_drinks_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        
+
+        self.admin_list.currentTextChanged.connect(self.on_combobox_changed)
+
         self.tabWidget.tabBarClicked.connect(self.handle_tabbar_clicked)
 
     def copy_copon(self):
@@ -149,22 +155,68 @@ class ManagerScreen(QDialog):
     def update_admins(self):
         self.first_name_input_2.clear()
         self.last_name_input_2.clear()
-        self.phone_number_input_2.clear()
-        self.email_input_2.clear()
         self.national_code_input_2.clear()
         self.password_input_2.clear()
         self.re_password_input_2.clear()
         self.last_name_input_5.clear()
-        self.first_name_input_2.clear()
+        self.first_name_input_5.clear()
         self.phone_number_input_5.clear()
         self.email_input_5.clear()
         self.national_code_input_5.clear()
         self.password_input_5.clear()
-        self.re_password_input_5.clear()
         self.admin_list.clear()
-        self.admin_list.addItems(["-- Select An Admin --", "reza", "ali", "mosa"])
+        self.error5.setText("")
+        self.admin_list.addItem("-- Select An Admin --")
+        for data in self.admin.AdminsList():
+            self.admin_list.addItem(str(data["NATIONAL_CODE"]))
+            
         self.admin_list.setCurrentIndex(0)
         
+    def add_new_admin_handle(self):
+        try:
+            firstname = self.first_name_input_2.text()
+            lastname = self.last_name_input_2.text()
+            phonenumber = self.phone_number_input_2.text()
+            email = self.email_input_2.text()
+            nationacode = self.national_code_input_2.text()
+            password = self.password_input_2.text()
+            password_2 = self.re_password_input_2.text()
+            
+            if not re.search(r'^[A-z ]{2,}$', firstname):
+                self.error5.setText("Invalid First Name")
+                return False
+            
+            elif not re.search(r'^[A-z ]{2,}$', lastname):
+                self.error5.setText("Invalid Last Name")
+                return False
+                
+            elif not re.search(r'(0|\+98|0098)?([ ]|-|[()]){0,2}9[1|2|3|4]([ ]|-|[()]){0,2}(?:[0-9]([ ]|-|[()]){0,2}){8}', phonenumber):
+                self.error5.setText("Invalid Phone Number")
+                return False
+            
+            elif not re.search(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', email):
+                self.error5.setText("Invalid Email")
+                return False
+            
+            elif not re.search(r'^\d{10}$', nationacode):
+                self.error5.setText("Invalid National Code")
+                return False
+            
+            elif not re.search(r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$", password):
+                self.error5.setText("8 characters, at least 1 letter, 1 number & 1 special character")
+                return False
+
+            elif not password == password_2:
+                self.error5.setText("Password and Re-password are not equal")
+                return False
+            
+            status , msg  = self.user.Registery(firstname, lastname, phonenumber, email, nationacode, password, "", 0, "Admin")
+            self.error5.setText(msg)
+            
+            if status == True:
+                self.update_admins()
+        except Exception as e:
+            print(e)
     def update_economy(self):
         formFrameEconomy = QFrame()
         self.layout_foods_and_drinks = QFormLayout(formFrameEconomy)
@@ -246,11 +298,21 @@ class ManagerScreen(QDialog):
                 print(e)
             
     def on_combobox_changed(self, value):
-        if value == "-- Select An Order --" or value == "":
-            self.vote_text_area.setDisabled(True)
+        if value == "-- Select An Admin --" or value == "":
+            self.last_name_input_5.clear()
+            self.first_name_input_5.clear()
+            self.phone_number_input_5.clear()
+            self.email_input_5.clear()
+            self.national_code_input_5.clear()
+            self.password_input_5.clear()
         else:
-            self.vote_text_area.setDisabled(False)
-            print("combobox changed", value , self.sender())
+            data = self.user.Person(value)
+            self.last_name_input_5.setText(data["FIRST_NAME"])
+            self.first_name_input_5.setText(data["LAST_NAME"])
+            self.phone_number_input_5.setText(data["PHONE_NUMBER"])
+            self.email_input_5.setText(data["EMAIL"])
+            self.national_code_input_5.setText(data["NATIONAL_CODE"])
+            self.password_input_5.setText(data["PASSWORD"])
 
             
     def update_foods(self):
@@ -273,7 +335,7 @@ class ManagerScreen(QDialog):
         self.foods_area.setWidget(formFrameFood)
         try:
             radio_button = QRadioButton(f"new food")
-            radio_button.setStyleSheet('QRadioButton { font: 12pt "MV Boli"; min-height: 20px; min-width: 200px;}')
+            radio_button.setStyleSheet('QRadioButton { font: 10pt "MV Boli"; min-height: 20px; min-width: 200px;}')
             self.layout_foods.addRow(radio_button)
             self.group.addButton(radio_button)
             for data in self.market.FoodMenu(date):
@@ -431,7 +493,7 @@ class ManagerScreen(QDialog):
         password_2 = self.re_password_input.text()
         
         if not re.search(r'^[A-z ]{2,}$', firstname):
-            self.error.setText("Invalid First Name")
+            self.error2.setText("Invalid First Name")
             return False
         
         elif not re.search(r'^[A-z ]{2,}$', lastname):

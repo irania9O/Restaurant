@@ -115,7 +115,7 @@ QTabBar::tab:selected {
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideMiddle</enum>
@@ -1139,6 +1139,11 @@ QPushButton:pressed   {
        <pointsize>10</pointsize>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit:disabled{
+color: rgb(0, 0, 0);
+}</string>
+     </property>
      <property name="text">
       <string/>
      </property>
@@ -1188,6 +1193,9 @@ QPushButton:pressed   {
      </property>
      <property name="text">
       <string/>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -1255,6 +1263,11 @@ QPushButton:pressed   {
        <pointsize>10</pointsize>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit:disabled{
+color: rgb(0, 0, 0);
+}</string>
+     </property>
      <property name="text">
       <string/>
      </property>
@@ -1307,6 +1320,9 @@ QPushButton:pressed   {
      </property>
      <property name="text">
       <string/>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -1476,6 +1492,11 @@ color: rgb(0, 0, 0);
        <pointsize>10</pointsize>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit:disabled{
+color: rgb(0, 0, 0);
+}</string>
+     </property>
      <property name="text">
       <string/>
      </property>
@@ -1529,6 +1550,11 @@ color: rgb(0, 0, 0);
        <pointsize>10</pointsize>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit:disabled{
+color: rgb(0, 0, 0);
+}</string>
+     </property>
      <property name="text">
       <string/>
      </property>
@@ -1563,6 +1589,11 @@ color: rgb(0, 0, 0);
        <pointsize>10</pointsize>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit:disabled{
+color: rgb(0, 0, 0);
+}</string>
+     </property>
      <property name="text">
       <string/>
      </property>
@@ -1594,8 +1625,16 @@ color: rgb(0, 0, 0);
        <pointsize>10</pointsize>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit:disabled{
+color: rgb(0, 0, 0);
+}</string>
+     </property>
      <property name="text">
       <string/>
+     </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
@@ -1682,6 +1721,11 @@ color: rgb(0, 0, 0);
        <pointsize>10</pointsize>
       </font>
      </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit:disabled{
+color: rgb(0, 0, 0);
+}</string>
+     </property>
      <property name="text">
       <string/>
      </property>
@@ -1696,56 +1740,6 @@ color: rgb(0, 0, 0);
      </property>
      <property name="clearButtonEnabled">
       <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QLineEdit" name="re_password_input_5">
-     <property name="geometry">
-      <rect>
-       <x>400</x>
-       <y>510</y>
-       <width>171</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>MV Boli</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-     <property name="placeholderText">
-      <string>repeat password</string>
-     </property>
-     <property name="clearButtonEnabled">
-      <bool>false</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="re_password_label_5">
-     <property name="geometry">
-      <rect>
-       <x>250</x>
-       <y>510</y>
-       <width>141</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>MV Boli</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Re-Password :</string>
      </property>
     </widget>
     <widget class="QLineEdit" name="national_code_input_5">
@@ -1814,6 +1808,27 @@ color: rgb(0, 0, 0);
      </property>
      <property name="text">
       <string>Admin Info</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="error5">
+     <property name="geometry">
+      <rect>
+       <x>640</x>
+       <y>440</y>
+       <width>321</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel {
+color: rgb(255, 30, 10);
+}</string>
+     </property>
+     <property name="text">
+      <string/>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

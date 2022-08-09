@@ -64,7 +64,7 @@ class SignUpScreen(QDialog):
             return False
     
         else:
-            status , msg  = self.user.Registery(firstname, lastname, phonenumber, email, nationacode, password, "/")
+            status , msg  = self.user.Registery(firstname, lastname, phonenumber, email, nationacode, password, "")
             self.error.setText(msg)
             if status == True:
                 self.firstname.setText("")
