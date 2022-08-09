@@ -14,7 +14,7 @@ from PyQt5.QtWidgets import (
 )
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.uic import loadUi
-import sys
+import sys, re
 import random
 
 indexes = {0: "Menu", 1: "Cart", 2: "Orders"}
@@ -33,7 +33,9 @@ class MainScreen(QDialog):
         
         self.go_to_admin_screen.clicked.connect(self.GoToAdminScreen)
         self.exit_button.clicked.connect(lambda x: sys.exit())
-    
+
+        self.update_profile_submit.clicked.connect(self.change_user_info)
+        
         pixmap = QtGui.QPixmap("frontend/icons/drinks.png").scaled(300, 100)
         self.drinks_header.setPixmap(pixmap)
 
@@ -112,6 +114,8 @@ class MainScreen(QDialog):
             self.update_vote()
         elif index == 4:
             self.update_news()
+        elif index == 5:
+            self.update_profile()
             
     def enable_disable_spin_box(self, name):
         counter_drinks = self.findChild(QSpinBox, f"{self.sender().objectName()}_count")
@@ -291,7 +295,75 @@ class MainScreen(QDialog):
             spinbox.valueChanged.connect(lambda x: self.change_spin_box(x))
 
             self.layout_drinks.addRow(checkbox, spinbox)
+            
+    def update_profile(self):
+        self.error.setText("")
+        self.re_password_input.setText("")
+        data = self.market.ResturantInfo()
+        self.restaurant_name_input.setText(data["NAME_RESTURANT"])
+        self.manager_first_name_input.setText(data["MANAGER_FIRST_NAME"])
+        self.manager_last_name_input.setText(data["MANAGER_LAST_NAME"])
+        self.restaurant_phone_number_input.setText(data["PHONE_NUMBER"])
+        self.restaurant_email_input.setText(data["EMAIL"])
+        self.location_input.setText(data["LOCATION"])
+        self.type_input.setText(data["TYPE"])
+        self.address_input.setText(data["ADDRESS"])
 
+        data_person =  self.user.Person(self.user.national_code)
+        self.first_name_input.setText(data_person["FIRST_NAME"])
+        self.last_name_input.setText(data_person["LAST_NAME"])
+        self.phone_number_input.setText(data_person["PHONE_NUMBER"])
+        self.email_input.setText(data_person["EMAIL"])
+        self.national_code_input.setText(data_person["NATIONAL_CODE"])
+        self.password_input.setText(data_person["PASSWORD"])
+        
+    def change_user_info(self):
+        firstname = self.first_name_input.text()
+        lastname = self.last_name_input.text()
+        phonenumber = self.phone_number_input.text()
+        email = self.email_input.text()
+        nationacode = self.national_code_input.text()
+        password = self.password_input.text()
+        password_2 = self.re_password_input.text()
+        
+        if not re.search(r'^[A-z ]{2,}$', firstname):
+            self.error.setText("Invalid First Name")
+            return False
+        
+        elif not re.search(r'^[A-z ]{2,}$', lastname):
+            self.error.setText("Invalid Last Name")
+            return False
+            
+        elif not re.search(r'(0|\+98|0098)?([ ]|-|[()]){0,2}9[1|2|3|4]([ ]|-|[()]){0,2}(?:[0-9]([ ]|-|[()]){0,2}){8}', phonenumber):
+            self.error.setText("Invalid Phone Number")
+            return False
+        
+        elif not re.search(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', email):
+            self.error.setText("Invalid Email")
+            return False
+        
+        elif not re.search(r'^\d{10}$', nationacode):
+            self.error.setText("Invalid National Code")
+            return False
+        
+        elif not re.search(r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$", password):
+            self.error.setText("8 characters, at least 1 letter, 1 number & 1 special character")
+            return False
+
+        elif not password == password_2:
+            self.error.setText("Password and Re-password are not equal")
+            return False
+        
+        else:
+            self.user.Update(FIRST_NAME = firstname,
+                             LAST_NAME = lastname,
+                             PHONE_NUMBER = phonenumber,
+                             EMAIL = email,
+                             NATIONAL_CODE = nationacode,
+                             PASSWORD = password
+                             )
+            self.update_profile()
+            
     def centralize(self):
         frameGm = self.frameGeometry()
         screen = QApplication.desktop().screenNumber(

@@ -1929,6 +1929,9 @@ color: rgb(0, 0, 0);
      <property name="text">
       <string/>
      </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
@@ -1976,6 +1979,9 @@ color: rgb(0, 0, 0);
      <property name="text">
       <string/>
      </property>
+     <property name="echoMode">
+      <enum>QLineEdit::Password</enum>
+     </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
@@ -2005,7 +2011,7 @@ color: rgb(0, 0, 0);
       <string>Re-Password :</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="update_profile">
+    <widget class="QPushButton" name="update_profile_submit">
      <property name="geometry">
       <rect>
        <x>700</x>
@@ -2512,6 +2518,27 @@ color: rgb(0, 0, 0);
      </property>
      <property name="text">
       <string>Restaurant Name :</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="error">
+     <property name="geometry">
+      <rect>
+       <x>640</x>
+       <y>450</y>
+       <width>321</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel {
+color: rgb(255, 30, 10);
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </widget>
