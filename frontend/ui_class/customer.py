@@ -40,6 +40,7 @@ class MainScreen(QDialog):
         self.order.clicked.connect(self.confirm_order)
         self.use_copon.clicked.connect(self.use_copon_handle)
         self.pay.clicked.connect(self.pay_handle)
+        self.submit_vote.clicked.connect(self.submit_vote_handle)
         
         pixmap = QtGui.QPixmap("frontend/icons/drinks.png").scaled(300, 100)
         self.drinks_header.setPixmap(pixmap)
@@ -91,10 +92,12 @@ class MainScreen(QDialog):
 
         formFrameVotes = QFrame()
         self.layout_votes = QVBoxLayout(formFrameVotes)
+        self.layout_votes.setAlignment(Qt.AlignTop)
         self.votes_area.setWidget(formFrameVotes)
         
         formFrameVotesFoodsDrinks = QFrame()
         self.layout_votes_foods_drinks = QVBoxLayout(formFrameVotesFoodsDrinks)
+        self.layout_votes_foods_drinks.setAlignment(Qt.AlignTop)
         self.foods_and_drinks_area.setWidget(formFrameVotesFoodsDrinks)
         
     def check_admin(self):
@@ -157,19 +160,33 @@ class MainScreen(QDialog):
             
         for i in reversed(range(self.layout_votes_foods_drinks.count())): 
             self.layout_votes_foods_drinks.itemAt(i).widget().deleteLater()
+            
+        date = self.calendarWidget_vote.selectedDate().toString("yyyy-MM-dd")
         
         try:
-            for i in range(40):
-                radio_button = QRadioButton(f" button radio {i} {random.randint(3, 90)}")
+            for data in self.market.FoodMenu(date):
+                radio_button = QRadioButton(f"{data['NAME']}\t {data['PRICE']}$", objectName= str(data["ID"]))
                 radio_button.setStyleSheet('QRadioButton { font: 12pt "MV Boli"; min-height: 20px; }')
                 radio_button.toggled.connect(self.radio_button_selection)
                 self.layout_votes_foods_drinks.addWidget(radio_button)
+                
+            for data in self.market.DrinkMenu(date):
+                radio_button = QRadioButton(f"{data['NAME']}\t {data['PRICE']}$", objectName= str(data["ID"]))
+                radio_button.setStyleSheet('QRadioButton { font: 12pt "MV Boli"; min-height: 20px; }')
+                radio_button.toggled.connect(self.radio_button_selection)
+                self.layout_votes_foods_drinks.addWidget(radio_button)
+                
         except Exception as e:
             print(e)
             
         try:
             self.foods_orderd.clear()
-            self.foods_orderd.addItems(["-- Select An Order --", "f2", "f3", "f4"])
+            self.foods_orderd.addItem("-- Select An Order --")
+            status, all_data = self.market.PayedOrders(self.user.national_code)
+            for data in all_data:
+                data_food = self.user.FoodInfo(data['FOOD_ID'])
+                self.foods_orderd.addItem(f"{data['FOOD_ID']} - {data['ID']} - {data_food['NAME']} - {data_food['DATE']}")
+                
             self.foods_orderd.setCurrentIndex(0)
         except Exception as e:
             print(e)
@@ -179,24 +196,37 @@ class MainScreen(QDialog):
     def radio_button_selection(self ):
         radioButton = self.sender()
         if radioButton.isChecked():
-            print(radioButton)
+
             for i in reversed(range(self.layout_votes.count())): 
                 self.layout_votes.itemAt(i).widget().deleteLater()
             try:
-                for i in range(40):
-                    label = QLabel(f" vote {i} {random.randint(3, 90)}")
-                    label.setStyleSheet('QLabel { font: 12pt "MV Boli"; min-height: 20px; }')
+                status, all_data = self.market.OneVote(radioButton.objectName())
+                for data in all_data:
+                    label = QLabel(f"{data['COMMENT']}")
+                    label.setStyleSheet('QLabel { font: 10pt "MV Boli"; min-height: 20px; }')
                     self.layout_votes.addWidget(label)
             except Exception as e:
                 print(e)
             
     def on_combobox_changed(self, value):
+        self.vote_text_area.setText("")
         if value == "-- Select An Order --" or value == "":
             self.vote_text_area.setDisabled(True)
         else:
             self.vote_text_area.setDisabled(False)
-            print("combobox changed", value , self.sender())
-    
+            
+    def submit_vote_handle(self):
+        try:
+            comment = self.vote_text_area.toPlainText()
+            if comment == "":
+                self.error2.setText("Cant add empty vote.")
+            else:
+                food_id = int(self.foods_orderd.currentText().split("-")[0])                
+                self.user.NewVote(food_id, comment)
+                self.update_vote()
+        except Exception as e:
+            print(e)
+
     def update_cart(self):
         sum_orders = 0
         self.discount_code.setDisabled(False)

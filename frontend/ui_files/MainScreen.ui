@@ -115,7 +115,7 @@ QTabBar::tab:selected {
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>5</number>
+    <number>3</number>
    </property>
    <property name="elideMode">
     <enum>Qt::ElideMiddle</enum>
@@ -1071,7 +1071,7 @@ QPushButton:pressed   {
       <string>Write your opinion ...</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="submit">
+    <widget class="QPushButton" name="submit_vote">
      <property name="geometry">
       <rect>
        <x>106</x>
@@ -1424,13 +1424,34 @@ color: rgb(64, 64, 64);
       </property>
      </widget>
     </widget>
+    <widget class="QLabel" name="error2">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>520</y>
+       <width>281</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLabel {
+color: rgb(255, 30, 10);
+}</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
     <zorder>line_16</zorder>
     <zorder>line_17</zorder>
     <zorder>register_vote_header</zorder>
     <zorder>line_18</zorder>
     <zorder>foods_orderd</zorder>
     <zorder>vote_text_area</zorder>
-    <zorder>submit</zorder>
+    <zorder>submit_vote</zorder>
     <zorder>line_19</zorder>
     <zorder>search_drink_2</zorder>
     <zorder>foods_and_drinks_area</zorder>
@@ -1443,6 +1464,7 @@ color: rgb(64, 64, 64);
     <zorder>line_45</zorder>
     <zorder>line_46</zorder>
     <zorder>votes_area</zorder>
+    <zorder>error2</zorder>
    </widget>
    <widget class="QWidget" name="widget">
     <attribute name="title">
