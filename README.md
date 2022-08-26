@@ -1,4 +1,4 @@
-# Calculator with graphical interface
+# Restaurant management with graphical interface
 
 _This is a multiple restaurant management project built graphical interface with the pyqt5 library._
 
